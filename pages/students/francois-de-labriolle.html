@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>François DE LABRIOLLE - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>François DE LABRIOLLE</span>
+      </div>
+      <h1>François DE LABRIOLLE</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #7B4FB5; color: #fff;">Physique</span>
+<span class="student-tag tag-abandon">Arts Musique</span>
+<span class="student-tag tag-option">Option Maths Expertes en Tle</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; Physique</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>Arts Musique</td></tr>
+<tr><td class="info-label">Option Tle</td><td>Option Maths Expertes en Tle</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;">Prepa PCSI</td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value">Prepa PCSI</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">2 voeux - 2 lettres de motivation</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI (Lakanal) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Madame, Monsieur,
+
+Fort d'une expérience stimulante, organisé, passionné et sociable, je souhaite intégrer la classe préparatoire MPSI de Lakanal pour acquérir une solide formation scientifique et intégrer ensuite une école d'ingénieur.
+
+Le programme des spécialités mathématique et physique, les horizons ouverts grâce à l'option maths expertes, ont confirmé mon attrait pour ces matières et l'envie d'en explorer les multiples territoires.
+
+Passionné de musique, j'ai commencé très jeune à jouer de plusieurs instruments, ce qui m'a habitué à la rigueur et à la constance dans mon travail. À 14 ans j'ai eu la chance d'intégrer l'Académie Musicale de Liesse, une école à horaire aménagé pour la pratique musicale (cf. les éléments liés à ma scolarité).
+
+Confronté à de fortes exigences scolaire et artistique, à un rythme soutenu, j'ai développé des capacités d'organisation et d'anticipation. Cela me permet d'envisager avec sérénité le rythme et la charge de travail de la préparation avec l'objectif d'acquérir une méthode et une capacité de travail éprouvées.
+
+Ayant participé aux portes ouvertes, j'ai particulièrement apprécié, outre le cadre exceptionnel de Lakanal, la disponibilité des professeurs, la fierté et l'engagement des élèves vis-à-vis de leur école et la présence enrichissante, dans le même lieu, de toutes les classes préparatoires.
+
+A Lakanal, je pense trouver les conditions favorables pour contribuer positivement aux objectifs de la formation et à la vie de l'établissement.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>PCSI (Lakanal) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Madame, Monsieur,
+
+Fort d'une expérience stimulante, organisé, passionné et sociable, je souhaite intégrer la classe préparatoire PCSI de Lakanal pour acquérir une solide formation scientifique et intégrer ensuite une école d'ingénieur.
+
+Le programme des spécialités mathématique et physique, les horizons ouverts grâce à l'option maths expertes, ont confirmé mon attrait pour ces matières et l'envie d'en explorer les multiples territoires.
+
+Passionné de musique, j'ai commencé très jeune à jouer de plusieurs instruments, ce qui m'a habitué à la rigueur et à la constance dans mon travail. À 14 ans j'ai eu la chance d'intégrer l'Académie Musicale de Liesse, une école à horaire aménagé pour la pratique musicale (cf. les éléments liés à ma scolarité).
+
+Confronté à de fortes exigences scolaire et artistique, à un rythme soutenu, j'ai développé des capacités d'organisation et d'anticipation. Cela me permet d'envisager avec sérénité le rythme et la charge de travail de la préparation avec l'objectif d'acquérir une méthode et une capacité de travail éprouvées.
+
+Ayant participé aux portes ouvertes, j'ai particulièrement apprécié, outre le cadre exceptionnel de Lakanal, la disponibilité des professeurs, la fierté et l'engagement des élèves vis-à-vis de leur école et la présence enrichissante, dans le même lieu, de toutes les classes préparatoires.
+
+A Lakanal, je pense trouver les conditions favorables pour contribuer positivement aux objectifs de la formation et à la vie de l'établissement.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d'encadrement ou d'animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dans le cadre de mon école, j'ai été responsable d'une équipe de 10 garçons, nous avions des missions chaque semaine pour le bien commun de l'école telles que le service de table, le débarrassage, le ménage. J'ai appris à être au service, à développer l'esprit d'équipe, et à rendre les autres heureux.
+
+L'année suivante j'ai été responsable de 3 équipes de 10 garçons du CM1 à la terminale, je devais m'assurer que mes équipes fassent les services en donnant à chacun les moyens d'y parvenir. Mon rôle était de faire mon possible pour qu'il y ait une bonne ambiance au sein de ce groupe, que la vie de l'internat se passe au mieux et enfin faciliter la communication entre adulte et élève notamment grâce aux réunions hebdomadaires avec mon directeur. Cette expérience fût enrichissante humainement me permettant de développer des amitiés avec des gens de tous âges, et découvrir la joie de donner sans retour.
+
+J'ai dirigé ce groupe de 30 garçons dans l'organisation d'un dîner à thème pour 120 personnes où nous devions assurer : la cuisine, la décoration pour plonger les invités dans l'univers, ainsi qu'une animation adaptée à tous âges tout le long de la soirée. J'ai dû respecter un budget, nous avions un temps limité pour préparer et ranger, en laissant les lieux aussi propres qu'initialement. J'ai pu développer des compétences telles que la capacité à déléguer, le sens des responsabilité, la confiance, l'anticipation, rendre compte et l'improvisation dans les imprévus.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Depuis très jeune, j'ai pris l'habitude de rendre service. Le fait de faire du scoutisme de mes 8 ans jusqu'à 16 ans m'a habitué assez tôt à rendre service, notamment grâce à des services de jardinage, de tailles de bois ou encore de rénovation de maisons. J'ai pu découvrir la joie qu'apporte le travail terminé, le travail en équipe et celle du don de soi pour une cause.
+
+J'ai eu la chance de pouvoir me rendre plusieurs fois dans des EHPAD, j'ai ainsi pu rencontrer des personnes âgées ou en situation de handicap et leur donner un moment de convivialité pendant une après-midi. Ce fut des expériences enrichissantes et touchantes me permettant de mieux me rendre compte de l'importance des liens transgénérationnels et de la socialisation des personnes âgées qui ont tous à nous transmettre.
+
+En faisant ma journée de défense et citoyenneté. J'ai pu ainsi mieux connaître les objectifs de la défense nationale Française et les différentes formes d'engagement. J'ai aussi validé mon PSC1 qui m'a permis d'acquérir les compétences nécessaires pour agir efficacement et porter secours aux personnes. J'ai aussi comme projet de faire une préparation militaire initiale dans le cadre du CIRFA pour découvrir l'armée et ainsi discerner sur la meilleure façon de servir mon pays.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Avec un ami, j'ai fait éditer un album de 6 morceaux de Rock de notre composition dans lequel je joue de la guitare, du chant et du clavier. En plus de devoir surmonter les problèmes techniques dus au manque de matériel, nous avons dû nous conformer aux conditions de notre label pour pouvoir éditer sur les plateformes de streaming. Cela m'a permis de développer une persévérance dans la collaboration et de mener à bien un projet concret.
+
+J'ai été dans un chœur semi-professionnel durant 4 ans et ai participé à 40 concerts de musique (classique, rock, jazz) par an, en France et à l'étranger.
+
+J'ai participé à des concerts hors de mon école avec mon groupe de 4 musiciens. Nous avons assuré la première partie d'un festival devant 1000 personnes. Cette expérience fut très formatrice me permettant d'apprendre la gestion du stress et de me rendre compte de la joie et difficulté des métiers de la scène. J'ai ainsi pu collaborer avec des ingénieurs du son et des musiciens professionnels.
+
+J'ai été responsable d'un stand de boissons pour 800 personnes à l'occasion des dix ans de mon école. Cela consistait à contacter les entreprises pour obtenir des devis, puis trouver un moyen d'acheminer la marchandise à l'endroit de l'événement en la conservant au frais, et enfin gérer une équipe de 8 personnes pour la vente. Cela m'a appris à avoir une conscience professionnelle, en me sentant réellement responsable. J'ai pu développer des qualités de management et d'autonomie dans mon travail.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J'ai pratiqué le waterpolo pendant 8 ans en compétition et à l'international. J'ai ainsi pu développer une vraie endurance physique et mentale et j'ai pu développer un esprit d'équipe. Aujourd'hui, j'aime beaucoup la course à pied car cela me permet de canaliser mon énergie et cette pratique me permet de garder un équilibre dans mon travail.
+
+Je fais de la musique depuis mes 6 ans, en commençant par 3 années de clavecin au conservatoire de Laval où j'ai pu jouer dans une formation de musique de chambre. A 9 ans, j'ai commencé le piano et je continue encore aujourd'hui. En 3eme, j'ai eu la chance de pouvoir continuer la musique de façon semi-professionnelle, au sein d'un lycée à horaires aménagés musique. Ainsi je consacre environ 10 heures par semaine à une pratique intense de chant et d'instrument. J'ai validé un deuxième cycle de piano, un premier de clavecin et à la fin de l'année je passerai mon troisième cycle de solfège.
+
+J'apprends aussi la guitare en autodidacte depuis 4 ans. Cette pratique musicale m'a permis de développer ma créativité (notamment grâce à l'improvisation), une rigueur, une certaine constance dans mon travail et enfin le sens du beau.
+
+Il y a un an, je suis entré en relation avec un correspondant allemand, et j'ai eu la chance de pouvoir aller dans ce pays. Cette expérience m'a donné goût à cette langue et à la culture germanique. J'ai aussi pu voyager grâce au cadre artistique de l'école, et découvrir des pays tels que l'Italie, la Belgique, Monaco.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grand Oral - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../assets/images/logo-aml.png">
+  <style>
+    .dashboard-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .filter-row-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #8C94A3;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 4px;
+    }
+    .filter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-tag {
+      padding: 8px 18px;
+      border-radius: 50px;
+      border: 2px solid #E8EBF0;
+      background: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #4A5568;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .filter-tag:hover {
+      border-color: #152D5B;
+      color: #152D5B;
+    }
+    .filter-tag.active {
+      background: #D4A843;
+      border-color: #D4A843;
+      color: #0B1A38;
+    }
+    .filter-tag-promo {
+      padding: 6px 14px;
+      border-radius: 50px;
+      border: 2px solid #E8EBF0;
+      background: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #4A5568;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .filter-tag-promo:hover {
+      border-color: #152D5B;
+      color: #152D5B;
+    }
+    .filter-tag-promo.active {
+      background: #152D5B;
+      border-color: #152D5B;
+      color: white;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 18px;
+      border: 2px solid #E8EBF0;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .search-box input:focus {
+      border-color: #152D5B;
+    }
+    .results-count {
+      color: #8C94A3;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+    .subject-card {
+      padding: 28px;
+      border: 1px solid #E8EBF0;
+      border-radius: 12px;
+      background: white;
+      transition: all 0.3s;
+    }
+    .subject-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 20px rgba(21,45,91,0.12);
+      border-color: transparent;
+    }
+    .subject-card.hidden {
+      display: none;
+    }
+    .subject-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .badge-maths {
+      background: rgba(21,45,91,0.1);
+      color: #152D5B;
+    }
+    .badge-hggsp {
+      background: rgba(212,168,67,0.15);
+      color: #B8912E;
+    }
+    .badge-hlp {
+      background: rgba(34,197,94,0.12);
+      color: #15803D;
+    }
+    .badge-inter {
+      background: rgba(139,92,246,0.12);
+      color: #7C3AED;
+    }
+    .badge-physique {
+      background: rgba(239,68,68,0.12);
+      color: #DC2626;
+    }
+    .badge-svt {
+      background: rgba(16,185,129,0.12);
+      color: #059669;
+    }
+    .badge-nsi {
+      background: rgba(99,102,241,0.12);
+      color: #4F46E5;
+    }
+    .badge-llce {
+      background: rgba(236,72,153,0.12);
+      color: #DB2777;
+    }
+    .badge-arts {
+      background: rgba(245,158,11,0.12);
+      color: #D97706;
+    }
+    .subject-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #152D5B;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .subject-author {
+      color: #8C94A3;
+      font-size: 0.85rem;
+    }
+    .subject-note {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(34,197,94,0.12);
+      color: #15803D;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    @media (max-width: 600px) {
+      .subjects-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <img src="../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Académie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="guide-etranger.html">Études à l'Étranger</a></li>
+        <li><a href="entretiens.html">Entretiens</a></li>
+        <li><a href="parcoursup.html">Parcoursup</a></li>
+        <li><a href="hggsp.html">HGGSP</a></li>
+        <li><a href="maths.html">Maths</a></li>
+        <li><a href="grand-oral.html" class="active">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span>/</span>
+        <span>Grand Oral</span>
+      </div>
+      <h1>Grand Oral</h1>
+      <p>Le Grand Oral est l'une des épreuves finales du Baccalauréat. Chaque élève présente un sujet de son choix en lien avec ses spécialités, devant un jury, pendant 20 minutes.</p>
+    </div>
+  </section>
+
+  <!-- Dashboard Content -->
+  <section class="page-content">
+    <div class="container">
+
+      <!-- Intro -->
+      <div class="content-wrapper reveal">
+        <p>L'épreuve du Grand Oral permet aux élèves de Terminale de démontrer leur capacité à argumenter, à structurer leur pensée et à s'exprimer à l'oral sur un sujet qu'ils ont choisi et préparé tout au long de l'année. Le sujet doit être en lien avec une ou deux spécialités suivies par l'élève. C'est une épreuve décisive, coefficient 10, qui valorise la curiosité intellectuelle et la maîtrise d'un sujet approfondi.</p>
+      </div>
+
+      <!-- Dashboard -->
+      <div class="content-wrapper reveal">
+        <h2>Tableau de bord des sujets</h2>
+      </div>
+
+      <!-- Filter Bar - Matiere -->
+      <div class="dashboard-filters reveal">
+        <div class="filter-tags">
+          <button class="filter-tag active" data-filter="all">Tous</button>
+          <button class="filter-tag" data-filter="Maths">Maths</button>
+          <button class="filter-tag" data-filter="Physique">Physique</button>
+          <button class="filter-tag" data-filter="SVT">SVT</button>
+          <button class="filter-tag" data-filter="NSI">NSI</button>
+          <button class="filter-tag" data-filter="HGGSP">HGGSP</button>
+          <button class="filter-tag" data-filter="HLP">HLP</button>
+          <button class="filter-tag" data-filter="LLCE">LLCE</button>
+          <button class="filter-tag" data-filter="Arts Musique">Arts Musique</button>
+          <button class="filter-tag" data-filter="Interdisciplinaire">Interdisciplinaire</button>
+        </div>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Rechercher par titre ou auteur...">
+        </div>
+      </div>
+
+      <!-- Filter Bar - Promo -->
+      <div class="filter-row reveal">
+        <span class="filter-row-label">Promo :</span>
+        <div class="filter-tags">
+          <button class="filter-tag-promo active" data-promo-filter="all">Toutes</button>
+          <button class="filter-tag-promo" data-promo-filter="P4">P4</button>
+          <button class="filter-tag-promo" data-promo-filter="P6">P6</button>
+          <button class="filter-tag-promo" data-promo-filter="P7">P7</button>
+          <button class="filter-tag-promo" data-promo-filter="P8">P8</button>
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <div class="results-count reveal" id="resultsCount">78 sujets affichés</div>
+
+      <!-- Cards Grid -->
+      <div class="subjects-grid reveal">
+
+        <!-- Maths -->
+        <div class="subject-card" data-category="Maths" data-promo="P4" data-title="Fractales et médecine" data-author="Théophane Le Bigot">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Fractales et médecine &raquo;</div>
+          <div class="subject-author">par Théophane Le Bigot - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P4" data-title="En quoi l'hyperloop est-il un moyen de transport compétitif pour l'avenir ?" data-author="Cyrille Boo d'Arc">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; En quoi l'hyperloop est-il un moyen de transport compétitif pour l'avenir ? &raquo;</div>
+          <div class="subject-author">par Cyrille Boo d'Arc - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P4" data-title="Comment l'étude d'une fractale permet-elle d'approcher et de concrétiser la notion d'infini et de dimension ?" data-author="Jean Crépelle">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment l'étude d'une fractale permet-elle d'approcher et de concrétiser la notion d'infini et de dimension ? &raquo;</div>
+          <div class="subject-author">par Jean Crépelle - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P6" data-title="Quelle est la place des probabilités dans les procès ?" data-author="Paul Couvreur">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Quelle est la place des probabilités dans les procès ? &raquo;</div>
+          <div class="subject-author">par Paul Couvreur - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P6" data-title="Pourquoi ne peut-on pas transposer avec des gammes Pythagoriciennes ?" data-author="Célestin Vanneufville">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Pourquoi ne peut-on pas transposer avec des gammes Pythagoriciennes ? &raquo;</div>
+          <div class="subject-author">par Célestin Vanneufville - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P6" data-title="Comment utiliser la loi de Benford pour détecter les fraudes fiscales ?" data-author="Nicolas Durka">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment utiliser la loi de Benford pour détecter les fraudes fiscales ? &raquo;</div>
+          <div class="subject-author">par Nicolas Durka - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P6" data-title="Le surbooking des avions" data-author="Louis-Marie Perret du Cray">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Le surbooking des avions &raquo;</div>
+          <div class="subject-author">par Louis-Marie Perret du Cray - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P6" data-title="Comment la théorie des jeux a-t-elle réduit toute décision à un choix mathématique ?" data-author="Paul-Milad Lallemand">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment la théorie des jeux a-t-elle réduit toute décision à un choix mathématique ? &raquo;</div>
+          <div class="subject-author">par Paul-Milad Lallemand - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P6" data-title="Les automates cellulaires peuvent-ils imiter le réel" data-author="Martin Dubruque">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Les automates cellulaires peuvent-ils imiter le réel &raquo;</div>
+          <div class="subject-author">par Martin Dubruque - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="À partir d'un aperçu de la théorie des fractales on s'interrogera sur son utilisation dans la création musicale." data-author="Melchior Berlizot">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; À partir d'un aperçu de la théorie des fractales on s'interrogera sur son utilisation dans la création musicale. &raquo;</div>
+          <div class="subject-author">par Melchior Berlizot - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="Comment l'invention des logarithmes a-t-elle contribué au développement de l'astronomie ?" data-author="Arthur d'Ornano">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment l'invention des logarithmes a-t-elle contribué au développement de l'astronomie ? &raquo;</div>
+          <div class="subject-author">par Arthur d'Ornano - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="Comment créer des images de synthèse grâce aux mathématiques ?" data-author="Auguste Fortin">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment créer des images de synthèse grâce aux mathématiques ? &raquo;</div>
+          <div class="subject-author">par Auguste Fortin - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="Comment les mathématiques augmentent-elles nos chances de gagner aux jeux ?" data-author="Augustin de Haut de Sigy">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment les mathématiques augmentent-elles nos chances de gagner aux jeux ? &raquo;</div>
+          <div class="subject-author">par Augustin de Haut de Sigy - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="Pourquoi ne parle-t-on pas ou peu du nombre d'or en musique ?" data-author="Thibault Zeller">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Pourquoi ne parle-t-on pas ou peu du nombre d'or en musique ? &raquo;</div>
+          <div class="subject-author">par Thibault Zeller - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="Qu'est ce que le paradoxe des anniversaires et en quoi consiste-t-il ?" data-author="Gabriel de Saint Ferjeux">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Qu'est ce que le paradoxe des anniversaires et en quoi consiste-t-il ? &raquo;</div>
+          <div class="subject-author">par Gabriel de Saint Ferjeux - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="La répétition des chiffres dans le monde est-elle vraiment aléatoire ?" data-author="Guilhem Chrétien">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; La répétition des chiffres dans le monde est-elle vraiment aléatoire ? &raquo;</div>
+          <div class="subject-author">par Guilhem Chrétien - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P7" data-title="Comment le paradoxe de Simpson peut-il affecter l'interprétation des données statistiques ?" data-author="Mathéo Damay">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Comment le paradoxe de Simpson peut-il affecter l'interprétation des données statistiques ? &raquo;</div>
+          <div class="subject-author">par Mathéo Damay - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P8" data-title="Les nombres univers magiques mais indémontrables ?" data-author="Alexis Bexon">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Les nombres univers magiques mais indémontrables ? &raquo;</div>
+          <div class="subject-author">par Alexis Bexon - P8</div>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P8" data-title="En quoi le paradoxe de Monty Hall remet-il en question notre compréhension de la probabilité ?" data-author="Beaudoin de Villers">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; En quoi le paradoxe de Monty Hall remet-il en question notre compréhension de la probabilité ? &raquo;</div>
+          <div class="subject-author">par Beaudoin de Villers - P8</div>
+          <span class="subject-note">16/20</span>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P8" data-title="Les Tours de Hanoi : entre jeu suites algorithmes et fractals" data-author="Aymar Lesueur">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Les Tours de Hanoi : entre jeu suites algorithmes et fractals &raquo;</div>
+          <div class="subject-author">par Aymar Lesueur - P8</div>
+          <span class="subject-note">16/20</span>
+        </div>
+
+        <div class="subject-card" data-category="Maths" data-promo="P8" data-title="Le paradoxe des anniversaires" data-author="Jean Sterin">
+          <span class="subject-badge badge-maths">Maths</span>
+          <div class="subject-title">&laquo; Le paradoxe des anniversaires &raquo;</div>
+          <div class="subject-author">par Jean Sterin - P8</div>
+        </div>
+
+        <!-- Physique -->
+        <div class="subject-card" data-category="Physique" data-promo="P4" data-title="En quoi le projet ITER propose-t-il une solution innovante et durable pour fournir l'électricité au monde ?" data-author="Cyrille Boo d'Arc">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; En quoi le projet ITER propose-t-il une solution innovante et durable pour fournir l'électricité au monde ? &raquo;</div>
+          <div class="subject-author">par Cyrille Boo d'Arc - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P4" data-title="Pourquoi l'oreille humaine entend-elle des sons différents lorsqu'une même mélodie est jouée par divers instruments ?" data-author="Jean Crépelle">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Pourquoi l'oreille humaine entend-elle des sons différents lorsqu'une même mélodie est jouée par divers instruments ? &raquo;</div>
+          <div class="subject-author">par Jean Crépelle - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P6" data-title="Le jetpack à eau : investissement d'avenir ou loisir grand public ?" data-author="Nicolas Durka">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Le jetpack à eau : investissement d'avenir ou loisir grand public ? &raquo;</div>
+          <div class="subject-author">par Nicolas Durka - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P7" data-title="Comment concilier bonne tenue de route et résistance minimale à l'air en formule 1 ?" data-author="Melchior Berlizot">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Comment concilier bonne tenue de route et résistance minimale à l'air en formule 1 ? &raquo;</div>
+          <div class="subject-author">par Melchior Berlizot - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P7" data-title="La chute d'un objet dépend-elle de sa masse ?" data-author="Augustin de Haut de Sigy">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; La chute d'un objet dépend-elle de sa masse ? &raquo;</div>
+          <div class="subject-author">par Augustin de Haut de Sigy - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P7" data-title="Comment la sonde pitot permet-elle de mesurer la vitesse d'un objet dans un fluide ?" data-author="Constantin Pauchon">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Comment la sonde pitot permet-elle de mesurer la vitesse d'un objet dans un fluide ? &raquo;</div>
+          <div class="subject-author">par Constantin Pauchon - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P7" data-title="Comment l'exploitation d'une nouvelle mine de lithium contribue-t-elle au développement des technologies de batterie ?" data-author="Guilhem Chrétien">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Comment l'exploitation d'une nouvelle mine de lithium contribue-t-elle au développement des technologies de batterie ? &raquo;</div>
+          <div class="subject-author">par Guilhem Chrétien - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P7" data-title="En quoi le projet ITER est-il un projet prometteur pour nos problèmes d'énergie ?" data-author="Mathéo Damay">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; En quoi le projet ITER est-il un projet prometteur pour nos problèmes d'énergie ? &raquo;</div>
+          <div class="subject-author">par Mathéo Damay - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P8" data-title="Comment concilier bonne tenue de route et résistance minimale à l'air en F1" data-author="Alexis Bexon">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Comment concilier bonne tenue de route et résistance minimale à l'air en F1 &raquo;</div>
+          <div class="subject-author">par Alexis Bexon - P8</div>
+        </div>
+
+        <div class="subject-card" data-category="Physique" data-promo="P8" data-title="Comment déterminer la masse de la Terre à l'aide de la 3e loi de Kepler ?" data-author="Beaudoin de Villers">
+          <span class="subject-badge badge-physique">Physique</span>
+          <div class="subject-title">&laquo; Comment déterminer la masse de la Terre à l'aide de la 3e loi de Kepler ? &raquo;</div>
+          <div class="subject-author">par Beaudoin de Villers - P8</div>
+        </div>
+
+        <!-- SVT -->
+        <div class="subject-card" data-category="SVT" data-promo="P4" data-title="Comment un sportif en montagne parvient-il à gérer le froid ?" data-author="Pierre Hollaender">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; Comment un sportif en montagne parvient-il à gérer le froid ? &raquo;</div>
+          <div class="subject-author">par Pierre Hollaender - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="SVT" data-promo="P4" data-title="Comment le milieu et spécialement l'étude du violon peut-il modeler le cortex cérébral ?" data-author="Pierre Hollaender">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; Comment le milieu et spécialement l'étude du violon peut-il modeler le cortex cérébral ? &raquo;</div>
+          <div class="subject-author">par Pierre Hollaender - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="SVT" data-promo="P4" data-title="Comment les exosquelettes et les prothèses peuvent-être un soutien dans le travail du kinésithérapeute ?" data-author="Théophane Le Bigot">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; Comment les exosquelettes et les prothèses peuvent-être un soutien dans le travail du kinésithérapeute ? &raquo;</div>
+          <div class="subject-author">par Théophane Le Bigot - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="SVT" data-promo="P6" data-title="La remyélinisation est-elle un bon traitement contre la sclérose en plaques ?" data-author="Paul Couvreur">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; La remyélinisation est-elle un bon traitement contre la sclérose en plaques ? &raquo;</div>
+          <div class="subject-author">par Paul Couvreur - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="SVT" data-promo="P7" data-title="Comment un défaut génétique peut-il conduire à la destruction de tous les muscles ?" data-author="Vianney Dickes">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; Comment un défaut génétique peut-il conduire à la destruction de tous les muscles ? &raquo;</div>
+          <div class="subject-author">par Vianney Dickes - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="SVT" data-promo="P7" data-title="Pourquoi injecte-t-on de l'adrénaline à un patient qui fait un choc anaphylactique ?" data-author="Constantin Pauchon">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; Pourquoi injecte-t-on de l'adrénaline à un patient qui fait un choc anaphylactique ? &raquo;</div>
+          <div class="subject-author">par Constantin Pauchon - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="SVT" data-promo="P7" data-title="En quoi la méthode CRISPR-CAS 9 est-elle une opportunité enthousiasmante pour étudier et pour soigner ?" data-author="Gabriel de Saint Ferjeux">
+          <span class="subject-badge badge-svt">SVT</span>
+          <div class="subject-title">&laquo; En quoi la méthode CRISPR-CAS 9 est-elle une opportunité enthousiasmante pour étudier et pour soigner ? &raquo;</div>
+          <div class="subject-author">par Gabriel de Saint Ferjeux - P7</div>
+        </div>
+
+        <!-- NSI -->
+        <div class="subject-card" data-category="NSI" data-promo="P6" data-title="Pourquoi les cookies pourraient-ils disparaître ?" data-author="Célestin Vanneufville">
+          <span class="subject-badge badge-nsi">NSI</span>
+          <div class="subject-title">&laquo; Pourquoi les cookies pourraient-ils disparaître ? &raquo;</div>
+          <div class="subject-author">par Célestin Vanneufville - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="NSI" data-promo="P6" data-title="Le ransomware Wannacry" data-author="Louis-Marie Perret du Cray">
+          <span class="subject-badge badge-nsi">NSI</span>
+          <div class="subject-title">&laquo; Le ransomware Wannacry &raquo;</div>
+          <div class="subject-author">par Louis-Marie Perret du Cray - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="NSI" data-promo="P7" data-title="L'émergence de l'informatique quantique menace-t-elle les systèmes de chiffrement traditionnels ?" data-author="Arthur d'Ornano">
+          <span class="subject-badge badge-nsi">NSI</span>
+          <div class="subject-title">&laquo; L'émergence de l'informatique quantique menace-t-elle les systèmes de chiffrement traditionnels ? &raquo;</div>
+          <div class="subject-author">par Arthur d'Ornano - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="NSI" data-promo="P7" data-title="Biométrie : gage de sécurité ou risque pour la vie privée ?" data-author="Auguste Fortin">
+          <span class="subject-badge badge-nsi">NSI</span>
+          <div class="subject-title">&laquo; Biométrie : gage de sécurité ou risque pour la vie privée ? &raquo;</div>
+          <div class="subject-author">par Auguste Fortin - P7</div>
+        </div>
+
+        <!-- LLCE -->
+        <div class="subject-card" data-category="LLCE" data-promo="P6" data-title="What is the figure of the pioneer in the american psyche" data-author="Hélie de Palmaert">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; What is the figure of the pioneer in the american psyche &raquo;</div>
+          <div class="subject-author">par Hélie de Palmaert - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="LLCE" data-promo="P6" data-title="Les techniques rhétoriques au sein des discours américains" data-author="Paul-Louis Chetaille">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; Les techniques rhétoriques au sein des discours américains &raquo;</div>
+          <div class="subject-author">par Paul-Louis Chetaille - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="LLCE" data-promo="P6" data-title="The grand tour" data-author="Victorien Éon">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; The grand tour &raquo;</div>
+          <div class="subject-author">par Victorien Éon - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="LLCE" data-promo="P7" data-title="Construction of one self: What are the different lessons to be learnt from art?" data-author="Joseph Garrigou Grandchamp">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; Construction of one self: What are the different lessons to be learnt from art? &raquo;</div>
+          <div class="subject-author">par Joseph Garrigou Grandchamp - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="LLCE" data-promo="P7" data-title="L'art n'est-il qu'esthétique ?" data-author="Clément Revol">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; L'art n'est-il qu'esthétique ? &raquo;</div>
+          <div class="subject-author">par Clément Revol - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="LLCE" data-promo="P7" data-title="Is the Mask a necessity in the human experience?" data-author="Mayeul Subra">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; Is the Mask a necessity in the human experience? &raquo;</div>
+          <div class="subject-author">par Mayeul Subra - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="LLCE" data-promo="P7" data-title="Pourquoi les voyages sont-ils des vecteurs de maturation et de découverte de soi-même ?" data-author="Paul Durka">
+          <span class="subject-badge badge-llce">LLCE</span>
+          <div class="subject-title">&laquo; Pourquoi les voyages sont-ils des vecteurs de maturation et de découverte de soi-même ? &raquo;</div>
+          <div class="subject-author">par Paul Durka - P7</div>
+        </div>
+
+        <!-- HGGSP -->
+        <div class="subject-card" data-category="HGGSP" data-promo="P4" data-title="Guerre civile et philosophie à l'époque hellénistique" data-author="Grégoire de Kerangat">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Guerre civile et philosophie à l'époque hellénistique &raquo;</div>
+          <div class="subject-author">par Grégoire de Kerangat - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P6" data-title="Pourquoi l'océan glacial arctique est-il un espace sous tension ?" data-author="Hélie de Palmaert">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Pourquoi l'océan glacial arctique est-il un espace sous tension ? &raquo;</div>
+          <div class="subject-author">par Hélie de Palmaert - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P6" data-title="Le contexte de la guerre froide a-t-il rendu nécessaire la course aux armements ?" data-author="Paul-Milad Lallemand">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Le contexte de la guerre froide a-t-il rendu nécessaire la course aux armements ? &raquo;</div>
+          <div class="subject-author">par Paul-Milad Lallemand - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P6" data-title="Pourquoi la guerre en Syrie persiste-t-elle ?" data-author="Victorien Éon">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Pourquoi la guerre en Syrie persiste-t-elle ? &raquo;</div>
+          <div class="subject-author">par Victorien Éon - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P6" data-title="L'état du Vatican peut-il être un facteur de paix ?" data-author="Gonzague de Pontonx">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; L'état du Vatican peut-il être un facteur de paix ? &raquo;</div>
+          <div class="subject-author">par Gonzague de Pontonx - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P7" data-title="Qu'est ce que la protection des biens culturels en cas de conflits armés ?" data-author="Hilaire Champeaux">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Qu'est ce que la protection des biens culturels en cas de conflits armés ? &raquo;</div>
+          <div class="subject-author">par Hilaire Champeaux - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P7" data-title="En quoi les innovations technologiques en course au large permettent-elles une meilleure protection de l'environnement ?" data-author="Paul Baffet">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; En quoi les innovations technologiques en course au large permettent-elles une meilleure protection de l'environnement ? &raquo;</div>
+          <div class="subject-author">par Paul Baffet - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P7" data-title="La guerre froide a-t-elle rendu nécessaire le développement massif des armements dans le monde ?" data-author="Thibault Zeller">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; La guerre froide a-t-elle rendu nécessaire le développement massif des armements dans le monde ? &raquo;</div>
+          <div class="subject-author">par Thibault Zeller - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P7" data-title="Le rôle du sport dans la diplomatie internationale : exemples et enjeux" data-author="Paul Durka">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Le rôle du sport dans la diplomatie internationale : exemples et enjeux &raquo;</div>
+          <div class="subject-author">par Paul Durka - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P8" data-title="Pourquoi perd-on la guerre ? Un nouvel art occidental" data-author="Christian du Plessis">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Pourquoi perd-on la guerre ? Un nouvel art occidental &raquo;</div>
+          <div class="subject-author">par Christian du Plessis - P8</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P8" data-title="L'émergence de l'intelligence artificielle modifie-t-elle fondamentalement le traitement et la production de l'information ?" data-author="Aymar Lesueur">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; L'émergence de l'intelligence artificielle modifie-t-elle fondamentalement le traitement et la production de l'information ? &raquo;</div>
+          <div class="subject-author">par Aymar Lesueur - P8</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P8" data-title="Que se passerait-il si la Chine envahissait Taiwan ?" data-author="Damien Soleil">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Que se passerait-il si la Chine envahissait Taiwan ? &raquo;</div>
+          <div class="subject-author">par Damien Soleil - P8</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P8" data-title="Pourquoi la Guerre Froide n'est-elle pas une guerre comme les autres ?" data-author="Jean Sterin">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; Pourquoi la Guerre Froide n'est-elle pas une guerre comme les autres ? &raquo;</div>
+          <div class="subject-author">par Jean Sterin - P8</div>
+        </div>
+
+        <div class="subject-card" data-category="HGGSP" data-promo="P8" data-title="L'ONU peut-elle combattre le terrorisme ?" data-author="Maxence de Bodman">
+          <span class="subject-badge badge-hggsp">HGGSP</span>
+          <div class="subject-title">&laquo; L'ONU peut-elle combattre le terrorisme ? &raquo;</div>
+          <div class="subject-author">par Maxence de Bodman - P8</div>
+        </div>
+
+        <!-- HLP -->
+        <div class="subject-card" data-category="HLP" data-promo="P4" data-title="Qu'est qu'un artiste ?" data-author="Philippe Vincent">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; Qu'est qu'un artiste ? &raquo;</div>
+          <div class="subject-author">par Philippe Vincent - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P4" data-title="Notre Dame de Paris : faut-il rompre avec l'histoire ou la prolonger ?" data-author="Philippe Vincent">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; Notre Dame de Paris : faut-il rompre avec l'histoire ou la prolonger ? &raquo;</div>
+          <div class="subject-author">par Philippe Vincent - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P4" data-title="Comment la notion de guerre juste a-t-elle évolué ?" data-author="Gonzague de Pontonx">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; Comment la notion de guerre juste a-t-elle évolué ? &raquo;</div>
+          <div class="subject-author">par Gonzague de Pontonx - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P4" data-title="L'instruction dans le Queyras" data-author="Grégoire de Kerangat">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; L'instruction dans le Queyras &raquo;</div>
+          <div class="subject-author">par Grégoire de Kerangat - P4</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P6" data-title="L'esthétique peut-elle constituer une éthique ?" data-author="Martin Dubruque">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; L'esthétique peut-elle constituer une éthique ? &raquo;</div>
+          <div class="subject-author">par Martin Dubruque - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P6" data-title="Dans quelle mesure l'autorité politique nécessite-t-elle la force ?" data-author="Paul-Louis Chetaille">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; Dans quelle mesure l'autorité politique nécessite-t-elle la force ? &raquo;</div>
+          <div class="subject-author">par Paul-Louis Chetaille - P6</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P7" data-title="La technique peut-elle transformer l'homme comme elle a transformé la nature ?" data-author="Paul Baffet">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; La technique peut-elle transformer l'homme comme elle a transformé la nature ? &raquo;</div>
+          <div class="subject-author">par Paul Baffet - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P7" data-title="L'art doit-il être au service de l'intelligence ?" data-author="Joseph Garrigou Grandchamp">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; L'art doit-il être au service de l'intelligence ? &raquo;</div>
+          <div class="subject-author">par Joseph Garrigou Grandchamp - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P7" data-title="L'école ne fait-elle qu'enseigner ?" data-author="Clément Revol">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; L'école ne fait-elle qu'enseigner ? &raquo;</div>
+          <div class="subject-author">par Clément Revol - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P7" data-title="La répression est-elle une nécessité dans les régimes totalitaires ?" data-author="Mayeul Subra">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; La répression est-elle une nécessité dans les régimes totalitaires ? &raquo;</div>
+          <div class="subject-author">par Mayeul Subra - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P8" data-title="Peut-on concevoir une fin de l'Histoire ?" data-author="Christian du Plessis">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; Peut-on concevoir une fin de l'Histoire ? &raquo;</div>
+          <div class="subject-author">par Christian du Plessis - P8</div>
+          <span class="subject-note">17/20</span>
+        </div>
+
+        <div class="subject-card" data-category="HLP" data-promo="P8" data-title="En quoi suis-je mes souvenirs ?" data-author="Maxence de Bodman">
+          <span class="subject-badge badge-hlp">HLP</span>
+          <div class="subject-title">&laquo; En quoi suis-je mes souvenirs ? &raquo;</div>
+          <div class="subject-author">par Maxence de Bodman - P8</div>
+        </div>
+
+        <!-- Arts Musique -->
+        <div class="subject-card" data-category="Arts Musique" data-promo="P7" data-title="Quelle est l'influence de la musique sur le cerveau et comment la musicothérapie peut-elle réparer des dégâts cérébraux post AVC ?" data-author="Vianney Dickes">
+          <span class="subject-badge badge-arts">Arts Musique</span>
+          <div class="subject-title">&laquo; Quelle est l'influence de la musique sur le cerveau et comment la musicothérapie peut-elle réparer des dégâts cérébraux post AVC ? &raquo;</div>
+          <div class="subject-author">par Vianney Dickes - P7</div>
+        </div>
+
+        <div class="subject-card" data-category="Arts Musique" data-promo="P7" data-title="Pourquoi et comment va-t-on procéder au réveil du grand orgue de Notre Dame de Paris" data-author="Hilaire Champeaux">
+          <span class="subject-badge badge-arts">Arts Musique</span>
+          <div class="subject-title">&laquo; Pourquoi et comment va-t-on procéder au réveil du grand orgue de Notre Dame de Paris &raquo;</div>
+          <div class="subject-author">par Hilaire Champeaux - P7</div>
+        </div>
+
+        <!-- Interdisciplinaire -->
+        <div class="subject-card" data-category="Interdisciplinaire" data-promo="P8" data-title="Peut-on prédire la géopolitique mondiale à l'aide des mathématiques ?" data-author="Damien Soleil">
+          <span class="subject-badge badge-inter">Interdisciplinaire</span>
+          <div class="subject-title">&laquo; Peut-on prédire la géopolitique mondiale à l'aide des mathématiques ? &raquo;</div>
+          <div class="subject-author">par Damien Soleil - P8</div>
+          <span class="subject-note">14/20</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les élèves de Terminale de l'Académie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="guide-etranger.html">Études à l'Étranger</a></li>
+            <li><a href="entretiens.html">Entretiens</a></li>
+            <li><a href="parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Révisions</h4>
+          <ul class="footer-links">
+            <li><a href="hggsp.html">BAC HGGSP</a></li>
+            <li><a href="maths.html">BAC Maths</a></li>
+            <li><a href="grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Académie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Créé avec soin par Aymar Lesueur pour l'Académie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    (function() {
+      const tags = document.querySelectorAll('.filter-tag');
+      const promoTags = document.querySelectorAll('.filter-tag-promo');
+      const cards = document.querySelectorAll('.subject-card');
+      const searchInput = document.getElementById('searchInput');
+      const resultsCount = document.getElementById('resultsCount');
+
+      let activeFilter = 'all';
+      let activePromo = 'all';
+
+      function updateCards() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visible = 0;
+
+        cards.forEach(function(card) {
+          const category = card.getAttribute('data-category');
+          const promo = card.getAttribute('data-promo');
+          const title = card.getAttribute('data-title').toLowerCase();
+          const author = card.getAttribute('data-author').toLowerCase();
+
+          const matchesFilter = activeFilter === 'all' || category === activeFilter;
+          const matchesPromo = activePromo === 'all' || promo === activePromo;
+          const matchesSearch = !query || title.includes(query) || author.includes(query);
+
+          if (matchesFilter && matchesPromo && matchesSearch) {
+            card.classList.remove('hidden');
+            visible++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        resultsCount.textContent = visible + ' sujet' + (visible !== 1 ? 's' : '') + ' affiché' + (visible !== 1 ? 's' : '');
+      }
+
+      tags.forEach(function(tag) {
+        tag.addEventListener('click', function() {
+          tags.forEach(function(t) { t.classList.remove('active'); });
+          tag.classList.add('active');
+          activeFilter = tag.getAttribute('data-filter');
+          updateCards();
+        });
+      });
+
+      promoTags.forEach(function(tag) {
+        tag.addEventListener('click', function() {
+          promoTags.forEach(function(t) { t.classList.remove('active'); });
+          tag.classList.add('active');
+          activePromo = tag.getAttribute('data-promo-filter');
+          updateCards();
+        });
+      });
+
+      searchInput.addEventListener('input', updateCards);
+    })();
+  </script>
+</body>
+</html>

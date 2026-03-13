@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pierre COUTURIER - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Pierre COUTURIER</span>
+      </div>
+      <h1>Pierre COUTURIER</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #2D8B57; color: #fff;">HGGSP (NSI en 1re)</span>
+<span class="student-tag tag-abandon">Physique</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; HGGSP (NSI en 1re)</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>Physique</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;"><span style="color: var(--gray); font-style: italic;">En attente...</span></td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box choix-pending">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value" style="color: var(--gray); font-style: italic;">En attente...</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">4 voeux - 4 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>BTS Communication <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">BTS Communication
+8000 caractères
+Ces motivations vont nous permettre d'analyser votre candidature. Vous aurez à cœur d'exposer de façon synthétique (entre 1500 et 8000 caractères maximum) et structurée, ce qui anime votre choix en décrivant votre personnalité, les expériences vécues, vos activités périscolaires, vos ambitions, votre projet professionnel....
+photos
++ lettres de recommandations
+Objet : Candidature pour le BTS Communication en apprentissage du Cours Diderot
+Madame, Monsieur,
+Organisé, créatif et passionné, j’aime transmettre mes passions. Je souhaite intégrer votre BTS Communication en apprentissage dans le but de me former aux métiers du secteur et d’acquérir des compétences en stratégie de communication, en gestion de projets événementiels de manière à réaliser ma passion.
+Mon objectif de carrière est de pouvoir travailler dans l’événementiel et de participer à la création de projets culturels et artistiques, voire à terme de devenir auto-entrepreneur dans ce domaine.
+Depuis 2018, je suis interne au sein de l’Académie Musicale de Liesse, un établissement exigeant à horaires aménagés musique, où je mène une activité de chanteur semi-professionnel. Cette formation m’apporte rigueur et endurance par un rythme soutenu de 1h30 de chant quotidien, ma participation à près de 50 concerts par an et de nombreuses tournées en France et à l’étranger (Belgique, Allemagne, Monaco, Italie…). Ces expériences exigeantes et uniques m’ont appris à m’organiser, à gérer le stress et à m’adapter à différents publics et cultures.
+Au sein de l’Académie, j’ai rapidement pris des responsabilités de gestion d’équipe et en organisation. Depuis 2020, j’encadre des groupes de 3 à 10 jeunes garçons, veillant à leur progression dans les services du quotidien et les projets collectifs. J’ai aussi pris en charge la gestion des plus de 3000 partitions différentes pour les 120 élèves : un rôle crucial dans un chœur professionnel. Pour cela, j’ai notamment coordonné leur archivage, distribution et restitution, ainsi que la mise en place et l’entretien d’une base de données informatique structurée.
+Enfin, j’ai collaboré à l’organisation d’événements d’envergure, notamment des soirées à thème réunissant jusqu’à 150 personnes pour lesquelles j’ai coordonné l’ensemble des aspects logistiques, artistiques et techniques.
+De 2022 à 2024 J’ai mené un projet ambitieux en créant un spectacle son et lumière, retraçant l’histoire d’un lieu d’exception : Le Domaine de la Salle. J’ai appris à concevoir et piloter un événement d’ampleur ce projet, voulu d’une qualité professionnelle par le directeur et présenté à plus de 200 personnes, a mobilisé une centaine de personnes (acteurs, techniciens, musiciens, régisseurs…). Cela m’a permis de développer des compétences clés en gestion de projet, en écriture et en communication événementielle.
+Lors de la phase initiale de recherche et d’écriture, j’ai conçu une histoire originale nourrie de nombreuses références historiques et artistiques afin d’offrir au public un récit à la fois captivant et cohérent. Puis, parmi les élèves et le personnel de l’Académie, j’ai pris en charge la sélection et la coordination des équipes : répartition des rôles, gestion des plannings, organisation des répétitions et des réunions techniques.
+Pour la communication, j’ai défini une identité visuelle et élaboré une stratégie de diffusion. J’ai travaillé sur la promotion de l’événement en réalisant des supports visuels CANVA et en coordonnant la communication sur différents canaux (affiches, réseaux sociaux, presse locale). J’ai également géré la mise en scène et la direction d’acteurs, veillant à transmettre une vision artistique forte tout en prenant en compte les contraintes techniques: sonorisation, éclairage, scénographie et météorologiques.
+Ce projet a été une expérience marquante, me confortant dans mon envie de me spécialiser dans la communication et l’évènementiel. Il m’a permis d’affiner mon sens de l’organisation, de la gestion d’équipe et du travail sous pression: autant d’atouts essentiels dans ce domaine.
+En parallèle de mon parcours musical et événementiel, je me suis formé à la photographie de manière autodidacte et auprès de professionnels. Une discipline que je considère comme un puissant vecteur de communication. Depuis 2024, je suis devenu photographe officiel de mon établissement, réalisant des reportages sur les concerts, les événements et la vie quotidienne de l’internat.
+Mon travail en photographie ne se limite pas à la simple prise de vue, je procède également à la post-production avec une maîtrise de Lightroom Pro et Classic, ce qui me permet d’optimiser et d’harmoniser mes clichés.
+Cette expertise m’a conduit à couvrir des événements externes : concerts, festivals, reportages pour des entreprises, et bientôt des mariages durant l’été 2025 sur recommandation de professionnels ou demandes personnelles. Ces expériences m’ont appris à répondre aux attentes spécifiques de chaque commanditaire dans des contextes variés. La photographie me permet d’exercer mon regard artistique, et de la communication visuelle; compétence importante dans le monde actuel où l’image occupe une place centrale.
+Actuellement en Terminale, j’évolue dans un lycée, alliant rigueur scolaire, formation artistique et engagement humain. J’y ai développé des qualités essentielles pour un futur communicant : autonomie, gestion du temps, travail en équipe et capacité d’adaptation.
+J’aime transmettre mes passions et partager mon savoir-faire, particulièrement en photographie et en organisation d’événements. Curieux et impliqué, je souhaite mettre ma créativité et mon sens du détail au service de projets dans le domaine de la communication. Les expériences scéniques et les responsabilités de gestion d’équipe acquises au sein de l'Académie Musicale de Liesse doublées d'une facilité relationnelle me permettent de m’adapter à différents interlocuteurs et de créer du lien entre les personnes.
+Choisir votre BTS Communication en apprentissage me semble être la meilleure voie pour réaliser mes aspirations. L’alternance me permettra d’acquérir une expérience professionnelle concrète tout en consolidant mes compétences en stratégie de communication, en gestion de projet et en création de contenu. Fort de mon parcours atypique et de mes multiples expériences, je suis prêt à m’investir pleinement dans cette formation et à apporter une vision créative et rigoureuse par mon implication au sein de votre établissement et d’une entreprise.
+Je reste à votre disposition pour un entretien et vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.
+Pierre Couturier
+https://lesphotosdepierre.mypixieset.com/
+(site)
+https://lesphotosdepierre.pixieset.com/
+(galerie)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>BTS Communication (apprentissage) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">BTS Communication (apprentissage)
+Lycée Gaston Berger -
+BTS Communication (apprentissage) - - 1467/1500
+Madame, Monsieur,
+Mon ambition est de travailler dans l’événementiel et la création de projets culturels et artistiques, voire de créer mon entreprise dans ce domaine. Organisé, créatif et passionné par la transmission du beau, je souhaite intégrer votre BTS Communication en apprentissage afin d’acquérir des compétences en gestion de projet et en stratégie de communication.
+Depuis 2018, je mène une activité de chanteur semi-professionnel à l’Académie Musicale de Liesse, où j’ai appris la rigueur et l’endurance à travers 50 concerts par an et des tournées en France et en Europe. J’y ai également développé des compétences en direction d’équipe et en organisation, encadrant des groupes de jeunes et assurant la gestion de plus de 3000 partitions.
+Entre 2022 et 2024, j’ai conçu et piloté un spectacle son et lumière mobilisant 130 participants et présenté à 200 spectateurs. J’ai mené l’écriture du scénario, la gestion des équipes et la communication de l’événement (affiches, réseaux sociaux, presse).
+Photographe autodidacte, je réalise des reportages sur les événements de mon établissement et collabore avec des professionnels du métier. Maîtrisant Lightroom Pro et Classic je couvre, par ailleurs, divers événements, perfectionnant ainsi mon sens de la communication visuelle.
+Votre BTS en apprentissage est pour moi l’opportunité idéale d’allier formation et expérience professionnelle. Prêt à m’investir pleinement, je reste à votre disposition pour un entretien.
+Pierre Couturier
+Ci dessous cela fait pile poil 1500 car et on insiste sur l’attirance pour l’apprentissage
+Madame, Monsieur,
+J’ambitionne de travailler dans l’événementiel et la création de projets culturels et artistiques et de créer mon entreprise dans ce domaine. Organisé, créatif et passionné par la transmission du beau, je souhaite intégrer votre BTS Communication en apprentissage afin d’acquérir des compétences en gestion de projet et en stratégie de communication et les pratiquer en entreprise.
+Depuis 2018, je mène une activité de chanteur semi-professionnel à l’Académie Musicale de Liesse, où j’ai appris la rigueur et l’endurance à travers 50 concerts par an et des tournées en France et en Europe. J’y ai également développé des compétences en direction d’équipe et en organisation, encadrant des groupes de jeunes et assurant la gestion de plus de 3000 partitions.
+Entre 2022 et 2024, j’ai conçu et piloté un spectacle son et lumière mobilisant 130 participants et présenté à 200 spectateurs. J’ai mené l’écriture du scénario, la gestion des équipes et la communication de l’événement (affiches, réseaux sociaux, presse).
+Photographe autodidacte, je réalise des reportages sur les événements de mon établissement et collabore avec des professionnels du métier. Maîtrisant Lightroom Pro je couvre, par ailleurs, divers événements, perfectionnant ainsi mon sens de la communication visuelle.
+Votre BTS en apprentissage est pour moi l’opportunité idéale d’allier formation et expérience professionnelle. Prêt à m’investir pleinement, je reste à votre disposition pour un entretien.
+Pierre Couturier</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>BTS Management (apprentissage) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">BTS Management (apprentissage)
+CFA Lycée Gaston Berger -
+BTS Management (apprentissage) - 1491/1500
+Madame, Monsieur,
+Passionné par la gestion de projet et l’organisation, je souhaite intégrer votre BTS Management en apprentissage pour acquérir des compétences essentielles à mon avenir professionnel notamment en managérat.
+Depuis plusieurs années, j’ai développé un solide sens des responsabilités et du travail en équipe. En quatrième, dans le scoutisme, on m’a confié la responsabilité d’encadrer un groupe de 6 jeunes de 12 à 17 ans. Cette mission impliquait l’organisation d’activités en autonomie et la prise de décisions pour assurer la cohésion du groupe et la progression de chacun.
+Interne depuis la sixième, j’ai appris à évoluer dans des environnements collectifs où la gestion des relations humaines est essentielle. En première, j’ai encadré 10 élèves, du CM1 à la terminale, en les accompagnant au quotidien et en coordonnant divers projets. L’organisation d’événements et la gestion d’équipe m’ont permis d’affiner mes compétences en leadership et en gestion de projet.
+J’ai également coordonné un événement rassemblant 130 personnes, nécessitant anticipation, communication et répartition efficace des responsabilités. Cette expérience m’a confronté aux réalités de la gestion d’un groupe à grande échelle, exigeant prise de décisions et organisation rigoureuse.
+Votre formation représente pour moi l’opportunité idéale de développer ces compétences et d’évoluer dans le domaine du management. Prêt à m’investir pleinement, je reste à votre disposition pour un entretien.
+Pierre Couturier</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Communication <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Communication
+Université de Lille Licence Communication
+- 1476/1500
+Madame, Monsieur,
+Mon ambition est de travailler dans l’événementiel et la création de projets culturels et artistiques, voire de créer mon entreprise dans ce domaine. Organisé, créatif et passionné par la transmission du beau, je souhaite intégrer votre Licence en Communication afin d’acquérir des compétences en gestion de projet et en stratégie de communication.
+Depuis 2018, je mène une activité de chanteur semi-professionnel à l’Académie Musicale de Liesse, où j’ai appris la rigueur et l’endurance à travers 50 concerts par an et des tournées en France et en Europe. J’y ai également développé des compétences en direction d’équipe et en organisation, encadrant des groupes de jeunes et assurant la gestion de plus de 3000 partitions.
+Entre 2022 et 2024, j’ai conçu et piloté un spectacle son et lumière mobilisant 130 participants et présenté à 200 spectateurs. J’ai mené l’écriture du scénario, la gestion des équipes et la communication de l’événement (affiches, réseaux sociaux, presse).
+Photographe autodidacte, je réalise des reportages sur les événements de mon établissement et collabore avec des professionnels du métier. Maîtrisant Lightroom Pro et Classic je couvre, par ailleurs, divers événements, perfectionnant ainsi mon sens de la communication visuelle.
+Votre Licence est pour moi l’opportunité idéale d’allier formation et expérience professionnelle. Prêt à m’investir pleinement, je reste à votre disposition pour un entretien.
+Pierre Couturier</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d'encadrement ou d'animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Décrivez ici vos expériences d'encadrement ou d'animation (1500 caractères max.) 1458/1500CP pendant un an -&gt; 6 personnes (organisation complète, autonomie, prise de décisions…)Chef d’équipe 1 an -&gt; 10 personnesOrganisation auberges et St Do (animations, déco, technique, veillées, montage, scripte…)Responsable magasin de partitions (équipe)management de 130 personnes lors d’un événement (son et lumière)De nombreuses expériences m’ont permis de développer mon sens des responsabilités, de management et d’animation. En quatrième, par le scoutisme, j’ai pris des responsabilités en encadrant un groupe de jeunes de 12 à 17 ans. Cette mission impliquait la gestion d’équipe, la programmation d’activités en autonomie et la prise de décisions afin d’assurer la cohésion du groupe et la progression de chacun. Interne depuis la sixième, j’ai évolué dans des environnements collectifs où le travail en équipe et les relations humaines sont essentiels. En première, j’ai encadré 10 élèves, du CM1 à la terminale, en les accompagnant au quotidien et en coordonnant divers projets. La mise en place d’événements, le pilotage de mes camarades et la planification d’activités variées (défis sportifs, soirées festives, mise en scène, activités théâtrales, montage vidéo) m’ont permis d’affiner mes compétences en gestion de projet, management et leadership. J’ai aussi assuré la création et la coordination logistique d’un événement en manageant 130 personnes, nécessitant anticipation, communication et répartition efficace des responsabilités. Cette expérience m’a confronté aux réalités de la direction d’un groupe à grande échelle, exigeant prises de décisions, gestion des imprévus et rigueur dans la planification. Elles ont renforcé mon sens de l’initiative, de l’esprit d’équipe, d’entraide, de leadership. et ma capacité à évoluer dans différents environnements.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Décrivez ici votre engagement citoyen ou bénévole dans une association, dans votre établissement ou un autre cadre (1500 caractères max.) 1085/1500Commémoration des monuments au mort (aml)journée dans une caserne de pompier (scouts)journée avec des personnes âgées (aml)Depuis mon plus jeune âge, je me suis investi dans des actions solidaires et citoyennes. Dès huit ans, j’ai aidé régulièrement des personnes âgées de mon entourage en effectuant des courses, des services, des moments de partages. Ces expériences m’ont permis de comprendre les enjeux de la solidarité et du lien social pour construire une société plus inclusive, renforçant ainsi l’importance du respect intergénérationnel. En parallèle, mon engagement s’est aussi traduit par des actions plus institutionnelles, comme ma participation régulière lors des commémorations aux monuments aux morts, qui m'ont sensibilisé à la mémoire collective. J’ai eu l’occasion de passer une journée dans une caserne de pompiers, découvrant ainsi leur engagement au service des autres. Enfin, dans mon établissement scolaire, j’ai été chargé d’accompagner les nouveaux élèves en horaires aménagés musique. Mon rôle consistait à les aider à se mettre à niveau afin de faciliter leur intégration dans le chœur. Toutes ces expériences ont renforcé ma volonté d’être un acteur engagé au sein de la société.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Décrivez ici vos expériences professionnelles ou les stages que vous avez effectués (1500 caractères max.) 1492/1500Responsable magasin de partitionsPhotographe de mon établissement et de plusieurs événements (concerts, festivals…)Maître des traditionsCréation d’un son et Lumière -&gt; création d’une histoire (recherches, écritures…), management de 130 personnes…Chanter 50 concerts en moyenne par an -&gt; pendant 7 ansdirection de choeurFaisant partie d’un établissement type CHAM depuis sept ans, j'ai eu l’opportunité d’occuper diverses responsabilités me permettant de développer des compétences organisationnelles, en création artistique et en encadrement d’équipe. Dans mon établissement, en tant que gestionnaire du magasin de plus de 3000 partitions j’ai assuré l’organisation et la gestion du matériel musical, un rôle demandant rigueur et sens de l’anticipation. Parallèlement, j’exerce le rôle de photographe officiel de mon établissement mais également pour plusieurs événements (concerts, entreprises, mariages), capturant des instants marquants et mettant en valeur le sens du beau. Passionné par la transmission des traditions, je pilote un comité veillant à préserver et transmettre l’histoire et les valeurs de mon établissement. Cet engagement s’est renforcé lors de la création d’un son et lumière. Un projet de grande envergure où j’ai conçu une histoire originale à travers des recherches approfondies et un travail d’écriture, tout en assurant la direction d’une équipe de 130 personnes. Enfin, ma pratique musicale intense m’a conduit à chanter une cinquantaine de concerts par an durant sept ans, me plongeant dans le monde du spectacle vivant. Cette expérience m’a amené à diriger des chœurs, développant ainsi des compétences en leadership et en gestion de groupe. Toutes ces expériences m’ont permis d’acquérir rigueur, autonomie et esprit d’initiative; des qualités essentielles pour mon avenir professionnel.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde (pratiques sportives et culturelles, parcours spécifiques)</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Décrivez ici vos pratiques sportives et culturelles et/ou les parcours spécifiques suivis (exemple : cordées de la réussite, parcours d’excellence). Il peut également s’agir de la pratique d’une langue étrangère non étudiée au lycée, de séjours à l'étranger ou d’un intérêt particulier pour une culture étrangère. (1500 caractères max.) 1039/1500Tournées : Italie, France, Belgique, Monacoconcerts (50 par ans depuis 7 ans)Depuis sept ans, mon engagement dans le chant m’a permis de développer une réelle ouverture au monde à travers la musique. En tant que chanteur semi-professionnel à l’Académie Musicale de Liesse, je participe à une cinquantaine de concerts par an, me produisant en France, en Belgique, en Italie ou encore à Monaco. Ces tournées m’ont offert l’opportunité de découvrir des cultures musicales variées, d’échanger avec des artistes de différents horizons et de m’adapter à des scènes et des publics toujours nouveaux.Ces expériences m’ont appris la rigueur, la gestion du stress et le travail en équipe dans des contextes multiculturels. Chaque concert est une immersion où la musique devient un langage universel, permettant de dépasser les barrières linguistiques et culturelles. Voyager ainsi m’a aussi sensibilisé à la richesse du patrimoine artistique, architectural et culturel européen et m’a donné le goût de la découverte.Cette ouverture international nourrit ma créativité et mon envie de transmettre des émotions à travers l’art.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

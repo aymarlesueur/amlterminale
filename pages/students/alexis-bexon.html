@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alexis BEXON - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Alexis BEXON</span>
+      </div>
+      <h1>Alexis BEXON</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #7B4FB5; color: #fff;">Physique</span>
+<span class="student-tag tag-abandon">NSI</span>
+<span class="student-tag tag-option">Option Maths Expertes en Tle</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; Physique</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>NSI</td></tr>
+<tr><td class="info-label">Option Tle</td><td>Option Maths Expertes en Tle</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;">Classe Prepa MPSI a Saint Benoit Angers</td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value">Classe Prepa MPSI a Saint Benoit Angers</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">15 voeux - 15 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ECAM <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ECAM
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en école d’ingénieurs, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi l’ECAM ?
+Je connais votre école de réputation depuis longtemps. Les bons échos que j’en ai eus m’ont vraiment donné envie de m’y inscrire (surtout que je suis passionné d’automobile et je suis très attiré par vos clubs automobiles, dans lesquels je me vois déjà).
+Ayant fait tout mon primaire et mon collège en Belgique dans une école internationale, mon but est de continuer à pratiquer l’anglais pendant mes études supérieures. Votre formation ECAM Engineering a donc particulièrement retenu mon attention, tout autant que le cursus Ingénieur Généraliste.
+Je ne vous envoie pas ma candidature par hasard : je suis convaincu que je trouverai à l’ECAM l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention.
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CONCOURS ADVANCE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CONCOURS ADVANCE
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec ce rythme de travail très soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en école d’ingénieurs, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Pourquoi le Concours Advance ?
+Je suis passionné d’automobile. En me renseignant sur les écoles, j’ai pris conscience qu’il y avait beaucoup de similitudes entre les domaines de l’automobile et de l’aéronautique.
+Je présente donc l’IPSA et l’ESME, qui proposent des cursus aéronautiques, avec en plus des associations automobiles dans lesquelles je me vois déjà. Je cherchais aussi une formation en anglais : ayant fait tout mon primaire et mon collège en Belgique dans une école internationale, j'aimerais continuer à pratiquer l’anglais pendant mes études supérieures.
+Je ne vous envoie pas ma candidature par hasard : je suis convaincu que je trouverai dans ces écoles l’émulation pour progresser toujours plus.
+J’espère vraiment que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICAM <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICAM
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec ce rythme de travail très soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en école d’ingénieurs, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Pourquoi l’ICAM ?
+Je connais votre école de réputation depuis longtemps. Les bons échos que j'ai eus m’ont vraiment donné envie de m’y inscrire.
+Ayant fait tout mon primaire et mon collège en Belgique dans une école internationale, vos formations ont particulièrement retenu mon attention car elles offrent de multiples opportunités d'aller à l'étranger.
+Venant d’un internat où l’émulation entre élèves est importante, j’ai envie de garder cette ambiance de soutien mutuel entre élèves. La pédagogie intégrale, l’accompagnement personnalisé, les aumôneries, sont des atouts que j’apprécie également.
+Je ne vous envoie pas ma candidature par hasard : je suis convaincu que je trouverai à l’ICAM l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention.
+Alexis</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>FÉNELON SAINTE MARIE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">FÉNELON SAINTE MARIE
+Madame la Directrice,
+Pourquoi candidater à Fénelon Sainte-Marie ?
+Organisé, rigoureux et régulier dans le travail, ayant démontré ma forte volonté de m’investir, fort d’un parcours international et artistique, je suis convaincu que l’excellence de votre établissement sera la meilleure préparation pour grandir humainement, mûrir mon projet de formation et intégrer une grande école d’ingénieur.
+J’ai fait toute ma scolarité jusqu’au collège à Bruxelles dans une école internationale où j’ai appris l’anglais en même temps que le français.
+Au lycée, j’ai fait le choix de rejoindre l’Académie Musicale de Liesse pour vivre l’expérience de l’internat avec d'autres jeunes portés par l’exigence du chant et de la musique. Cette école à horaires aménagés m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant. C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec ce rythme de travail très soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques, dont l’informatique.
+Grâce à des tests de caractérologie organisés à l’Académie (Hexa 3D, RIASEC), j’ai appris à connaître mon tempérament et mes points forts : rigueur, organisation, curiosité d’esprit, ténacité et intégrité.
+Curieux, j’ai toujours cherché à observer et étudier le monde environnant. C’est pourquoi j’aime particulièrement les sciences. En classe de 1ère, j’ai étudié les spécialités Maths, Physique-Chimie et NSI, qui m’ont toutes intéressé. En terminale, en plus de l’option Maths Expertes, j’ai fait le choix d’approfondir mes connaissances en physique, matière qui me plait aussi énormément.
+L’informatique en 1ère a été une découverte passionnante. J’ai vraiment envie d’approfondir ce domaine. C’est pourquoi je postule en MP2I, puis PSI.
+J’ajoute que j’apprécie la possibilité de m’impliquer dans la vie de mon établissement.
+Cette année, j’ai été nommé chef d’équipe dans mon lycée : je suis responsable de veiller au bon épanouissement de 10 garçons du CM1 à la seconde. Cela m’a appris à promouvoir les qualités humaines comme la camaraderie, l’esprit d’équipe, le sens des responsabilités : belle expérience qui m’a fait découvrir que servir les autres est une grande richesse pour soi. Je sais que je retrouverai cet esprit grâce au climat d’entraide et de respect mis en avant à Fénelon Sainte-Marie.
+Vous proposez des activités variées pour vivre ces deux années de manière équilibrée : l’étude encadrée, la formation à l’expression orale, la méthodologie sur la gestion du temps, les ateliers d’approfondissement ainsi que la dimension spirituelle. Tout ceci compte beaucoup pour moi. Je suis convaincu que les valeurs qui m’ont fait grandir à l’Académie sont communes avec celles de Fénelon Sainte-Marie.
+Cela m’apportera un environnement stimulant, avec des valeurs que j’approuve, qui seront mes vitamines quotidiennes. Je pourrai profiter de l’émulation des autres pour me dépasser.
+Je suis convaincu que, comme la montagne, une CPGE est une magnifique expérience de vie. Depuis très jeune, avec un père savoyard, nous avons tous les ans fait des randonnées. Préparation, objectif, gestion du temps et des efforts, aller chercher la récompense en acceptant de sortir du confort quotidien, mesurer le risque, faire confiance au guide et savoir compter sur soi. En intégrant Fénelon Sainte-Marie, je pense retrouver beaucoup de points communs avec la progression vers le sommet.
+Pour toutes ces raisons, c’est vraiment Fénelon Sainte-Marie que je veux intégrer. Je ne vous envoie pas ma candidature par hasard, car au-delà de l’excellence académique, votre établissement tient compte de toutes les dimensions de la personne. Je sais que j’y retrouverai des valeurs qui me sont chères. J’aimerais déjà les vivre lors du stage de pré-rentrée.
+J’espère vraiment que ma candidature retiendra votre attention.
+Je vous prie d’agréer, Madame la Directrice, mes sincères salutations.
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI CHATEAUBRIAND <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+CHATEAUBRIAND
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi une CPGE à Chateaubriand ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI/PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : c’est la prépa Chateaubriand que je veux intégrer car elle répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI DESCARTES <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+DESCARTES
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Pourquoi une CPGE au Lycée Descartes ?
+Je ciblais une prépa répondant aux critères suivants :
+Filière MPSI/PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile)
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : mon cousin, qui est en prépa à Descartes cette année, m’a convaincu d’envoyer mon dossier. Je veux intégrer votre prépa car elle répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI SAINT STANISLAS (Nantes) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+SAINT STANISLAS (Nantes)
+Monsieur le Directeur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors pourquoi Saint Stan ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI/PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Petits effectifs pour avoir un contact direct avec les professeurs et un accompagnement personnalisé, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : je veux intégrer Saint Stan car votre prépa répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI CLEMENCEAU <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+CLEMENCEAU
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi une CPGE au lycée Clémenceau ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI puis PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : je veux intégrer Clémenceau car votre prépa répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI HENRI BERGSON <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+HENRI BERGSON
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi une CPGE au Lycée Henri Bergson ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI puis PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : je veux intégrer votre prépa car elle répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI SAINT BENOIT <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+SAINT BENOIT
+Madame,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Pourquoi la prépa Saint Benoît ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI/PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Petits effectifs pour avoir un contact direct avec les professeurs et un accompagnement personnalisé, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : c’est Saint Benoît que je veux intégrer car c’est la prépa qui répond le plus à tous mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vraiment que ma candidature retiendra votre attention.
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI MONTESQUIEU <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+MONTESQUIEU
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi une CPGE au Lycée Montesquieu ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI puis PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Si possible, pas trop loin de ma famille.
+Je ne vous envoie pas ma candidature par hasard : je veux intégrer votre prépa car elle répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>PRYTANÉE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">PRYTANÉE
+Mon Colonel,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa militaire, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Aussi, j’apprécie particulièrement mon rôle de chef d’équipe qui me donne l’opportunité de me former tout en faisant progresser les jeunes qui me sont confiés.
+Pourquoi Le Prytanée ?
+Je suis convaincu que les valeurs qui m’ont fait grandir à l’Académie sont communes avec celles du Prytanée.
+Voici ce qui m’attire particulièrement :
+le cadre de vie et de travail rigoureux, propices à l’atteinte de mes objectifs
+la cohésion et l’esprit de camaraderie
+les valeurs et la pratique du sport
+l’encadrement militaire, synonyme de discipline et de respect
+Je ne vous envoie pas ma candidature par hasard : je suis convaincu que je trouverai au Prytanée l’émulation pour progresser toujours plus.
+J’espère vraiment que ma candidature retiendra votre attention,
+Je vous prie d’agréer, mon Colonel, mes respectueuses salutations.
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI JANSON DE SAILLY <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+JANSON DE SAILLY
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi une CPGE à Janson de Sailly ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI/PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Pas trop loin de mon foyer étudiants.
+Je ne vous envoie pas ma candidature par hasard : j’ai eu de bons échos de votre prépa par des amis et celle-ci répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI SAINT FRANÇOIS <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI
+SAINT FRANÇOIS
+Monsieur le Directeur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Pourquoi la CPGE Saint François d’Assise ?
+Je ciblais une prépa répondant aux critères suivants :
+Filière MPSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile)
+Petits effectifs pour avoir un contact direct avec les professeurs et un accompagnement personnalisé afin d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Présence d’une aumônerie.
+Proche de ma famille.
+Je ne vous envoie pas ma candidature par hasard : c’est la prépa Saint François que je veux intégrer car elle répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI/PSI JANSON DE SAILLY  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI/PSI
+JANSON DE SAILLY
+Madame, Monsieur,
+Je suis à l’Académie Musicale de Liesse. Cette école à horaires aménagés musique m’a donné le goût de l’excellence et de l’effort constant : j’ai été habitué à travailler en conciliant, au quotidien, les études scolaires, le travail du piano et du chant.
+C’est un vrai défi puisque nous faisons le même programme scolaire que les autres lycées. Avec un rythme de travail aussi soutenu, j’ai pris l’habitude d’optimiser mon temps et de travailler efficacement. Les concerts m'ont également appris la gestion de la pression.
+Ceci me donne un bon avant-goût de la rigueur nécessaire en prépa, où je serai heureux de pouvoir me consacrer davantage aux matières scientifiques.
+Alors, pourquoi une CPGE à Janson de Sailly ?
+Je cherchais une prépa répondant aux critères suivants :
+Filière MPSI/PSI afin d’intégrer les écoles que je vise (pour travailler dans l’automobile).
+Contact direct avec les professeurs, dans le but d'être bien prêt pour les concours.
+Venant d’un internat où l’émulation entre élèves est importante, volonté de garder cette ambiance de soutien mutuel entre élèves.
+Pas trop loin de mon foyer étudiants.
+Je ne vous envoie pas ma candidature par hasard : j’ai eu de bons échos de votre prépa par des amis et celle-ci répond vraiment à mes critères. Je suis convaincu que j’y trouverai l’émulation pour progresser toujours plus.
+J’espère vivement que ma candidature retiendra votre attention,
+Cordialement,
+Alexis Bexon</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d'encadrement ou d'animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">En seconde et en première, j’ai été élu délégué de classe deux années de suite. Durant ces deux ans, j’ai veillé à la bonne ambiance de la classe en faisant attention à ce que chacun soit épanoui. J’ai fait le lien entre élèves et professeurs, j’ai participé aux conseils de classe.... Parallèlement à cela, j’ai été, avec 3 autres lycéens, adjoint à la responsabilité d’un groupe de jeunes du CM1 à la 6ème durant mes 2 premières années de lycée. Nous devions organiser deux ou trois fois par semaine des activités extérieures (notamment sportives) et des temps de jeux de société. Nous avions aussi la responsabilité de les aider à se coucher à l’internat. Par notre présence régulière auprès d’eux, nous avons créé un vrai lien de fraternité et d’amitié, qui continue de grandir aujourd'hui. Cette école, qui va du CM1 à la terminale, fonctionne sur un système qui rassemble les élèves en quatre grandes équipes appelées capitaineries, elles-mêmes divisées en trois équipes. Ainsi, cette année scolaire, je suis chef d’équipe, c'est-à-dire que je dirige une équipe de 10 garçons de 8 à 16 ans. Chaque chef d’équipe je suis garant du respect des horaires et des activités de l’internat, et impliqué dans la gestion des services du repas. Nous avons aussi quelquefois pendant l’année des temps de cohésion entre capitaineries, comme par exemple des olympiades, où, en tant que chef d’équipe, je pousse mon équipe à se dépasser et à donner le meilleur d'elle-même.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen et associatif</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Ces dernières années, en plus d’être délégué, j’ai pu, bénévolement, organiser un week-end dans l’école spécialement pour les lycéens, en gérant emploi du temps, activités, séances de travail, etc… Depuis l’année dernière, j'écris de façon hebdomadaire dans un journal de mon école, où je traite à chaque fois un événement sportif majeur de la semaine. En plus de cela, je m’occupe des éditions spéciales sportives de ce même journal, où j’interview des joueurs de mon école après les matchs de football ou rugby, organisés contre des équipes extérieures. A l’âge de 14 ans, à Bruxelles, où j’habitais, j’ai participé à des maraudes envers les plus pauvres de la rue. Cela m’a poussé, jeune, à aller vers les gens pour aider les plus démunis. Dans ce même registre, j’ai participé plusieurs fois à l’opération « Shoe Box », où l’on prépare des boîtes remplies de nourriture aux sans-abris lors de Noël, pour égayer cette fête à laquelle tout le monde a droit. L’été dernier, j’ai aussi eu l’occasion de servir pendant une semaine chaque repas du quotidien à des personnes âgées et en situation de handicap. Aujourd’hui, je participe activement à la vie de mon lycée, notamment grâce à mon rôle de chef d’équipe, expliqué plus haut. Enfin, ma passion pour la musique m’a donné l’occasion de faire de nombreux concerts et de donner de la joie aux autres, notamment pour les personnes âgées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Jusqu’à présent, mes différentes passions m’ont amené à avoir de nombreuses expériences “professionnelles”. Tout d’abord, la musique m’a conduit à faire une cinquantaine de concerts de chant, en chœur, en France et parfois à l’étranger (Belgique et Espagne), en plus de quelques prestations en piano. J’ai pu aussi enregistrer et faire plusieurs CDs. J’ai aussi eu l’occasion de faire deux comédies musicales en anglais (“My Fair Lady” et “Annie”) dans une salle de spectacle de 600 personnes. Pour les 10 ans de mon école, nous avons organisé un festival rassemblant 1 000 personnes. J'ai été responsable du pôle accueil (accueil, distribution des billets, gestion des parkings, …) avec 10 élèves sous ma responsabilité et de la billetterie (création et gestion d’une billetterie en ligne). Enfin, j’ai participé trois années de suite à un concours d’organisation d’une soirée à thème interne à mon école. Ce concours consiste à organiser un repas pour une centaine de personnes, le servir et animer la soirée en fonction du thème. Cela demande beaucoup d'organisation et d’anticipation car la logistique est très importante. La première année, on m’a d’abord confié la direction du pôle cuisine, puis le pôle animation l’année suivante, avant de diriger le pôle décoration.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde (pratiques sportives et culturelles, parcours spécifiques)</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Quoique français, je suis né à Bruxelles et j’ai habité pendant 14 ans dans cette capitale européenne. Cette ville est internationale et j’ai été habitué à côtoyer des gens de toutes nationalités, durant l’entièreté de ma scolarité là-bas. J’ai fait mon primaire dans une école en immersion français-anglais, avant de continuer durant 2 années dans une école internationale, où toutes les matières étaient enseignées en anglais. Dans cette école, j’étais le seul francophone de ma classe, avec plus de 15 nationalités différentes. Cela m'a permis de vivre une expérience forte m’ouvrant aux traditions de nombreux pays et j’ai alors pris conscience de la richesse des cultures. Depuis mon lycée, je suis scolarisé en France dans un internat où je suis habitué à vivre en société. Dans cet internat, j’ai la chance d’exercer une de mes principales passions : la musique. En effet, je pratique le chant choral depuis 12 ans, le piano depuis 8 ans. En plus de cela, j’ai pratiqué la formation musicale pendant 9 ans, tout en suivant pendant une année des cours d'écriture et d’analyse musicale. Durant mon parcours scolaire, j’ai pu pratiquer à l’école du rugby, du badminton, du futsal, du handball, du basket-ball, du hockey sur gazon, du football, etc.. Et surtout, je pratique le tennis depuis l'âge de mes 8 ans et joue en compétition… de préférence lorsqu’il n’y a pas de grand prix de Formule 1, discipline qui me passionne.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

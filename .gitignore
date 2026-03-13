@@ -1,0 +1,4 @@
+# Utility scripts
+*.py
+*.sh
+.DS_Store

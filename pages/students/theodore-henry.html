@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Théodore HENRY - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Théodore HENRY</span>
+      </div>
+      <h1>Théodore HENRY</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-abandon">NSI</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>NSI</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;"><span style="color: var(--gray); font-style: italic;">En attente...</span></td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box choix-pending">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value" style="color: var(--gray); font-style: italic;">En attente...</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">7 voeux - 7 lettres de motivation</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Bocuse <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J’ai été intendant chez les scouts et j’ai ressenti depuis lors un attrait pour l’hôtellerie.
+
+Fort de ma personnalité artistique, j’ai intégré l’Académie musicale de Liesse, une CHAM qui m’a responsabilisé en étant chargé des prestations publiques quotidiennes des élèves : mise en place de l’ordre de passage des 120 élèves concernés, coordination avec les professeurs et gestion des imprévus. J’ai pu gagner en adaptation et organisation.
+
+L’hôtellerie me semble être un domaine où il faut savoir diriger, innover, et posséder un leadership important : En 1ère, j’ai accepté d’être chef d’équipe de 9 garçons de tous âges pour assurer le service à table des 3 repas quotidiens pour 120 personnes. Nous avons aussi créé un restaurant éphémère pour une soirée festive et compétitive pour tout l’établissement. J’ai participé 4 fois à ce concours.
+
+Cette année, je suis responsable senior du sport. J’ai ainsi charge d’organiser des tournois inter-écoles (répartitions des équipes, transports, sécurité), j’ai fait le lien avec les institutions civiles et assuré la coordination des responsables juniors. J’ai développé mes qualités de diplomatie et de délégation.
+
+L’esprit de famille de votre établissement est celui que je vis actuellement. Je souhaite vivre ma passion de l’hôtellerie avec des camarades qui partagent les mêmes valeurs que moi. Aussi je me permets de vous présenter ma candidature.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Cheval Blanc (alternance Ferrandi) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">En me promenant dans Paris et en admirant la beauté de ses monuments, j’ai pu observer votre hôtel, majestueusement placé à quelques pas du Louvre et du Marais. Je souhaite enrichir mon parcours au Cheval Blanc pour mon alternance chez Ferrandi. J’ai depuis longtemps un attrait particulier pour le secteur de l’hôtellerie restauration.
+
+Fort de ma personnalité artistique, j’ai intégré l’Académie musicale de Liesse, une CHAM qui m’a responsabilisé en étant chargé des prestations publiques quotidiennes des élèves : mise en place de l’ordre de passage des 120 élèves concernés, coordination avec les professeurs et gestion des imprévus. J’ai pu gagner en adaptation et organisation.
+
+L’hôtellerie-restauration reste un domaine où il faut savoir diriger, innover, et posséder un leadership important. C’est pourquoi en 1ère j’ai pris la responsabilité de chef d’équipe, une fonction consistant à manager une équipe de 9 garçons du CM1 à la Terminale pour différents projets dont trois services de table par semaine. De plus, je me suis occupé durant 4 ans de soirées festives à thème annuelles compétitives pour une centaine de personnes.
+
+Je me suis mis cette année à un management alliant complexité et harmonisation : responsable senior du sport. J’ai ainsi été chargé d’organiser des tournois inter-écoles (répartitions des équipes, transports, sécurité). J’ai fait le lien avec les institutions civiles et assuré la coordination des responsables juniors.
+
+Doué d’une grande affabilité, j’aime aborder les gens poliment en m’adaptant à eux grâce à mes années de théâtre. Doté d’un certain côté perfectionniste, je reste flexible et original tout en restant maître de soi dans des situations complexes. J’aimerais énormément travailler dans votre hôtel, aussi je me permets de vous présenter ma candidature.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>3IS - Cinéma <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Âgé de 17 ans, j’ai toujours adoré le langage cinématographique qui attire ma fibre d’artiste. Je recherche à explorer les multiples facettes de la création visuelle tout en construisant un parcours professionnel cohérent grâce à une analyse approfondie des compétences requises dans le secteur. Je souhaite par la suite intégrer la Fémis afin de parfaire mes compétences. Votre formation proposant ce que je veux acquérir : la culture artistique, la production, la réalisation, le montage, le tout appuyé sur des ateliers pratiques. M’étant déjà investi dans une production vidéo et une production audio, je connais la rigueur du métier et son sens du détail. L’enseignement de la NSI en 1ère m’a donné quelques clefs. De plus, étant élève en CHAM, j’ai souvent fait l’expérience des caméras et de la radio me permettant aujourd’hui d’être à l’aise face à des situations de stress. Mes voyages en tournées musicales m’ont ouvert aux cultures élargissant ma culture générale et mes projets d’avenir. Je suis sûr que ces pré-acquis me serviront dans votre école et me permettront de me démarquer. Aussi je me permets de vous présenter ma candidature.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>EIML - Luxe <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Âgé de 17 ans, j’ai toujours été attiré par le commerce, spécialement le luxe qui répond à ma fibre artistique. Je recherche à explorer les multiples facettes marketing de luxe tout en construisant un parcours professionnel cohérent. Je souhaite par la suite investir le monde professionnel en profitant de mon expérience d’alternant. Votre formation proposant ce que j’ai besoin d’acquérir : les codes et la culture du luxe afin de les mettre à profit dans les grandes maisons pour se professionnaliser en vente et être directement opérationnel à la fin du cursus. M’étant déjà investi dans un projet commercial afin de vendre des goodies pour un festival pop/rock, je connais la rigueur du métier et son sens du détail. De plus, étant élève en CHAM, j’ai souvent fait l’expérience des caméras et de la radio me permettant aujourd’hui d’être à l’aise face à des situations de stress. Les tournées musicales m’ont ouvert aux autres cultures élargissant la mienne et ouvrant mes projets d’avenir. L’alternance particulièrement est une formation qui me sera profitable et où je pourrais m’épanouir. Aussi je me permets de vous présenter ma candidature.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licences de maths <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Élève en CHAM à l’Académie musicale de Liesse, je suis particulièrement organisé et pragmatique, fort d’un parcours semi-professionnel rigoureux et responsable, et je suis convaincu que l’excellence de votre établissement me sera profitable et me permettra d’élargir mes compétences pour de multiples projets.
+
+Très intéressé depuis longtemps par les mathématiques et la physique, j’ai choisi ces spécialités en 1ère, me démenant souvent auprès de mes professeurs pour comprendre. Ma motivation m’a permis de persévérer et de poursuivre mes efforts reconnus par mon professeur de spécialité.
+
+J’aime me responsabiliser et je suis devenu chef d’équipe en 1ère. Cette fonction dont le but est de manager 9 garçons de tous âges afin de mener à bien plusieurs services et projets pendant l’année est très importante. Grâce à des tests de caractérologie (Hexa 3D, RIASEC, ...), je connais mon tempérament et mes points forts : (rigueur, créativité, sens de l’organisation) ; et aussi mes défauts : (réserve, parfois trop prudent). Cependant je travaille à les corriger, notamment en m’ouvrant plus aux autres.
+
+Pratiquant la trompette depuis 10 ans, j’ai participé à de nombreux concerts et tournées m’ouvrant à la culture et la langue des pays visités, ces voyages m’ayant également permis de rester maître de soi devant des situations de stress en prenant la parole devant plus de 5000 personnes.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licences de droit <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Élève en CHAM à l’Académie musicale de Liesse, je suis particulièrement organisé et pragmatique, fort d’un parcours semi-professionnel rigoureux et responsable, et je suis convaincu que l’excellence de votre établissement ne me sera que profitable et me permettra d’élargir mes compétences pour de multiples projets.
+
+J’ai pu plusieurs fois rencontrer des avocats qui m’ont fait découvrir leur métier, dans ce but, j’ai appris à prendre la parole en restant maître de moi dans des situations de stress comme des débats, des ouvertures de concerts ou des enregistrements radios.
+
+Étant scout, j’ai développé un esprit pragmatique afin de devenir chef d’équipe en 1ère, cette fonction dont le but est de commander 9 garçons de tous âges pour mener à bien plusieurs services et projets durant l’année. Comme celui de s’occuper de l’animation, du service, et de la décoration d’une soirée festive annuelle. Grâce à des tests de caractérologie (Hexa 3D, RIASEC, ...), je connais mon tempérament et mes points forts : (rigueur, créativité, sens de l’organisation) ; et aussi mes défauts.
+
+Pratiquant la trompette depuis 10 ans, j’ai participé à de nombreux concerts et tournées m’ouvrant à la culture et la langue des pays visités, ces voyages m’ayant également permis de développer une capacité de leadership et de sens pratique en organisant des concerts et tournées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépas B/L (Sainte-Marie de Neuilly) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Fort d’un parcours original, organisé, responsable et aimant m’engager pour les autres, je souhaite intégrer votre CPGE afin d’intégrer une grande école par la suite. Âgé de 17 ans et actuellement élève à l’Académie musicale Notre-Dame de Liesse, un établissement où je pratique la musique et le chant de manière semi-professionnelle, j’ai un tempérament à la fois scientifique et littéraire, j’aime autant étudier les maths et les sciences en vue du bac que prendre plaisir à chanter le Requiem de Mozart.
+
+C’est pourquoi faire une classe préparatoire B/L me permettrait de poursuivre ma formation humaine. Je connais un peu la prépa Ste Marie de Neuilly par des amies de ma sœur qui y a passé son bac en 2022.
+
+Possédant une forte fibre artistique, je fais de la trompette au niveau semi-professionnel depuis plus de 10 ans et du chant depuis presque autant de temps. Dans le cadre de représentations, j’ai su apprendre à rester maître de moi dans des situations de stress et à parler en public.
+
+Grâce à mes années de scoutisme, j’ai acquis un esprit de service et de leadership que j’ai développé en devenant chef d’équipe en 1ère. Cette fonction consiste à gérer une équipe de 9 garçons de tous âges pour différents projets dont l’écriture de saynètes.
+
+Possédant une plume affinée par d’excellents professeurs, je me suis souvent occupé d’écrire des lettres de remerciements à des intervenants professionnels invités dans notre établissement.
+
+Depuis longtemps, je possède une véritable passion pour les lettres. Cette passion s’est développée en lisant très jeune : Autant en emporte le vent, Germinal, le Seigneur des anneaux, Pilote de guerre. De plus, j’ai pratiqué longtemps le théâtre en amateur grâce à une excellente mémoire.
+
+Je voudrais étudier dans votre école car elle met en avant la jubilation intellectuelle, l’émulation, le dépassement de soi à travers l’expérience de la prépa, parce qu’elle vise l’excellence humaine avant tout.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Expériences d’encadrement et d’animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dès la troisième j’ai pu prendre en charge grâce au scoutisme un groupe de 7 personnes pour plus de 15 échéances dans l’année variant de 2 à 18 jours. Dans le cadre de mon lycée en CHAM j’ai été responsable de rénover un système d’auditions fonctionnant chaque midi du lundi au jeudi afin d’évaluer le travail des élèves semi-professionnels, devant un public important. Ce système perdure encore aujourd’hui de façon efficace. Ce travail m’ayant donné les capacités de coordonner des actions entre les adultes et les élèves, j’ai pu prendre la charge de chef d’équipe en 1ère, fonction consistant à manager une équipe de 9 garçons allant du CM1 à la Terminale afin de réaliser différents projets dont trois services par semaine. Dans ce même cadre j’ai été le responsable de la décoration, de l’animation et du service d’une soirée festive annuelle à thème et compétitive, pour une centaine de personnes recevant plusieurs fois la meilleure notation. De plus, la même année j’ai organisé la mise en scène d’un spectacle en coordonnant les actions de plus de 30 personnes. Je me suis également occupé de préparer les sessions de sport cette année, en coordination avec la mairie. Afin de parfaire ces expériences je me suis motivé à passer le BAFA.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">À partir de mes 11 ans, dans le cadre de ma chorale j’ai participé à de nombreuses représentations auprès de personnes âgées ou handicapées ce qui m’a permis d’aider ces personnes et de développer une bienveillance auprès des personnes fragiles ou en difficulté. Pendant plusieurs années c’est en s’engageant bénévolement auprès de personnes en difficulté que j’ai pris conscience de l’importance de la solidarité pour contribuer à une société inclusive et accueillante. Depuis 4 ans j’ai pris l’habitude de m’occuper des services nécessaires pour un repas pour une centaine de personnes. Enfin, la Journée du Citoyen que j’ai effectuée récemment m’a permis d’ouvrir plus largement mon regard sur mon rôle de citoyen. Dans la chorale du conservatoire de ma ville et en accord avec la mairie nous avons interprété des chants de Noël pour le marché de Noël de ma ville. Je me suis également engagé dans mon lycée afin de faire venir des professionnels pour un salon et organiser des activités afin d’inclure les élèves de 3ème dans les activités des lycéens.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J’ai contribué à de nombreux concerts à des fins parfois caritatives avec des associations pour, par exemple, la rénovation de Notre-Dame. Depuis 4 ans je pratique le chant semi-professionnel pour une moyenne de 50 représentations diverses par an en France, à l’étranger, et en plusieurs langues. Trompettiste depuis 10 ans, j’ai souvent eu l’occasion d’en jouer à des concerts importants à Paris comme à Monaco. Afin de parfaire mes compétences dans le domaine de la scène, j’ai souvent pris la parole pour débuter un concert ou passer à la radio. L’année dernière j’ai participé tout au long de l’année à la réalisation d’un festival de musique à l’occasion des 10 ans de mon établissement, événement musical rassemblant plus de 700 personnes, en m’occupant de la vente de goodies, impliquant de faire des devis, de coordonner les responsables adultes et élèves. Particulièrement porté sur l’anticipation et l’organisation, je sais trouver rapidement des solutions aux problèmes rencontrés.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Trompettiste et chanteur semi-professionnel grâce à une formation de conservatoire, je pratique un travail intense et régulier qui me permet d’évoluer dans le secteur de la musique et du spectacle à travers de nombreux concerts et tournées. Les styles de musique restent ouverts et comprennent de la musique classique, des chants sacrés avec des compositeurs comme Mozart, Haendel, Haydn, John Rutter, ou encore de la musique plus actuelle avec du rock et de la pop. J’ai acquis ainsi mon 2ème cycle de trompette et mon 3ème cycle de solfège.
+
+Différentes tournées sélectives m’ont conduites à l’étranger, j’ai eu l’occasion de découvrir d’autres cultures ainsi que leurs richesses en plus d’apprendre la langue.
+
+Je pratique encore très couramment le badminton, le tennis de table, le basket, la course à pied, le rugby et le football. Auparavant j’ai pratiqué la natation, le ski, la voile, l’escrime, le tennis, le patinage, les échecs, et la danse classique, certains même en compétition.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

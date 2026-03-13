@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AML Terminale - Académie Musicale de Liesse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/images/logo-aml.png">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand">
+        <img src="assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Académie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="pages/guide-etranger.html">Études à l'Étranger</a></li>
+        <li><a href="pages/entretiens.html">Entretiens</a></li>
+        <li><a href="pages/parcoursup.html">Parcoursup</a></li>
+        <li><a href="pages/hggsp.html">HGGSP</a></li>
+        <li><a href="pages/maths.html">Maths</a></li>
+        <li><a href="pages/grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          Classe de Terminale
+        </div>
+        <h1>
+          Prépare ton avenir avec<br>
+          <span class="highlight">l'Académie</span>
+        </h1>
+        <p>
+          Tout ce dont tu as besoin pour réussir ton année de Terminale : BAC, Parcoursup, Grand Oral, études à l'étranger et bien plus.
+        </p>
+        <div class="hero-cta">
+          <a href="pages/parcoursup.html" class="btn btn-primary">Explorer Parcoursup</a>
+          <a href="#ressources" class="btn btn-secondary">Découvrir les ressources</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div class="stat-item">
+          <h3><span data-count="50" data-suffix="+">0</span></h3>
+          <p>Élèves accompagnés</p>
+        </div>
+        <div class="stat-item">
+          <h3><span data-count="4" data-suffix="">0</span></h3>
+          <p>Promotions de bacheliers</p>
+        </div>
+        <div class="stat-item">
+          <h3><span data-count="6" data-suffix="">0</span></h3>
+          <p>Ressources complètes</p>
+        </div>
+        <div class="stat-item">
+          <h3><span data-count="3" data-suffix="">0</span></h3>
+          <p>Pays couverts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Cards -->
+  <section id="ressources">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Ressources</span>
+        <h2>Tout pour réussir ta Terminale</h2>
+        <p>Des guides complets et des retours d'expérience pour t'aider à chaque étape de ton parcours.</p>
+      </div>
+
+      <div class="cards-grid stagger-children">
+
+        <a href="pages/guide-etranger.html" class="card">
+          <div class="card-icon">🌍</div>
+          <h3>Guide Études à l'Étranger</h3>
+          <p>Tout savoir sur les candidatures au Royaume-Uni, aux États-Unis et en Irlande après le bac.</p>
+          <span class="card-link">Consulter le guide &rarr;</span>
+        </a>
+
+        <a href="pages/entretiens.html" class="card">
+          <div class="card-icon">🏫</div>
+          <h3>Questions Type Entretien</h3>
+          <p>Retours d'expérience d'entretiens réels : ESSEC, ESCP, EDHEC, EM Lyon, Ave Maria.</p>
+          <span class="card-link">Voir les questions &rarr;</span>
+        </a>
+
+        <a href="pages/parcoursup.html" class="card">
+          <div class="card-icon">🎓</div>
+          <h3>Data Base Parcoursup</h3>
+          <p>Lettres de motivation et profils de 50+ académiciens classés par promotion.</p>
+          <span class="card-link">Explorer la base &rarr;</span>
+        </a>
+
+        <a href="pages/hggsp.html" class="card">
+          <div class="card-icon">🧠</div>
+          <h3>Révisions BAC HGGSP</h3>
+          <p>Fiches de révision complètes pour les 4 thèmes du programme de Terminale.</p>
+          <span class="card-link">Réviser &rarr;</span>
+        </a>
+
+        <a href="pages/maths.html" class="card">
+          <div class="card-icon">📐</div>
+          <h3>BAC de Maths</h3>
+          <p>Formules essentielles, méthodes et annales corrigées pour performer au BAC.</p>
+          <span class="card-link">S'entraîner &rarr;</span>
+        </a>
+
+        <a href="pages/grand-oral.html" class="card">
+          <div class="card-icon">🗣️</div>
+          <h3>Grand Oral</h3>
+          <p>Exemples de sujets et présentations réalisées par des académiciens.</p>
+          <span class="card-link">Découvrir &rarr;</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About section -->
+  <section style="background: var(--off-white);">
+    <div class="container">
+      <div class="feature-row reveal">
+        <div class="feature-text">
+          <span class="section-tag">À propos</span>
+          <h3>Créée par les académiciens, pour les académiciens</h3>
+          <p>
+            Cette plateforme regroupe les ressources essentielles pour préparer au mieux ton année de Terminale. Les sujets sont variés mais tous ont leur utilité. À toi d'aller farfouiller pour trouver les infos qui t'intéressent !
+          </p>
+          <p>
+            <strong>Bon courage !</strong>
+          </p>
+        </div>
+        <div class="feature-visual">
+          <img src="assets/images/logo-aml.png" alt="Blason AML" style="max-height: 200px;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les élèves de Terminale de l'Académie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="pages/guide-etranger.html">Études à l'Étranger</a></li>
+            <li><a href="pages/entretiens.html">Entretiens</a></li>
+            <li><a href="pages/parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Révisions</h4>
+          <ul class="footer-links">
+            <li><a href="pages/hggsp.html">BAC HGGSP</a></li>
+            <li><a href="pages/maths.html">BAC Maths</a></li>
+            <li><a href="pages/grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Académie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Créé avec soin par Aymar Lesueur pour l'Académie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

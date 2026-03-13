@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christian DU PLESSIS - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Christian DU PLESSIS</span>
+      </div>
+      <h1>Christian DU PLESSIS</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #9A6BB4; color: #fff;">HLP</span>
+<span class="student-tag tag-spe" style="background: #D27B2D; color: #fff;">HGGSP</span>
+<span class="student-tag tag-abandon">LLCE Anglais</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>HLP &amp; HGGSP</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>LLCE Anglais</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;"><span style="color: var(--gray); font-style: italic;">En attente...</span></td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box choix-pending">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value" style="color: var(--gray); font-style: italic;">En attente...</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">17 voeux - 16 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Blomet <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Blomet
+Madame, Monsieur,
+Fort d’un parcours original, curieux, persévérant et travailleur, je souhaite intégrer votre CPGE pour enrichir ma culture littéraire et former ainsi un bagage culturel sur lequel je puisse m’appuyer pour la suite de ma vie professionnelle.
+Ma passion pour les Lettres s’est manifestée très tôt. Depuis la lecture des romans de Jules Verne, je suis passionné de lecture, et j’ai élargi ma culture littéraire en lisant de mon propre chef des classiques (Rimbaud, Raspail, Montaignes, Labruyère, Balzac…) et des ouvrages d'Histoire (Aron, Petitfils, Druon). J’ai eu également de nombreuses occasions de faire du théâtre au sein de mon école ou en famille, une passion qui m’habite depuis la quatrième; classe au sein de laquelle je venais déguisé en Cyrano ou en Dom Diègue pour déclamer les monologues que nous avions à apprendre. Les langues, latin et anglais m’ont toujours plu. Ayant eu des cours de latin de la sixième à la seconde, les contacts avec cette langue dans les textes de la liturgie et du chant choral m’en ont donné une solide connaissance. Du côté de l’Anglais, j’ai développé des facilités à l’oral grâce au choix de la spécialité Langue Littérature et Culture Étrangère en première, une spécialité que j’ai particulièrement aimée. La logique, étudiée en classe de première, et la philosophie en terminale me sont aussi très chères. Elles m’ont permis d’acquérir pour l’une la rigueur du raisonnement philosophique, pour l’autre les bases de la philosophie et de l’Histoire de la philosophie. Pour couronner le tout, le choix de la spécialité HLP en première et terminale m’a permis d’associer l’étude de la Philosophie à celle de la littérature, deux domaines qui me tiennent très à cœur. Cette spécialité m’a également aidée à développer le style et le fond de ma rédaction et de mon raisonnement à travers les exercices de la dissertation et de l’essai. De même, la spécialité Histoire Géographie Géopolitique Sciences-Politiques m’a permis de satisfaire mon goût pour l’étude de notre histoire. En terminale, l’arrivée en demi-finale du concours d’éloquence de la DRAC m’a fait travailler le domaine de l’art oratoire, domaine qui me motive beaucoup. Ce goût pour les études littéraires (langues, philosophie, littérature, domaine oral) m’a donné envie d’approfondir ma culture littéraire, qui puisse former un bagage culturel pour la suite de ma vie. Ainsi, le choix de la classe préparatoire a été comme une évidence pour moi, cherchant une atmosphère d’exigence et de travail conjuguée à un réel travail d’équipe entre étudiants. C’est en échangeant avec deux étudiants de Blomet, Madeleine Gouasque et Hélie de Palmaert que m’est venue l’envie d’intégrer cette prépa. Tout d’abord pour la disponibilité des professeurs, qui suivent avec bienveillance le travail des élèves et peuvent s’adapter à leurs besoins. Puis pour les effectifs assez faibles, qui permettent un entraide entre étudiants dans un cadre de vie à taille humaine. Pour la position idéale des bâtiments en plein cœur de Paris, environnés d’espaces verts. Enfin, pour la pression que les étudiants subissent dans l’école en vue de préparer les concours, mais qui peut s’adapter aux débouchés que chacun souhaite. Le rythme d’étude que les étudiants doivent supporter en prépa ne m’effraie pas, étant en CHAM depuis 5 ans (Classe à Horaire Aménagé Musique). Je suis déjà habitué à devoir honorer des échéances fréquentes et exigeantes de concerts, tout en suivant les études avec autant d’assiduité que des élèves normaux. Les périodes de concerts, avec plusieurs échéances musicales tant en semaine que sur les weeks-end m’ont appris à gérer mon stress, tout devant honorer des attentes artistiques à un niveau semi-professionnel. Ces années m’ont donné le goût de l’exigence, et m’ont permis de développer des méthodes de travail efficaces. Cependant, je suis autant conscient de mes points forts que de mes points faibles pour passer 2 ou 3 années en prépa. Je sais pouvoir m’appuyer sur mon goût pour les Lettres et les Humanités, développé notamment grâce à la lecture; sur mon aisance à l’oral, sur ma volonté de travailler et mon expérience du travail d’équipe, rodée grâce au scoutisme et aux années en internat. Comme mentionné dans ma rubrique “Activités et centres d'intérêts”, j’ai mené de nombreux projets en groupes, qui ont développé ma capacité à communiquer efficacement. Toutefois, je connais aussi mes points faibles, sur lesquels je travaille. Tout d’abord, j’ai besoin de pression pour travailler efficacement, une difficulté qui ne m’a guère dérangée pendant mes 9 années de pensionnat, pendant lesquelles les temps d’étude fréquents et obligatoires m’ont forcés à travailler sérieusement. J’ai choisi de postuler en prépa notamment pour remédier à cette légère difficulté. Mes deux autres points faibles majeurs sont d’une part mes difficultés dans les matières scientifiques, qui ne devraient pas trop ralentir mon dossier en classe préparatoire littéraire, et mon faible niveau d’Allemand, dû notamment à des années sans professeurs dans cette matière.
+Je pense tout de même avoir les qualités nécessaires pour entrer dans votre établissement, ainsi que la volonté et la persévérance pour mener mes études avec succès. Ainsi, j’espère pouvoir rentrer l’année prochaine en hypokhâgne à Blomet!
+La lettre de motivation a pour objectif de vous présenter. Comment se manifeste votre goût pour des études littéraires ?
+goût de la lecture (Début avec les Jules Verne en Quatrième
+théâtre (avec les cousins, avec Mme Tyldesley, aux auberges…)
+langues (latin de la sixième à la seconde)
+Histoire-Géographie
+Logique en première et philo en Terminale, spé HLP en 1ère et en Tle.
+Goût pour la rédaction et la réflexion
+Quelles sont les expériences, les rencontres ou les projets qui vous amènent à postuler en hypokhâgne ? Pourquoi faites-vous le choix de la préparation d’un concours ?
+Échanges avec deux étudiants de Blomet
+Envie de développer ma culture Littéraire,
+Désir de travailler en groupe pour préparer un concours exigeant (désir d'exigence et d’entraide)
+Analysez également votre parcours. Quels sont vos points forts ? Quelles ont été les difficultés rencontrées au cours du cycle terminal ? Comment y avez-vous remédié ? Quels sont encore les points d’amélioration ?
+Points forts
+dans mon parcours scolaire: volonté de travailler, goût pour les lettres, j’aime bien l’Anglais, aisance à l’oral.
+Points faibles:
+Besoin de pression(ou au moins de cadre), nullité dans les matières scientifiques, difficultés en Allemand dues à l’absence de professeurs.
+remèdes utilisés:
+usage (modéré) de la méthode assimil pour l’Allemand, scolarité en pension, avec des temps d’étude cadrés et une vie réglée.
+Comment vous projetez-vous dans des études au rythme et aux projets exigeants ?
+Je suis déjà habitué à ce type d’études, étant en CHAM depuis 5 ans, avec de nombreuses exigences.
+Scoutisme plus Académie m’ont formés à la vie de communauté en d’entraide.
+Enfin, pourquoi postulez-vous en particulier à Blomet ? Quelles sont nos spécificités auxquelles vous êtes particulièrement sensible ?
+Un cadre agréable au cœur de Paris, proximité avec des parcs, bonne réputation de l’établissement, pression conjuguée à un suivi personnel des professeurs, qui peuvent s’adapter à nos besoins. Je ne vise pas spécifiquement à intégrer un ENS, mais plutôt à développer ma culture littéraire.
+N'hésitez pas à nous faire part de votre projet de suivre la spécialité histoire et théorie des arts.
+???
+Est ce qu’il faut dire que j’ai été à Courset et à l’académie, et que certains élèves (hélie) ont étés pris à Blomet?
+Ajouter mes méthodes de travail et mes résultats scolaires.
+bien expliquer leur profil, leur parcours, leur projet et montrer une bonne compréhension des exigences, des attendus, et du projet d'établissement.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Sainte-Marie de Neuilly <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Sainte-Marie de Neuilly
+7000 caractères
+Madame, Monsieur,
+Curieux, persévérant et surtout passionné par les lettres, je souhaite intégrer votre CPGE pour enrichir ma culture littéraire et acquérir des méthodes de travail qui puissent me servir pour ma vie entière.
+Ma passion pour les lettres s’est révélée très tôt, par le biais de lectures nombreuses et variées. Dès la quatrième, avec les romans de Jules Verne, J’ai rapidement pris une vraie habitude de lecture; ainsi ai-je fréquenté aussi bien des classiques (Zola, Montaigne, Rimbaud, Dumas, Raspail… ) que des ouvrages d’histoire (Petitfils, Druon, Aron). Au lycée, je suis tombé amoureux de la philosophie, grâce à l’étude de la logique, proposée par notre lycée en première et de la philosophie en terminale, disciplines étayées par la spécialité Humanités Littératures Philosophie. Cette dernière m’a permis de confronter l’étude de la littérature avec celle de la philosophie, deux domaines que j’affectionne particulièrement. Les langues m’ont également toujours plu. Ayant suivi 4 années de cours de Latin, le contact avec cette langue dans la liturgie et le chant choral m’en a donné une connaissance approfondie. L’anglais est également un point fort pour moi, ayant choisi la spécialité Langues Littératures et Cultures Étrangères en première. Mes 5 années de cours avec un professeur d’Anglais natif et passionné m’ont permis d’étudier cette langue sous tous ses aspects et d’en acquérir un bon niveau à l’oral. Mais ma passion prédominante est sans doute celle du théâtre et de l’art oratoire, une passion qui m’habite depuis la quatrième; classe au sein de laquelle je venais déguisé en Cyrano ou en Dom Diègue pour déclamer les monologues que nous avions à apprendre. J’ai eu de nombreuses occasions de concrétiser cette passion et en Terminale, je suis arrivé en demi-finale du concours d’éloquence de la DRAC. Enfin, je possède le goût de la rédaction et de la réflexion, des éléments que j’ai pu affiner pendant mes années de lycée avec l’exercice de la dissertation.
+Considérant tous ces éléments, intégrer une classe préparatoire littéraire a été pour moi comme une évidence. Aller au fond des choses, décortiquer le sens d’un texte, intégrer la pensée d’un auteur ou d’un philosophe sont des exercices qui m’ont toujours passionné. Mais l’élément qui me fait frapper spécialement à votre porte est que ma mère, ayant fait sa prépa à Sainte-Marie de Neuilly, témoigne particulièrement de l’ambiance familiale qui y règne, conciliée avec une véritable exigence de travail. C’était il y a certes quelques années, mais ayant adoré ses années d’études dans votre établissement, cela me donne envie de l’intégrer. Tout d’abord pour ce fameux esprit de famille qui me tient tant à cœur, après 9 années passées en internat, où la fraternité et la camaraderie sont primordiales. Puis pour la formation de vos élèves qui se veut intégrale: à la fois éducation humaine et spirituelle. Enfin, la formation intellectuelle dispensée dans votre établissement est très réputée, pour être exigeante et porteuse dans les concours aussi bien que dans la vie professionnelle. Je souhaite profondément pouvoir en profiter, pour former à Sainte-Marie de Neuilly aussi bien mon intelligence que mon cœur. Le rythme d’étude que les étudiants doivent supporter en prépa ne m’effraie pas, étant en CHAM depuis 5 ans (Classe à Horaire Aménagé Musique). Je suis déjà habitué à devoir honorer des échéances fréquentes et exigeantes de concerts, tout en suivant les études avec autant d’assiduité que des élèves normaux. Les périodes de concerts, avec plusieurs échéances musicales tant en semaine que sur les weeks-end m’ont appris à gérer mon stress, tout devant honorer des attentes artistiques à un niveau semi-professionnel. Ces années m’ont donné le goût de l’exigence, et m’ont permis de développer des méthodes de travail efficaces. Cependant, je suis autant conscient de mes points forts que de mes points faibles pour passer 2 ou 3 années en prépa. Je sais pouvoir m’appuyer sur mon goût pour les Lettres et les Humanités, développé notamment grâce à la lecture; sur mon aisance à l’oral, sur ma volonté de travailler et mon expérience du travail d’équipe, rodée grâce au scoutisme et aux années en internat. Comme mentionné dans ma rubrique “Activités et centres d'intérêts”, j’ai mené de nombreux projets en groupes, qui ont développé ma capacité à communiquer efficacement. Toutefois, je connais aussi mes points faibles, sur lesquels je travaille. Tout d’abord, j’ai besoin de pression pour travailler efficacement, une difficulté qui ne m’a guère dérangée pendant mes 9 années de pensionnat, pendant lesquelles les temps d’étude fréquents et obligatoires m’ont forcés à travailler sérieusement. J’ai choisi de postuler en prépa notamment pour remédier à cette légère difficulté. Mes deux autres points faibles majeurs sont d’une part mes difficultés dans les matières scientifiques, qui ne devraient pas trop ralentir mon dossier en classe préparatoire littéraire, et mon faible niveau d’Allemand, dû notamment à des années sans professeurs dans cette matière.
+Je pense tout de même avoir les qualités nécessaires pour entrer dans votre établissement, ainsi que la volonté et la persévérance pour mener mes études avec succès. Ainsi, j’espère pouvoir rentrer l’année prochaine en hypokhâgne à Sainte-Marie de Neuilly!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Blanche de Castille <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Blanche de Castille
+500 caractères
+Madame, Monsieur,
+Fort d’un parcours original, curieux, persévérant et travailleur, je souhaite intégrer votre CPGE pour enrichir ma culture littéraire et former ainsi un bagage culturel sur lequel je puisse m’appuyer pour la suite de ma vie professionnelle.
+Ma passion pour les Lettres s’est manifestée très tôt. Depuis la lecture des romans de Jules Verne, je suis passionné de lecture, et j’ai élargi ma culture littéraire en lisant de mon propre chef des classiques (Rimbaud, Raspail, Montaignes, Labruyère, Balzac…) et des ouvrages d'Histoire (Aron, Petitfils, Druon). J’ai eu également de nombreuses occasions de faire du théâtre au sein de mon école ou en famille, une passion qui m’habite depuis la quatrième; classe au sein de laquelle je venais déguisé en Cyrano ou en Dom Diègue pour déclamer les monologues que nous avions à apprendre. Les langues, latin et anglais m’ont toujours plu. Ayant eu des cours de latin de la sixième à la seconde, les contacts avec cette langue dans les textes de la liturgie et du chant choral m’en ont donné une solide connaissance. Du côté de l’Anglais, j’ai développé des facilités à l’oral grâce au choix de la spécialité Langue Littérature et Culture Étrangère en première, une spécialité que j’ai particulièrement aimée. La logique, étudiée en classe de première, et la philosophie en terminale me sont aussi très chères. Elles m’ont permis d’acquérir pour l’une la rigueur du raisonnement philosophique, pour l’autre les bases de la philosophie et de l’Histoire de la philosophie. Pour couronner le tout, le choix de la spécialité HLP en première et terminale m’a permis d’associer l’étude de la Philosophie à celle de la littérature, deux domaines me tenant très à cœur. Cette spécialité m’a également aidée à développer le style et le fond de ma rédaction et de mon raisonnement à travers les exercices de la dissertation et de l’essai. En terminale, l’arrivée en demi-finale du concours d’éloquence de la DRAC m’a fait travailler le domaine de l’art oratoire, domaine qui me motive beaucoup. Ce goût pour les études littéraires (langues, philosophie, littérature, domaine oral) m’a donné envie d’approfondir ma culture littéraire, qui puisse former un bagage culturel pour la suite de ma vie. Ainsi, le choix de la classe préparatoire a été comme une évidence pour moi, cherchant une atmosphère d’exigence et de travail conjuguée à un réel travail d’équipe entre étudiants. Je viens postuler spécialement à Blanche de Castille pour ce que vous apportez de plus par rapport à beaucoup d’autres formations: une éducation intégrale, de l’intelligence et du cœur; une formation véritablement humaine. J’attache beaucoup d’importance à cet aspect après plusieurs années de scoutisme et d’internat, structures dans lesquelles l’éducation tient une place primordiale. Ainsi, je souhaite particulièrement intégrer Blanche de Castille. Le rythme d’étude que les étudiants doivent supporter en prépa ne m’effraie pas, étant en CHAM depuis 5 ans (Classe à Horaire Aménagé Musique). Je suis déjà habitué à devoir honorer des échéances fréquentes et exigeantes de concerts, tout en suivant les études avec autant d’assiduité que des élèves normaux. Les périodes de concerts, avec plusieurs échéances musicales tant en semaine que sur les weeks-end m’ont appris à gérer mon stress, tout devant honorer des attentes artistiques à un niveau semi-professionnel. Ces années m’ont donné le goût de l’exigence, et m’ont permis de développer des méthodes de travail efficaces. Cependant, je suis autant conscient de mes points forts que de mes points faibles pour passer 2 ou 3 années en prépa. Je sais pouvoir m’appuyer sur mon goût pour les Lettres et les Humanités, développé notamment grâce à la lecture; sur mon aisance à l’oral, sur ma volonté de travailler et mon expérience du travail d’équipe, rodée grâce au scoutisme et aux années en internat. Comme mentionné dans ma rubrique “Activités et centres d'intérêts”, j’ai mené de nombreux projets en groupes, qui ont développé ma capacité à communiquer efficacement. Toutefois, je connais aussi mes points faibles, sur lesquels je travaille. Tout d’abord, j’ai besoin de pression pour travailler efficacement, une difficulté qui ne m’a guère dérangée pendant mes 9 années de pensionnat, pendant lesquelles les temps d’étude fréquents et obligatoires m’ont forcés à travailler sérieusement. J’ai choisi de postuler en prépa notamment pour remédier à cette légère difficulté. Mes deux autres points faibles majeurs sont d’une part mes difficultés dans les matières scientifiques, qui ne devraient pas trop ralentir mon dossier en classe préparatoire littéraire, et mon faible niveau d’Allemand, dû notamment à des années sans professeurs dans cette matière.
+Je pense tout de même avoir les qualités nécessaires pour entrer dans votre établissement, ainsi que la volonté et la persévérance pour mener mes études avec succès. Ainsi, j’espère pouvoir rentrer l’année prochaine en hypokhâgne à Blanche de Castille!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Schweitzer <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Schweitzer
+1500 caractères
+Madame, Monsieur,
+Fort d’un parcours original, à la fois curieux et persévérant, et surtout passionné par les lettres, je souhaite intégrer votre classe préparatoire Littéraire.
+Ma passion pour les lettres s’est révélée très tôt, notamment grâce à mes lectures (Zola, Montaigne, Rimbaud, Dumas, Raspail… ), qui m’ont conféré une large culture littéraire et historique. Amoureux de la philosophie, je suis également très proche des langues anciennes et contemporaines. Je possède un bon niveau d’Anglais et j’ai pu profiter de quatre années de cours de Latin. L’art du théâtre, du débat, de la rhétorique m’est particulièrement cher: Dès la Quatrième, je venais déguisé en classe pour réciter mes monologues, et je suis arrivé en demi-finale du concours d’éloquence de la DRAC en Terminale. Je souhaite notamment candidater au lycée Schweitzer pour la proximité géographique de cet établissement avec mon domicile. Pour mener à bien des études en classes prépa, je sais pouvoir compter sur de solides capacités autant à l’écrit qu’à l’oral, et surtout sur une bonne dose de volonté et de persévérance pour mener à leur terme deux années de travail intensif. Enfin et surtout, les années de scoutisme et de pension m’ont donné un sens aigu du travail de groupe et de la coopération, élément intrinsèque de la pédagogie des classes prépa. En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Lycée Molière <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Lycée Molière
+1500 caractères
+V1 :
+Madame, Monsieur,
+élève depuis 9 ans en internat, je souhaite intégrer votre formation.
+Ma passion pour les lettres s’est révélée très tôt, notamment grâce à mes lectures (Druon, Raspail, Aron, Zola…), qui m’ont conféré une large culture littéraire et historique. De plus, j’apprécie beaucoup l’Histoire (choix de la spécialité HGGSP), et la philosophie, dont j’ai pu éprouver la richesse et la profondeur grâce à une année de logique en première et une année de philosophie en terminale. La spécialité HLP m’a permis de faire un parallèle entre cette discipline et la Littérature, domaine que j’apprécie beaucoup. Enfin, je possède des qualités littéraires, notamment à l’oral (Je suis arrivé en demi-finale du concours d’éloquence de la DRAC en Terminale) et j’apprécie particulièrement les travaux de rédaction, comme l’essai ou la dissertation. Les langues m’ont toujours plu; le latin, après 4 années de cours, l’Anglais grâce à la spécialité LLCE, en première, dont les cours en petit effectif m’ont fait développer mon oral et mon écrit. Le désir de poursuivre l’étude des Lettres m’a motivé pour entrer en prépa littéraire, mais la discussion avec un ancien élève de mon établissement ayant fait sa prépa à Molière, Donatien Tierny, m’a particulièrement poussé à aller frapper à votre porte.
+V2 :
+Madame, Monsieur,
+À la fois curieux et persévérant, et surtout passionné par les lettres, je souhaite intégrer votre établissement.
+Ma passion pour les lettres s’est révélée très tôt, notamment grâce à mes lectures (Zola, Montaigne, Rimbaud, Dumas, Raspail… ), qui m’ont conféré une large culture littéraire et historique. Amoureux de la philosophie, je suis également très proche des langues anciennes et contemporaines. Je possède un bon niveau d’Anglais et j’ai pu profiter de quatre années de cours de Latin. L’art du théâtre, du débat, de la rhétorique m’est particulièrement cher: Dès la Quatrième, je venais déguisé en classe pour réciter mes monologues, et je suis arrivé en demi-finale d’un concours d’éloquence national en Terminale. Pour mener à bien des études en classes prépa, je sais pouvoir compter sur de solides capacités autant à l’écrit qu’à l’oral, et surtout sur une bonne dose de volonté et de persévérance pour mener à leur terme deux années de travail intensif. Enfin et surtout, les années de scoutisme et de pension m’ont donné un sens aigu du travail de groupe et de la coopération, élément intrinsèque de la pédagogie des classes prépa. Mais c’est en discutant avec un ancien camarade ayant fait sa prépa à Molière, Donatien Tierny, que m’est venu l’envie d’aller frapper à votre porte. En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Lycée Balzac <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Lycée Balzac
+1500 caractères
+Madame, Monsieur,
+À la fois curieux et persévérant, et surtout passionné par les lettres, je souhaite intégrer votre établissement.
+Ma passion pour les lettres s’est révélée très tôt, notamment grâce à mes lectures (Zola, Montaigne, Rimbaud, Dumas, Raspail… ), qui m’ont conféré une large culture littéraire et historique. Amoureux de la philosophie, je suis également très proche des langues anciennes et contemporaines. Je possède un bon niveau d’Anglais et j’ai pu profiter de quatre années de cours de Latin. L’art du théâtre, du débat, de la rhétorique m’est particulièrement cher: Dès la Quatrième, je venais déguisé en classe pour réciter mes monologues, et je suis arrivé en demi-finale du concours d’éloquence de la DRAC en Terminale. Pour mener à bien des études en classes prépa, je sais pouvoir compter sur de solides capacités autant à l’écrit qu’à l’oral, et surtout sur une bonne dose de volonté et de persévérance pour mener à leur terme deux années de travail intensif. Enfin et surtout, les années de scoutisme et de pension m’ont donné un sens aigu du travail de groupe et de la coopération, élément intrinsèque de la pédagogie des classes prépa. Mais c’est en discutant avec un ancien camarade ayant fait sa prépa au lycée Balzac, Grégoire de Kerangat, que m’est venu l’envie d’aller frapper à votre porte. En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Prépa A/L Lycée Bossuet <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Prépa A/L Lycée Bossuet
+1500 caractères
+Madame, Monsieur,
+À la fois curieux, persévérant et passionné par les lettres, je souhaite intégrer votre établissement.
+Ma passion pour les lettres s’est révélée très tôt, notamment grâce à mes lectures (Zola, Montaigne, Rimbaud, Dumas, Raspail… ), qui m’ont conféré une large culture littéraire et historique. Amoureux de la philosophie, je suis également très proche des langues anciennes et contemporaines. Je possède un bon niveau d’Anglais et j’ai pu profiter de quatre années de cours de Latin. L’art de la rhétorique m’est particulièrement cher: Dès la Quatrième, je venais déguisé en classe pour réciter mes monologues, et je suis arrivé en demi-finale du concours d’éloquence de la DRAC en Terminale. En classes prépa, je saurais pouvoir compter sur de solides capacités autant à l’écrit qu’à l’oral, et surtout sur une bonne dose de volonté et de persévérance pour mener à leur terme deux années de travail intensif. Enfin, les années de scoutisme et de pension m’ont donné un sens aigu du travail de groupe et de la coopération, élément intrinsèque de la pédagogie des classes prépa. Mais c’est en rencontrant Madame Carraud au salon des classes prépa catholiques, le 25 Janvier, que m’est venu le désir d’aller frapper à votre porte. Je souhaite particulièrement être pris en internat, pour pouvoir suivre mes études sereinement. En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICP - Double Diplôme / Licence Humanités + Bachelor Géopolitique <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICP - Double Diplôme / Licence Humanités + Bachelor Géopolitique
+1500 caractères
+Attendus: travail régulier et important, autonomie, capacité de travail, régularité dans les résultats, assiduité, qualité du français écrit et oral, raisonnement, curiosité intellectuelle.
+Cette double formation a l’ambition d’aider les étudiants à réfléchir dans un monde complexe et à maîtriser les techniques d'analyse et de synthèse, d'expression écrite et orale. Possibilité de se déplacer à l’étranger.
+IMPORTANT: 1. Résultats scolaires, 2. Méthodes de travail. 3. Savoir être
+Importance de l’Anglais
+Madame, Monsieur,
+Élève depuis 9 ans en internat, je souhaite intégrer votre formation.
+Je profite d’une grande curiosité intellectuelle. Mon goût pour l’Histoire a toujours été très vif, pendant toutes mes années de scolarité. Il a été étayé par des lectures (Druon, Raspail, Aron, Petitfils…) qui m’ont conféré une bonne connaissance historique. De plus, je m’intéresse de près aux grandes questions politiques et géopolitiques, ce qui a motivé mon choix de la spécialité HGGSP. Aimant les langues et tout particulièrement l’Anglais, je possède également des qualités littéraires, notamment à l’oral (Arrivée en demi-finale du concours d’éloquence de la DRAC en Terminale) et j’apprécie les travaux de rédaction et d’expression. Ces éléments m’ont poussés à postuler dans cette formation, qui permet des débouchés très enthousiasmants. La rencontre lors du salon des classes prépa catholiques, ce 25 Janvier, avec Madame de Chabot-Tramecourt a également motivé ce choix. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, la charge de travail exigée par la licence et le bachelor ne m’effraie pas, étant habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICP - Double licence Histoire-Sciences Politiques <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICP - Double licence Histoire-Sciences Politiques
+1500 caractères
+Madame, Monsieur,
+élève depuis 9 ans en internat, je souhaite intégrer votre formation.
+Je profite d’une grande curiosité intellectuelle. Mon goût pour l’Histoire a toujours été très vif, pendant toutes mes années de scolarité. Il a été étayé par des lectures (Druon, Raspail, Aron, Petitfils…) qui m’ont conféré une bonne connaissance historique. De plus, je m’intéresse de près aux grandes questions politiques et géopolitiques, ce qui a motivé mon choix de la spécialité HGGSP. Aimant les langues et tout particulièrement l’Anglais, je possède également des qualités littéraires, notamment à l’oral (Arrivée en demi-finale du concours d’éloquence de la DRAC en Terminale) et j’apprécie les travaux de rédaction et d’expression. Ces éléments m’ont poussés à postuler dans cette formation, qui permet des débouchés très enthousiasmants. La réputation de l’ICP et la visite de ses bâtiments pendant le salon des classes prépa catholiques m’ont encouragé dans ce choix. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, la charge de travail exigée par la licence et le bachelor ne m’effraie pas, étant habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Paris 1 Panthéon Sorbonne - Double Licence Histoire-Sciences Politiques <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Paris 1 Panthéon Sorbonne - Double Licence Histoire-Sciences Politiques
+1500 caractères
+Madame, Monsieur,
+élève depuis 9 ans en internat, je souhaite intégrer votre formation.
+Je profite d’une grande curiosité intellectuelle. Mon goût pour l’Histoire a toujours été très vif, pendant toutes mes années de scolarité. Il a été étayé par des lectures (Druon, Raspail, Aron, Petitfils…) qui m’ont conféré une bonne connaissance historique. De plus, je m’intéresse de près aux grandes questions politiques et géopolitiques, ce qui a motivé mon choix de la spécialité HGGSP. Aimant les langues et tout particulièrement l’Anglais, je possède également des qualités littéraires, notamment à l’oral (Arrivée en demi-finale du concours d’éloquence de la DRAC en Terminale) et j’apprécie les travaux de rédaction et d’expression. Ces éléments m’ont poussés à postuler dans cette formation, qui permet des débouchés très enthousiasmants. L’excellente réputation de la Sorbonne m’a encouragé dans ce choix. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, la charge de travail exigée par la licence d’Histoire ne m’effraie pas, étant habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICES - Double licence Histoire-Sciences politiques <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICES - Double licence Histoire-Sciences politiques
+1500 caractères
+Madame, Monsieur,
+élève depuis 9 ans en internat, je souhaite intégrer votre formation.
+Je profite d’une grande curiosité intellectuelle, et mon goût pour l’Histoire a toujours été très vif pendant mes années de scolarité. Il a été étayé par des lectures (Druon, Raspail, Aron, Petitfils…) qui m’ont conféré une bonne connaissance historique. De plus, je m’intéresse de près aux grandes questions politiques et géopolitiques, ce qui a motivé mon choix de la spécialité HGGSP. Aimant les langues et tout particulièrement l’Anglais, je possède également des qualités littéraires, particulièrement à l’oral (Arrivée en demi-finale du concours d’éloquence de la DRAC en Terminale) et j’apprécie les travaux de rédaction et d’expression. Ces éléments académiques m’ont poussés à venir postuler l’ICES. Mais à vrai dire, c’est l’esprit qui anime votre école qui vous démarque des autres formations, un esprit de cohésion et de fraternité, une formation qui se veut intégrale. Cela me pousse particulièrement à aller frapper à votre porte. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, je suis habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICES - Licence Histoire <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICES - Licence Histoire
+1500 caractères
+Madame, Monsieur,
+Fort d’un parcours original, curieux et persévérant, je souhaite intégrer votre formation. Mon goût pour l’histoire a toujours été très vif, et a été étayé par mes lectures (Petitfils, Druon, Raspail, Aron…). Je m’intéresse aussi de près aux grandes questions politiques et géopolitiques, ce qui a motivé mon choix de la spécialité HGGSP. Aimant les langues et tout particulièrement l’Anglais, je possède également des qualités littéraires, particulièrement à l’oral (Arrivée en demi-finale d’un concours d’éloquence national en Terminale) et j’apprécie les travaux de rédaction et d’expression. Ces éléments académiques m’ont poussés à venir postuler l’ICES. Mais à vrai dire, c’est l’esprit qui anime votre école qui vous démarque des autres formations, un esprit de cohésion et de fraternité, une formation qui se veut intégrale. Cela me pousse particulièrement à aller frapper à votre porte. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, je suis habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICES - Licence Droit-Histoire <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICES - Licence Droit-Histoire
+1500 caractères
+Madame, Monsieur,
+Fort d’un parcours original, curieux et persévérant, je souhaite intégrer votre formation. Mon goût pour l’histoire a toujours été très vif, et a été étayé par mes lectures (Petitfils, Druon, Raspail, Aron…) et je m’intéresse aussi de près aux grandes questions politiques et géopolitiques. Le droit m’intéresse pour mon projet professionnel: devenir avocat, un métier passionnant, qui me donnerait l’occasion de mettre mes talents à la bonne place. Je possède en effet des qualités littéraires, particulièrement à l’oral (Arrivée en demi-finale d’un concours d’éloquence national en Terminale). Grâce à la logique et à la philosophie je sais aller au fond des choses, décortiquer un texte, l’analyser sous tous ses aspects. Mais le droit me donnera également une formation à la rigueur intellectuelle et un outil très utile dans notre société moderne. À vrai dire, c’est l’esprit qui anime votre école qui vous démarque des autres formations, un esprit de cohésion et de fraternité, une formation qui se veut intégrale. Cela me pousse particulièrement à aller frapper à votre porte. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Assas - Licence de Droit <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Assas - Licence de Droit
+1500 caractères
+Madame, Monsieur,
+Fort d’un parcours original, curieux et persévérant, je souhaite intégrer votre licence de droit l’année prochaine. Le droit m’intéresse tout d’abord pour mon projet professionnel: devenir avocat, un métier passionnant, qui me donnerait l’occasion de mettre mes talents à la bonne place. En effet, j’apprécie particulièrement le domaine de l’art oratoire (Arrivée en demi-finale d’un concours d’éloquence national en Terminale), le théâtre et la prise de parole en public. Je suis bien conscient que ce métier exige aussi un travail de profondeur, où la connaissance du droit et l’analyse des différents cas est primordiale. Grâce aux cours de logique en première et de philosophie en terminale, je sais aller au fond des choses, décortiquer un texte, l’analyser sous tous ses aspects. Mais le droit me donnera également une formation à la rigueur intellectuelle et un outil très utile dans notre société moderne. Ainsi, je souhaite tout spécialement intégrer la licence de droit à Assas, très réputée pour son excellence académique. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, je suis habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>IPC - Double licence Philosophie &amp; (Sciences Politiques ou Droit )</span>
+              <span class="accordion-icon" style="opacity:0.3">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p class="no-letter-msg">Aucune lettre de motivation disponible pour ce voeu.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICP - Double Diplôme / Licence Humanités + Bachelor Géopolitique  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICP - Double Diplôme / Licence Humanités + Bachelor Géopolitique
+1500 caractères
+Attendus: travail régulier et important, autonomie, capacité de travail, régularité dans les résultats, assiduité, qualité du français écrit et oral, raisonnement, curiosité intellectuelle.
+Cette double formation a l’ambition d’aider les étudiants à réfléchir dans un monde complexe et à maîtriser les techniques d'analyse et de synthèse, d'expression écrite et orale. Possibilité de se déplacer à l’étranger.
+IMPORTANT: 1. Résultats scolaires, 2. Méthodes de travail. 3. Savoir être
+Importance de l’Anglais
+Madame, Monsieur,
+Élève depuis 9 ans en internat, je souhaite intégrer votre formation.
+Je profite d’une grande curiosité intellectuelle. Mon goût pour l’Histoire a toujours été très vif, pendant toutes mes années de scolarité. Il a été étayé par des lectures (Druon, Raspail, Aron, Petitfils…) qui m’ont conféré une bonne connaissance historique. De plus, je m’intéresse de près aux grandes questions politiques et géopolitiques, ce qui a motivé mon choix de la spécialité HGGSP. Aimant les langues et tout particulièrement l’Anglais, je possède également des qualités littéraires, notamment à l’oral (Arrivée en demi-finale du concours d’éloquence de la DRAC en Terminale) et j’apprécie les travaux de rédaction et d’expression. Ces éléments m’ont poussés à postuler dans cette formation, qui permet des débouchés très enthousiasmants. La rencontre lors du salon des classes prépa catholiques, ce 25 Janvier, avec Madame de Chabot-Tramecourt a également motivé ce choix. Après 9 années d’internat, je sais pouvoir compter sur de solides méthodes de travail et sur une très bonne autonomie. Ainsi, la charge de travail exigée par la licence et le bachelor ne m’effraie pas, étant habitué à des contraintes de temps et de qualité (Dans le cadre de ma CHAM, je suis des études normales tout en faisant 2 heures de musique par jour). En définitive, je pense posséder les qualités nécessaires pour intégrer votre établissement, et souhaite de tout cœur en faire partie dès l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>IPC - Double licence Philosophie & (Sciences Politiques ou Droit ) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">IPC - Double licence Philosophie & (Sciences Politiques ou Droit )
+1500 caractères
+désir de poser des bases solides pour ma vie, comme le socle d’une statue; et de continuer l’œuvre de formation humaine que l’Académie a commencée;
+Désir de continuer la Philosophie après la Terminale, de la manière dont je l’ai toujours appréciée.
+Conscience que l’avenir demande des Hommes structurés, des Hommes de conviction;
+Désir d’étudier la science politique sous le regard de la Philo, et de m’orienter vers les métiers de la politique après mes études.
+C’est pour cela que je demande la double licence Philo-Science po,
+Je suis conscient de la charge de travail et de l’état d’esprit dans lequel les étudiants du double cursus sont, puisque ma grande sœur fait la double licence philo-science-po.
+J’ai pu échanger avec d’autres élèves de l’IPC à l’occasion du salon des métiers de l’Académie, 3 professeurs de l’Académie viennent de l’IPC, Monsieur Galhac est venu nous donner une conférence qui nous a passionné.
+Madame, Monsieur,
+L'IPC est mon premier choix parmi tous mes vœux. Je souhaite profondément intégrer cette école tout d’abord pour continuer de faire de la Philosophie telle que je l’aime et telle que je l’ai toujours connue, à l’Académie Musicale de Liesse avec monsieur Marguet. Je souhaite aussi intégrer l’IPC pour poser des bases solides pour ma réflexion aussi bien que pour ma vie. “Mieux vaut une tête bien faite qu’une tête bien pleine”, disait Montaigne. Je suis conscient que l’avenir demande plus que jamais des Hommes qui sachent penser par eux-mêmes. Mais aussi, je suis désireux de poursuivre la formation humaine que j’ai eu la chance de recevoir dans mes anciens établissements, à une période clé de la vie. Enfin, je souhaite étudier les sciences politiques sous le regard de la philosophie, afin de m’orienter éventuellement par la suite vers les métiers de la politique; ainsi je demande la possibilité de suivre le double cursus philosophie-sciences politiques. Après 9 années de pension, je sais pouvoir suivre la lourde charge de travail et les horaires contraignants de cette formation, qui m’est d’ailleurs familière car ma sœur Agnès y entre en L3. Enfin, je connais bien l’établissement et sa pédagogie, ayant pu rencontrer aussi bien des
+Hypacéens
+lors d’un salon des métiers, ayant échangé avec Monsieur Galhac et Monsieur Brochier et ayant fait une journée d’immersion en mars. J’espère de tout cœur pouvoir intégrer votre établissement l’année prochaine!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d’encadrement ou d’animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">En tant que deuxième d’une famille de sept enfants, j’ai appris depuis très tôt le sens de la vie en communauté. L’expérience du scoutisme, vécue pendant quatre années, m’a elle aussi permis de développer la fraternité et l’entraide en organisant parfois des activités dans la nature avec des groupes allant de quatre à trente personnes. Dès le CM1, les adultes de mon école m’ont fait confiance pour prendre la tête d’une équipe de six personnes dans des tâches du quotidien, ce qui m’a familiarisé une première fois avec l’art du management. Avec l’âge, mes responsabilités ont grandi. Ainsi en classe de première, j’ai été amené à prendre la tête d’une équipe de 10 personnes mêlant des élèves allant du CM1 à la terminale. Cette diversité dans les âges m’a fait travailler la douceur et la pédagogie, pour m’adapter à chacun des membres de l’équipe. Enfin en Terminale, j’ai été reconduit dans mes fonctions, en assumant cette fois la gestion de trente élèves de tous âges, avec l’aide de trois garçons plus âgés. Ensemble, nous avons monté pendant l’année des projets enthousiasmants: pièce de théâtre, dîner animé pour une centaine de personnes, Sketchs, jeux dans la nature… Cette responsabilité, exigeante et belle, m'a également appris à coopérer avec les adultes et le directeur de l'école pour le bien commun.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Durant mes classes de primaire, j'ai été amené avec ma classe à participer à des opérations de ramassages de déchets en bord de route, avec "Nettoyons la Nature", une initiative sponsorisée par Leclerc. Tous les mois d'Août depuis cinq ans, je fais du bénévolat pour l'association Saint Vincent de Paul. Notre mission est de distribuer des colis de nourriture à des personnes en situation de précarité, deux fois par semaine. Cela m'a sensibilisé au combat contre la détresse Humaine, à l'importance de la fraternité et du service des plus pauvres. Toujours au sein de cette association, j'ai été amené à servir à maintes reprises des déjeuners caritatifs d'une centaine de couverts. En troisième, j’ai été élu délégué de ma classe, à une période difficile de la vie. Cette mission m’a sensibilisé aux difficultés liées à l’adolescence et à exigée de moi que je gère en moyenne 4 rassemblements par jour, pour faire des trajets entre les différents locaux de mon école. En terminale, dans le cadre du concours d’éloquence de la DRAC, j’ai pu participer en tant que porte drapeau au ravivage de la flamme du soldat inconnu.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">En lien avec un journaliste professionnel, j'ai eu l'occasion de couvrir un festival de plusieurs centaines de personnes, se déroulant sur un week-end entier. Cela m'a permis d'apprendre les rudiments du métier de journaliste: interviews, photographies, suivi des objectifs de l'article, synthèse... J'ai ainsi pu travailler en collaboration avec des journalistes de métier et des jeunes de mon âge, pour paraître finalement dans un journal ayant une large audience en France. Durant ma scolarité, j'ai été responsable de l'arrière cuisine de l'école, secrétaire du lycée et responsable des uniformes. En classe de première, j'ai eu la responsabilité de l'intendance d'un festival de musique, organisé par mon école. Dans ce cadre, il m'a fallu fournir trois repas à environ 500 personnes, en gérant une équipe de service et de cuisine. Cette expérience m'a demandé de sortir de ma zone de confort en me faisant d'anticiper l'événement de plusieurs mois, et en ayant un lien permanent avec les adultes. Je pratique la musique de manière semi-professionnelle depuis 5 ans, ce qui m'a permis de chanter en moyenne une trentaine de concerts par an, allant jusqu'à faire des solos devant des assemblées de 500 à 700 personnes. Cela m'a permis d'acquérir plusieurs qualités, comme la confiance en moi, la facilité de prise de parole en public et le professionnalisme. Étant aussi clarinettiste en autodidacte, j'ai pu être incorporé à un orchestre professionnel après seulement deux ans de pratique.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde (pratiques sportives et culturelles, parcours spécifiques)</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Au sein de mon école, j’ai pû pratiquer la musique à haute intensité, avec environ 2 heures de musique par jour. Cela m’a ouvert à la beauté et à la profondeur de la musique; tant classique avec la pratique du piano, de l’orgue puis de la clarinette, que actuelle, avec quelques rudiments de batterie. J’apprécie particulièrement la diversité que l’on peut trouver dans la musique, et que j’ai pu éprouver dans mon école. Étant assez sportif avec un goût du dépassement de soi, je fais aussi bien de la course que du tennis avec mon père. De plus, j’ai eu la chance de faire du rugby, du foot, du badminton et de la natation avec mon école, ce qui m’a donné des rudiments dans de nombreux sports. Enfin, mon envie de monter des projets personnels m’a amenée à faire, avec mes propres moyens, du cidre avec les pommes de mes grands parents; à construire une petite maison dans les bois avec mes cousins; à passer un concours d’éloquence national; à monter un potager sur le toit de ma maison… Grâce à mon goût prononcé pour le théâtre, j’ai pu aussi bien écrire des animations et de courtes pièces de théâtre que jouer sur scène pour animer des dîners-spectacles, une tradition de noël de mon école. J’ai également participé à l’enregistrement d’une émission radiodiffusée pour RCF Sarthe.Scoutisme: J’ai été dans le mouvement scout de ma sixième à ma troisième; j’ai été CP sur une fin d’année: Week-end et camp d’été.Famille: Je suis le deuxième d’une fratrie de 7 enfants; je m’occupe d’un potager d’une dizaine de mètres carrés depuis quelques années; , je lis plutôt beaucoup, je suis en pension depuis le CM1,projets: j’ai fait à ma propre initiative et par mes propres moyens du cidre, avec les pommes de mes grands parents; j’ai construit une petite maison dans les bois avec mes cousins; je suis venu déguisé pour toutes mes récitations de poésie en quatrième; je prépare le concours d’éloquence de la DRAC.Académie: J’ai été responsable:du café et du Lait pendant deux ans,de l’arrière cuisine pendant un an,des uniformes pendant deux ans,j’ai été chef d’équipe pendant un an,Capitaine pendant un an,Secrétaire général du lycée pendant un an,Responsable de la nourriture réservée pour les 10 ans de l’Académie,j’ai été responsable de la cuisine pendant notre auberge sur le Vikings, de l’animation du dîner pendant celle sur les Mousquetaires,j’ai monté un son et lumière et une saint Jean Bosco avec monsieur Châtillon.Musique:j’ai fais plusieurs solos en concert ou en vêpres devant un public allant jusqu’à plusieurs centaines de personnes,j’ai commencé la Clarinette en autodidacte, et j’ai pu en jouer un an après au sein d’un orchestre professionnel pendant un de nos concerts, et j’ai pu en jouer en solo pour une entrée de vêpres et pendant un concert de l’Académie.J’ai acheté un accordéon d’occasion, je l’ai réparé et ai appris seul à en jouer,J’ai suivi des cours d’orgue pendant 3 ans, des cours de piano pendant 2 ans.j’ai monté une œuvre difficile avec un petit groupe en dehors des temps scolaires, nous l’avons filmée et enregistrée, permettant de la publier sur Youtube.je fais en moyenne 2 heures de musique par jours.Associatif:J’apporte mon aide comme bénévole tous les étés depuis 4 ans au sein de l’association “Août secours alimentaire”, se chargeant de distribuer des colis de nourriture aux plus pauvres.J’ai servi plusieurs repas d’une centaine de couverts de l’association saint-Vincent de Paul, en tant que bénévole.Sport: je cours régulièrement avec mon père, j’ai suivi quatre années de cours de tennis, j’ai pratiqué divers sports au sein de mon école (rugby, badminton, football, course, ultimate… ).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

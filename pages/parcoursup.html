@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Base Parcoursup - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../assets/images/logo-aml.png">
+
+  <style>
+    /* ===== Modal Overlay ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    /* ===== Modal Panel ===== */
+    .modal-panel {
+      background: #FFFFFF;
+      border-radius: 16px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: modalFadeIn 0.25s ease;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Modal Close Button ===== */
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: #F7F8FA;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #152D5B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      line-height: 1;
+    }
+    .modal-close-btn:hover {
+      background: #E8EBF0;
+      transform: scale(1.1);
+    }
+
+    /* ===== Modal Title & Info ===== */
+    .modal-panel h2 {
+      color: #152D5B;
+      margin-bottom: 8px;
+      padding-right: 48px;
+      font-size: 1.5rem;
+    }
+    .modal-subtitle {
+      color: #8C94A3;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    /* ===== Modal Accordion (independent from page accordions) ===== */
+    .modal-accordion-item {
+      border: 1px solid #E8EBF0;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .modal-accordion-item:hover {
+      border-color: #D4A843;
+    }
+    .modal-accordion-header {
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #152D5B;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      transition: background 0.2s ease;
+    }
+    .modal-accordion-header:hover {
+      background: #F7F8FA;
+    }
+    .modal-accordion-arrow {
+      transition: transform 0.3s ease;
+      color: #D4A843;
+      flex-shrink: 0;
+      margin-left: 12px;
+      font-size: 0.8rem;
+    }
+    .modal-accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modal-accordion-item.open .modal-accordion-body {
+      max-height: 8000px;
+    }
+    .modal-accordion-item.open .modal-accordion-arrow {
+      transform: rotate(90deg);
+    }
+    .modal-accordion-content {
+      padding: 16px 18px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #4A5568;
+      white-space: pre-wrap;
+      border-top: 1px solid #E8EBF0;
+      word-wrap: break-word;
+    }
+
+    /* ===== No Letters Message ===== */
+    .modal-no-letters {
+      color: #8C94A3;
+      font-style: italic;
+      padding: 20px 0;
+    }
+
+    /* ===== Search Bar ===== */
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      border: 2px solid var(--gray-light);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--blue-primary);
+      background: var(--white);
+      transition: var(--transition);
+      outline: none;
+      box-sizing: border-box;
+    }
+    .search-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+    }
+    .search-input::placeholder {
+      color: var(--gray);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+      pointer-events: none;
+    }
+    .search-results-count {
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+    .student-card.hidden {
+      display: none;
+    }
+    .promo-section.hidden {
+      display: none;
+    }
+
+    /* ===== Student Card with Letters ===== */
+    .student-card {
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .student-card-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+    }
+    .student-card-name {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 6px;
+    }
+    .student-firstname {
+      color: var(--gray-dark);
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+    .student-lastname {
+      color: var(--blue-primary);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .student-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .letter-badge-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(212, 168, 67, 0.12);
+      color: #D4A843;
+      border-radius: 12px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .profile-link-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      color: #8C94A3;
+      transition: color 0.2s ease;
+      flex-shrink: 0;
+    }
+    .student-card:hover .profile-link-icon {
+      color: #D4A843;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <img src="../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Académie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="guide-etranger.html">Études à l'Étranger</a></li>
+        <li><a href="entretiens.html">Entretiens</a></li>
+        <li><a href="parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="hggsp.html">HGGSP</a></li>
+        <li><a href="maths.html">Maths</a></li>
+        <li><a href="grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span>/</span>
+        <span>Data Base Parcoursup</span>
+      </div>
+      <h1>Data Base Parcoursup</h1>
+      <p>Retrouve les lettres de motivation et les profils Parcoursup des académiciens, classés par promotion.</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+
+      <!-- Callout -->
+      <div class="callout reveal">
+        <p>Cette base de données regroupe les lettres de motivation rédigées par les élèves de Terminale ainsi que les éléments importants de leurs dossiers Parcoursup au fil des années. Elle a pour but d'aider les futurs bacheliers à s'inspirer et à mieux préparer leurs candidatures.</p>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container reveal">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="studentSearch" placeholder="Rechercher un élève ou une formation...">
+        <div class="search-results-count" id="searchResultsCount"></div>
+      </div>
+
+      <!-- Promotions -->
+
+      <!-- Promotion 8 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 8 / BAC 2025</h3>
+          <span class="badge">12 Bacheliers</span>
+        </div>
+        <div class="student-grid">
+          <div class="student-card" data-student="Alexis BEXON" data-firstname="Alexis" data-lastname="BEXON"></div>
+          <div class="student-card" data-student="Pierre COUTURIER" data-firstname="Pierre" data-lastname="COUTURIER"></div>
+          <div class="student-card" data-student="Maxence DE BODMAN" data-firstname="Maxence" data-lastname="DE BODMAN"></div>
+          <div class="student-card" data-student="François DE LABRIOLLE" data-firstname="François" data-lastname="DE LABRIOLLE"></div>
+          <div class="student-card" data-student="Beaudoin DE VILLERS" data-firstname="Beaudoin" data-lastname="DE VILLERS"></div>
+          <div class="student-card" data-student="Christian DU PLESSIS" data-firstname="Christian" data-lastname="DU PLESSIS"></div>
+          <div class="student-card" data-student="Théodore HENRY" data-firstname="Théodore" data-lastname="HENRY"></div>
+          <div class="student-card" data-student="Henri KOCH" data-firstname="Henri" data-lastname="KOCH"></div>
+          <div class="student-card" data-student="Yves LE GOFF" data-firstname="Yves" data-lastname="LE GOFF"></div>
+          <div class="student-card" data-student="Aymar LESUEUR" data-firstname="Aymar" data-lastname="LESUEUR"></div>
+          <div class="student-card" data-student="Damien SOLEIL" data-firstname="Damien" data-lastname="SOLEIL"></div>
+          <div class="student-card" data-student="Jean STÉRIN" data-firstname="Jean" data-lastname="STÉRIN"></div>
+        </div>
+      </div>
+
+      <!-- Promotion 9 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 9 / BAC 2026</h3>
+          <span class="badge">8 Bacheliers</span>
+        </div>
+        <div class="student-grid">
+          <div class="student-card" data-student="Samuel BÉTHOUART" data-firstname="Samuel" data-lastname="BÉTHOUART"></div>
+          <div class="student-card" data-student="Gabriel BIENASSIS" data-firstname="Gabriel" data-lastname="BIENASSIS"></div>
+          <div class="student-card" data-student="Luc BOURGEOIS" data-firstname="Luc" data-lastname="BOURGEOIS"></div>
+          <div class="student-card" data-student="Noé DAMAY" data-firstname="Noé" data-lastname="DAMAY"></div>
+          <div class="student-card" data-student="Théophile DELBAERE" data-firstname="Théophile" data-lastname="DELBAERE"></div>
+          <div class="student-card" data-student="Raphaël LEGRAIN" data-firstname="Raphaël" data-lastname="LEGRAIN"></div>
+          <div class="student-card" data-student="Gaëtan MASALA" data-firstname="Gaëtan" data-lastname="MASALA"></div>
+          <div class="student-card" data-student="Raul MESQUITA DA CUNHA" data-firstname="Raul" data-lastname="MESQUITA DA CUNHA"></div>
+        </div>
+      </div>
+
+      <!-- Promotion 10 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 10 / BAC 2027</h3>
+          <span class="badge">14 Bacheliers</span>
+        </div>
+        <div class="student-grid">
+          <div class="student-card" data-student="Charles AUBRY" data-firstname="Charles" data-lastname="AUBRY"></div>
+          <div class="student-card" data-student="Joseph BROSSOLET" data-firstname="Joseph" data-lastname="BROSSOLET"></div>
+          <div class="student-card" data-student="Clément CELTON" data-firstname="Clément" data-lastname="CELTON"></div>
+          <div class="student-card" data-student="Gabriel DE LA CROIX" data-firstname="Gabriel" data-lastname="DE LA CROIX"></div>
+          <div class="student-card" data-student="Armand DU BOURG" data-firstname="Armand" data-lastname="DU BOURG"></div>
+          <div class="student-card" data-student="Augustin ESCOUTE" data-firstname="Augustin" data-lastname="ESCOUTE"></div>
+          <div class="student-card" data-student="Mayeul HUBERT" data-firstname="Mayeul" data-lastname="HUBERT"></div>
+          <div class="student-card" data-student="Vivien NICOLARDOT" data-firstname="Vivien" data-lastname="NICOLARDOT"></div>
+          <div class="student-card" data-student="Bénigne PERRET DU CRAY" data-firstname="Bénigne" data-lastname="PERRET DU CRAY"></div>
+          <div class="student-card" data-student="Pier-Marie SAUER" data-firstname="Pier-Marie" data-lastname="SAUER"></div>
+          <div class="student-card" data-student="Pierre SIMONNEAU" data-firstname="Pierre" data-lastname="SIMONNEAU"></div>
+          <div class="student-card" data-student="Augustin TATIBOUËT" data-firstname="Augustin" data-lastname="TATIBOUËT"></div>
+          <div class="student-card" data-student="Benoît TESSIER" data-firstname="Benoît" data-lastname="TESSIER"></div>
+          <div class="student-card" data-student="Tancrède de VIGNERAL" data-firstname="Tancrède" data-lastname="de VIGNERAL"></div>
+        </div>
+      </div>
+
+      <!-- Promotion 11 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 11 / BAC 2028</h3>
+          <span class="badge">16 Bacheliers</span>
+        </div>
+        <div class="student-grid">
+          <div class="student-card" data-student="François BARRÉ" data-firstname="François" data-lastname="BARRÉ"></div>
+          <div class="student-card" data-student="Vianney BOÜAN" data-firstname="Vianney" data-lastname="BOÜAN"></div>
+          <div class="student-card" data-student="Aloys DRANSART" data-firstname="Aloys" data-lastname="DRANSART"></div>
+          <div class="student-card" data-student="Ghislain DUBIGEON" data-firstname="Ghislain" data-lastname="DUBIGEON"></div>
+          <div class="student-card" data-student="Mayeul DUFOURCQ" data-firstname="Mayeul" data-lastname="DUFOURCQ"></div>
+          <div class="student-card" data-student="Augustin EON" data-firstname="Augustin" data-lastname="EON"></div>
+          <div class="student-card" data-student="Benoît EON-DUVAL" data-firstname="Benoît" data-lastname="EON-DUVAL"></div>
+          <div class="student-card" data-student="Gabriel GLIKMANAS" data-firstname="Gabriel" data-lastname="GLIKMANAS"></div>
+          <div class="student-card" data-student="Célestin HENRY" data-firstname="Célestin" data-lastname="HENRY"></div>
+          <div class="student-card" data-student="Martin LAUNAY" data-firstname="Martin" data-lastname="LAUNAY"></div>
+          <div class="student-card" data-student="Charles-Eliane LE FORESTIER" data-firstname="Charles-Eliane" data-lastname="LE FORESTIER"></div>
+          <div class="student-card" data-student="Loyola LECOURTOIS" data-firstname="Loyola" data-lastname="LECOURTOIS"></div>
+          <div class="student-card" data-student="Augustin MONGREVILLE" data-firstname="Augustin" data-lastname="MONGREVILLE"></div>
+          <div class="student-card" data-student="Ambroise NICOLAS" data-firstname="Ambroise" data-lastname="NICOLAS"></div>
+          <div class="student-card" data-student="Auguste RAVOUX" data-firstname="Auguste" data-lastname="RAVOUX"></div>
+          <div class="student-card" data-student="Valens de SAINT-FERJEUX" data-firstname="Valens" data-lastname="de SAINT-FERJEUX"></div>
+        </div>
+      </div>
+
+      <!-- Useful Links Section -->
+      <div class="content-wrapper reveal">
+        <h2>Liens utiles - Classements</h2>
+        <ul>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Prépa B/L</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Prépa ECG</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Prépa A/L</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Prépa MP</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Prépa PC</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement BBA</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Bachelor</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Fac de Médecine</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Fac de Droit</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Fac de Communication</a></li>
+          <li><a href="#" style="color: var(--blue-primary); font-weight: 500;">Classement Prépas Militaire</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="studentModal">
+    <div class="modal-panel" id="modalPanel">
+      <button class="modal-close-btn" id="modalClose" aria-label="Fermer">&times;</button>
+      <h2 id="modalTitle"></h2>
+      <p class="modal-subtitle" id="modalSubtitle"></p>
+      <div id="modalLetters"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les élèves de Terminale de l'Académie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="guide-etranger.html">Études à l'Étranger</a></li>
+            <li><a href="entretiens.html">Entretiens</a></li>
+            <li><a href="parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Révisions</h4>
+          <ul class="footer-links">
+            <li><a href="hggsp.html">BAC HGGSP</a></li>
+            <li><a href="maths.html">BAC Maths</a></li>
+            <li><a href="grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Académie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Créé avec soin par Aymar Lesueur pour l'Académie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../student_data.js"></script>
+
+  <script>
+    (function() {
+      var studentData = (typeof STUDENT_DATA !== 'undefined') ? STUDENT_DATA : null;
+
+      var overlay = document.getElementById('studentModal');
+      var modalPanel = document.getElementById('modalPanel');
+      var modalTitle = document.getElementById('modalTitle');
+      var modalSubtitle = document.getElementById('modalSubtitle');
+      var modalLetters = document.getElementById('modalLetters');
+      var modalClose = document.getElementById('modalClose');
+
+      // Slugify a student name for profile page URL
+      function slugify(name) {
+        return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase().trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+
+      // Helper: find student data by matching name (handles accent differences)
+      function findStudentData(name) {
+        if (!studentData) return null;
+        if (studentData[name]) return studentData[name];
+        var normalizedName = name.normalize('NFC');
+        for (var key in studentData) {
+          if (key.normalize('NFC') === normalizedName) return studentData[key];
+        }
+        var lowerName = name.toLowerCase();
+        for (var key in studentData) {
+          if (key.toLowerCase() === lowerName) return studentData[key];
+        }
+        return null;
+      }
+
+      function getLetterCount(data) {
+        if (!data || !data.letters) return 0;
+        return Object.keys(data.letters).length;
+      }
+
+      function initStudentCards() {
+        var cards = document.querySelectorAll('.student-card[data-student]');
+        cards.forEach(function(card) {
+          var studentName = card.getAttribute('data-student');
+          var firstName = card.getAttribute('data-firstname') || '';
+          var lastName = card.getAttribute('data-lastname') || '';
+          var data = findStudentData(studentName);
+          var letterCount = data ? getLetterCount(data) : 0;
+          var slug = slugify(studentName);
+          var profileUrl = 'students/' + slug + '.html';
+
+          card.innerHTML = '';
+
+          var inner = document.createElement('div');
+          inner.className = 'student-card-inner';
+
+          var nameDiv = document.createElement('span');
+          nameDiv.className = 'student-card-name';
+
+          var firstSpan = document.createElement('span');
+          firstSpan.className = 'student-firstname';
+          firstSpan.textContent = firstName;
+          nameDiv.appendChild(firstSpan);
+
+          var lastSpan = document.createElement('span');
+          lastSpan.className = 'student-lastname';
+          lastSpan.textContent = lastName;
+          nameDiv.appendChild(lastSpan);
+
+          inner.appendChild(nameDiv);
+
+          var actions = document.createElement('span');
+          actions.className = 'student-card-actions';
+
+          if (letterCount > 0) {
+            card.classList.add('has-letters');
+            var badge = document.createElement('span');
+            badge.className = 'letter-badge-text';
+            badge.textContent = letterCount + ' lettre' + (letterCount > 1 ? 's' : '');
+            badge.title = letterCount + ' lettre' + (letterCount > 1 ? 's' : '') + ' de motivation';
+            actions.appendChild(badge);
+          }
+
+          // Profile link arrow icon
+          var arrow = document.createElement('span');
+          arrow.className = 'profile-link-icon';
+          arrow.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>';
+          arrow.title = 'Voir le profil';
+          actions.appendChild(arrow);
+
+          inner.appendChild(actions);
+          card.appendChild(inner);
+
+          // Click navigates to profile page
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+              window.open(profileUrl, '_blank');
+            } else {
+              window.location.href = profileUrl;
+            }
+          });
+        });
+      }
+
+      function openModal(name, data) {
+        modalTitle.textContent = name;
+
+        var letterKeys = data.letters ? Object.keys(data.letters) : [];
+        var count = letterKeys.length;
+
+        if (count > 0) {
+          modalSubtitle.textContent = count + ' lettre' + (count > 1 ? 's' : '') + ' de motivation disponible' + (count > 1 ? 's' : '');
+        } else {
+          modalSubtitle.textContent = '';
+        }
+
+        var html = '';
+
+        if (count > 0) {
+          letterKeys.forEach(function(key) {
+            var content = data.letters[key];
+            html += '<div class="modal-accordion-item">';
+            html += '<button class="modal-accordion-header" type="button">';
+            html += '<span>' + escapeHtml(key) + '</span>';
+            html += '<span class="modal-accordion-arrow">&#9654;</span>';
+            html += '</button>';
+            html += '<div class="modal-accordion-body">';
+            html += '<div class="modal-accordion-content">' + escapeHtml(content) + '</div>';
+            html += '</div>';
+            html += '</div>';
+          });
+        } else {
+          html = '<p class="modal-no-letters">Aucune lettre de motivation disponible pour cet eleve.</p>';
+        }
+
+        modalLetters.innerHTML = html;
+
+        var headers = modalLetters.querySelectorAll('.modal-accordion-header');
+        headers.forEach(function(header) {
+          header.addEventListener('click', function() {
+            var item = this.parentElement;
+            var siblings = modalLetters.querySelectorAll('.modal-accordion-item.open');
+            siblings.forEach(function(sibling) {
+              if (sibling !== item) {
+                sibling.classList.remove('open');
+              }
+            });
+            item.classList.toggle('open');
+          });
+        });
+
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      modalClose.addEventListener('click', closeModal);
+
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+      });
+
+      // ===== Search Functionality =====
+      function initSearch() {
+        var searchInput = document.getElementById('studentSearch');
+        var resultsCount = document.getElementById('searchResultsCount');
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function() {
+          var query = this.value.trim().toLowerCase();
+          var cards = document.querySelectorAll('.student-card[data-student]');
+          var promoSections = document.querySelectorAll('.promo-section');
+          var totalVisible = 0;
+
+          if (!query) {
+            // Show everything
+            cards.forEach(function(card) { card.classList.remove('hidden'); });
+            promoSections.forEach(function(section) { section.classList.remove('hidden'); });
+            resultsCount.textContent = '';
+            return;
+          }
+
+          // Normalize query for accent-insensitive search
+          var normalizedQuery = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+          cards.forEach(function(card) {
+            var studentName = card.getAttribute('data-student') || '';
+            var normalizedName = studentName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            var nameMatch = normalizedName.indexOf(normalizedQuery) !== -1;
+
+            // Also search through letter content in STUDENT_DATA
+            var contentMatch = false;
+            if (!nameMatch) {
+              var data = findStudentData(studentName);
+              if (data && data.letters) {
+                var letterKeys = Object.keys(data.letters);
+                for (var i = 0; i < letterKeys.length; i++) {
+                  var key = letterKeys[i].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                  var content = data.letters[letterKeys[i]].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                  if (key.indexOf(normalizedQuery) !== -1 || content.indexOf(normalizedQuery) !== -1) {
+                    contentMatch = true;
+                    break;
+                  }
+                }
+              }
+            }
+
+            if (nameMatch || contentMatch) {
+              card.classList.remove('hidden');
+              totalVisible++;
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+
+          // Show/hide promo sections based on visible cards
+          promoSections.forEach(function(section) {
+            var visibleCards = section.querySelectorAll('.student-card:not(.hidden)');
+            if (visibleCards.length === 0) {
+              section.classList.add('hidden');
+            } else {
+              section.classList.remove('hidden');
+            }
+          });
+
+          resultsCount.textContent = totalVisible + ' résultat' + (totalVisible !== 1 ? 's' : '');
+        });
+      }
+
+      // Initialize cards and search on load
+      initStudentCards();
+      initSearch();
+    })();
+  </script>
+
+</body>
+</html>

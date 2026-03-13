@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAC Maths - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../assets/images/logo-aml.png">
+  <style>
+    /* Math content styling */
+    .math-block {
+      background: var(--off-white);
+      border: 1px solid var(--gray-light);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    .math-block .katex-display {
+      margin: 0.5rem 0;
+    }
+
+    .theorem-box {
+      background: linear-gradient(135deg, rgba(21, 45, 91, 0.03), rgba(212, 168, 67, 0.03));
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .theorem-box h4 {
+      color: var(--blue-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .theorem-box p, .theorem-box li {
+      color: var(--gray-dark);
+      line-height: 1.8;
+    }
+
+    .method-box {
+      background: rgba(21, 45, 91, 0.04);
+      border-left: 4px solid var(--blue-primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .method-box h4 {
+      color: var(--blue-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .method-box p {
+      color: var(--gray-dark);
+      line-height: 1.8;
+    }
+
+    .formula-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .formula-table th {
+      background: var(--blue-primary);
+      color: var(--white);
+      padding: 0.75rem 1rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .formula-table td {
+      padding: 0.75rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--gray-light);
+      vertical-align: middle;
+    }
+
+    .formula-table tr:nth-child(even) td {
+      background: var(--off-white);
+    }
+
+    .formula-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .section-subtitle {
+      color: var(--blue-primary);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.75rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 2px solid var(--gold);
+      display: inline-block;
+    }
+
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .two-col-grid {
+        grid-template-columns: 1fr;
+      }
+      .formula-table {
+        font-size: 0.85rem;
+      }
+      .formula-table td, .formula-table th {
+        padding: 0.5rem;
+      }
+      .math-block, .theorem-box, .method-box {
+        padding: 1rem;
+      }
+    }
+
+    .accordion-content ul {
+      list-style: disc;
+      padding-left: 1.5rem;
+    }
+
+    .accordion-content ul li {
+      margin-bottom: 0.4rem;
+      line-height: 1.8;
+      color: var(--gray-dark);
+    }
+
+    .accordion-content ol {
+      padding-left: 1.5rem;
+    }
+
+    .accordion-content ol li {
+      margin-bottom: 0.4rem;
+      line-height: 1.8;
+      color: var(--gray-dark);
+    }
+
+    .accordion-content .katex {
+      font-size: 1.05em;
+    }
+
+    .math-block .katex {
+      font-size: 1.15em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <img src="../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Académie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="guide-etranger.html">Études Étranger</a></li>
+        <li><a href="entretiens.html">Entretiens</a></li>
+        <li><a href="parcoursup.html">Parcoursup</a></li>
+        <li><a href="hggsp.html">HGGSP</a></li>
+        <li><a href="maths.html" class="active">Maths</a></li>
+        <li><a href="grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span>/</span>
+        <span>BAC Maths</span>
+      </div>
+      <h1>Parcours d'accompagnement pour performer au BAC de Maths</h1>
+      <p>Formules essentielles, méthodes classiques et annales corrigées pour viser l'excellence.</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper">
+
+        <!-- Callout Tips -->
+        <div class="callout callout-tip">
+          <p><strong>Conseils pour réussir :</strong></p>
+          <ul>
+            <li>Les notes du bac comptent pour Parcoursup donc il faut tout donner MAINTENANT</li>
+            <li>Mettre son téléphone loin pendant chaque séance de travail</li>
+            <li>Si vous ne vous sentez pas prêt : c'est normal (personne ne l'est)</li>
+            <li>Connaître toutes les formules essentielles + maîtriser les exercices classiques</li>
+            <li>Le bac de maths est très redondant : 2 annales et vous ne pourrez pas être surpris</li>
+            <li>Faire ne serait-ce que le quart de ce programme = au moins 15 !</li>
+          </ul>
+        </div>
+
+        <!-- Formulas Accordion -->
+        <h2>Formules et Méthodes Essentielles</h2>
+
+        <div class="accordion">
+
+          <!-- 1. Étude de fonction -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>1. Étude de fonction - Dérivées, Théorème des valeurs intermédiaires, Corollaire TVI</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+
+                <h3 class="section-subtitle">Identités remarquables</h3>
+                <div class="math-block">
+                  $$(a+b)^2 = a^2 + 2ab + b^2$$
+                  $$(a-b)^2 = a^2 - 2ab + b^2$$
+                  $$(a+b)(a-b) = a^2 - b^2$$
+                </div>
+
+                <h3 class="section-subtitle">Équation du second degré</h3>
+                <p>Soit l'équation \(az^2 + bz + c = 0\) et le discriminant \(\Delta = b^2 - 4ac\)</p>
+                <ul>
+                  <li>Si \(\Delta > 0\) alors 2 solutions réelles :
+                    <div class="math-block">
+                      $$z_1 = \frac{-b + \sqrt{\Delta}}{2a} \qquad z_2 = \frac{-b - \sqrt{\Delta}}{2a}$$
+                      $$z_1 z_2 = \frac{c}{a} \qquad z_1 + z_2 = \frac{-b}{a}$$
+                    </div>
+                  </li>
+                  <li>Si \(\Delta = 0\) alors 1 solution réelle :
+                    <div class="math-block">
+                      $$z_0 = \frac{-b}{2a}$$
+                    </div>
+                  </li>
+                </ul>
+
+                <h3 class="section-subtitle">Équation d'une tangente</h3>
+                <div class="math-block">
+                  $$T : y = f'(a)(x - a) + f(a)$$
+                </div>
+
+                <div class="theorem-box">
+                  <h4>Théorème des valeurs intermédiaires</h4>
+                  <p>Soit \(f\) une fonction continue sur un intervalle \([a\,;b]\) alors :</p>
+                  <p>Pour tout réel \(y\) compris entre \(f(a)\) et \(f(b)\), il existe au moins un réel \(c\) compris entre \(a\) et \(b\) tel que \(f(c) = y\).</p>
+                </div>
+
+                <div class="theorem-box">
+                  <h4>Corollaire du TVI</h4>
+                  <p>Soit \(f\) une fonction continue et strictement croissante (resp. strictement décroissante) sur l'intervalle \([a\,;b]\) alors :</p>
+                  <ul>
+                    <li>L'image de l'intervalle \([a\,;b]\) par \(f\) est l'intervalle \([f(a)\,;f(b)]\) (resp. \([f(b)\,;f(a)]\)).</li>
+                    <li>Pour tout \(y\) de l'intervalle \([f(a)\,;f(b)]\) (resp. \([f(b)\,;f(a)]\)), l'équation \(f(x) = y\) d'inconnue \(x\) possède une unique solution dans l'intervalle \([a\,;b]\).</li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Étude d'une suite -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>2. Étude d'une suite - Arithmétique, Géométrique, Sens de variation, Récurrence</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+
+                <h3 class="section-subtitle">Suites arithmétiques</h3>
+                <p>De raison \(r\) et premier terme \(u_0\) :</p>
+                <div class="math-block">
+                  $$u_{n+1} = u_n + r \qquad \text{ou} \qquad u_n = u_0 + nr$$
+                </div>
+                <p>Somme de \(n\) termes consécutifs :</p>
+                <div class="math-block">
+                  $$S = \text{nombre de termes} \times \frac{\text{1er terme} + \text{dernier}}{2}$$
+                </div>
+
+                <h3 class="section-subtitle">Suites géométriques</h3>
+                <p>De raison \(q\) et premier terme \(u_0\) :</p>
+                <div class="math-block">
+                  $$u_{n+1} = q \cdot u_n \qquad \text{ou} \qquad u_n = u_0 \, q^n$$
+                </div>
+                <p>Somme de \(n\) termes consécutifs :</p>
+                <div class="math-block">
+                  $$S = \text{1er terme} \times \frac{1 - q^{\text{nombre de termes}}}{1 - q} \quad \text{avec } q \neq 1$$
+                </div>
+                <p>En particulier :</p>
+                <div class="math-block">
+                  $$1 + x + x^2 + x^3 + \ldots + x^n = \frac{1 - x^{n+1}}{1 - x} \quad (x \neq 1)$$
+                </div>
+
+                <h3 class="section-subtitle">Sens de variation</h3>
+                <ul>
+                  <li>\((u_n)\) est croissante si \(u_n \leqslant u_{n+1}\) pour tout entier naturel \(n\), c'est-à-dire \(u_{n+1} - u_n \geqslant 0\)</li>
+                  <li>\((u_n)\) est décroissante si \(u_n \geqslant u_{n+1}\) pour tout entier naturel \(n\), c'est-à-dire \(u_{n+1} - u_n \leqslant 0\)</li>
+                </ul>
+
+                <h3 class="section-subtitle">Récurrence</h3>
+                <div class="method-box">
+                  <h4>Démontrer par récurrence (les deux étapes sont indispensables) :</h4>
+                  <ol>
+                    <li>On vérifie que \(\mathcal{P}_{n_0}\) est vraie (<strong>initialisation</strong>)</li>
+                    <li>On suppose que \(\mathcal{P}_n\) est vraie pour un entier quelconque \(n\) fixé, \(n \geqslant n_0\), et on montre alors que \(\mathcal{P}_{n+1}\) est vraie (<strong>hérédité</strong>)</li>
+                    <li>On conclut par le principe de récurrence que : pour tout \(n\) de \(\mathbb{N}\), \(n \geqslant n_0\), \(\mathcal{P}_n\) est vraie</li>
+                  </ol>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Limites à connaître -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>3. Limites à connaître - Théorèmes essentiels, Formules</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+
+                <div class="theorem-box">
+                  <h4>Théorème de comparaison</h4>
+                  <p>Soit \((u_n)\) et \((v_n)\) deux suites telles que \(u_n \leqslant v_n\) à partir d'un certain rang \(n_0\).</p>
+                  <ul>
+                    <li>Si \(\lim u_n = +\infty\) alors \(\lim v_n = +\infty\)</li>
+                    <li>Si \(\lim v_n = -\infty\) alors \(\lim u_n = -\infty\)</li>
+                  </ul>
+                </div>
+
+                <div class="theorem-box">
+                  <h4>Théorème des gendarmes</h4>
+                  <p>Soit \((u_n)\), \((v_n)\) et \((w_n)\) trois suites telles que \(u_n \leqslant v_n \leqslant w_n\) à partir d'un certain rang \(n_0\).</p>
+                  <p>Si \((u_n)\) et \((w_n)\) convergent vers une même limite \(\ell\), alors \((v_n)\) converge aussi vers \(\ell\).</p>
+                </div>
+
+                <h3 class="section-subtitle">Limites de référence</h3>
+                <div class="two-col-grid">
+                  <div class="math-block">
+                    $$\lim_{x \to +\infty} \ln x = +\infty$$
+                    $$\lim_{x \to +\infty} e^x = +\infty$$
+                    $$\lim_{x \to -\infty} e^x = 0$$
+                    $$\lim_{x \to +\infty} \frac{e^x}{x} = +\infty$$
+                    $$\lim_{x \to -\infty} x\,e^x = 0$$
+                    $$\lim_{x \to +\infty} \frac{\ln x}{x} = 0$$
+                    $$\lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$$
+                    $$\lim_{x \to +\infty} \frac{\ln x}{x^n} = 0$$
+                  </div>
+                  <div class="math-block">
+                    $$\lim_{x \to -\infty} x^n\,e^x = 0$$
+                    $$\lim_{x \to +\infty} x^n\,e^{-x} = 0$$
+                    $$\lim_{x \to 0} \ln x = -\infty$$
+                    $$\lim_{x \to 0} x \ln x = 0$$
+                    $$\lim_{x \to 0} \frac{\sin x}{x} = 1$$
+                    $$\lim_{x \to 0} \frac{1 - \cos x}{x} = 0$$
+                    $$\lim_{x \to 0} \frac{\ln(1+x)}{x} = 1$$
+                    $$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$$
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Dérivées classiques -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>4. Dérivées classiques</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <table class="formula-table">
+                  <thead>
+                    <tr>
+                      <th>\(f(x)\)</th>
+                      <th>\(f'(x)\)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>\(k\)</td><td>\(0\)</td></tr>
+                    <tr><td>\(\dfrac{1}{x}\)</td><td>\(\dfrac{-1}{x^2}\)</td></tr>
+                    <tr><td>\(\ln x\)</td><td>\(\dfrac{1}{x}\)</td></tr>
+                    <tr><td>\(\cos x\)</td><td>\(-\sin x\)</td></tr>
+                    <tr><td>\(x\)</td><td>\(1\)</td></tr>
+                    <tr><td>\(\dfrac{1}{x^n}\), \(n \in \mathbb{N}\)</td><td>\(\dfrac{-n}{x^{n+1}}\)</td></tr>
+                    <tr><td>\(e^x\)</td><td>\(e^x\)</td></tr>
+                    <tr><td>\(\sin x\)</td><td>\(\cos x\)</td></tr>
+                    <tr><td>\(x^n\)</td><td>\(nx^{n-1}\)</td></tr>
+                    <tr><td>\(\sqrt{x}\)</td><td>\(\dfrac{1}{2\sqrt{x}}\)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Opérations sur les dérivées -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>5. Opérations sur les dérivées</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="two-col-grid">
+                  <div class="math-block">
+                    $$(u + v)' = u' + v'$$
+                    $$(uv)' = u'v + uv'$$
+                    $$\left(\sqrt{u}\right)' = \frac{u'}{2\sqrt{u}}$$
+                    $$\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$$
+                    $$(e^u)' = u'\,e^u$$
+                  </div>
+                  <div class="math-block">
+                    $$(ku)' = ku'$$
+                    $$\left(\frac{1}{u}\right)' = \frac{-u'}{u^2}$$
+                    $$(u^n)' = nu'\,u^{n-1}$$
+                    $$(v \circ u)' = u' \cdot v' \circ u$$
+                    $$(\ln u)' = \frac{u'}{u}$$
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Primitives -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>6. Primitives</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+
+                <h3 class="section-subtitle">Fonctions de référence</h3>
+                <table class="formula-table">
+                  <thead>
+                    <tr>
+                      <th>Fonction \(f\)</th>
+                      <th>Primitive \(F\)</th>
+                      <th>Intervalle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>\(x^n\) &ensp; \((n \in \mathbb{Z} \setminus \{0,-1\})\)</td>
+                      <td>\(\dfrac{1}{n+1}\,x^{n+1}\)</td>
+                      <td>\(\mathbb{R}\) si \(n \geqslant 1\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\dfrac{1}{x}\)</td>
+                      <td>\(\ln(x)\)</td>
+                      <td>\(]0\,;+\infty[\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\dfrac{1}{x^2}\)</td>
+                      <td>\(-\dfrac{1}{x}\)</td>
+                      <td>\(\mathbb{R}^*\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\dfrac{1}{x^n}\) &ensp; \((n \geqslant 2)\)</td>
+                      <td>\(\dfrac{-1}{(n-1)\,x^{n-1}}\)</td>
+                      <td>\(]-\infty\,;0[\;\cup\;]0\,;+\infty[\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\dfrac{1}{\sqrt{x}}\)</td>
+                      <td>\(2\sqrt{x}\)</td>
+                      <td>\(]0\,;+\infty[\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(e^x\)</td>
+                      <td>\(e^x\)</td>
+                      <td>\(\mathbb{R}\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\cos x\)</td>
+                      <td>\(\sin x\)</td>
+                      <td>\(\mathbb{R}\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\sin x\)</td>
+                      <td>\(-\cos x\)</td>
+                      <td>\(\mathbb{R}\)</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h3 class="section-subtitle">Avec fonctions composées</h3>
+                <table class="formula-table">
+                  <thead>
+                    <tr>
+                      <th>Fonction \(f\)</th>
+                      <th>Primitive \(F\)</th>
+                      <th>Condition</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>\(u'\,u^n\) &ensp; \((n \in \mathbb{Z} \setminus \{0,-1\})\)</td>
+                      <td>\(\dfrac{1}{n+1}\,u^{n+1}\)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>\(\dfrac{u'}{\sqrt{u}}\)</td>
+                      <td>\(2\sqrt{u}\)</td>
+                      <td>\(u > 0\)</td>
+                    </tr>
+                    <tr>
+                      <td>\(\dfrac{u'}{u}\)</td>
+                      <td>\(\ln(u)\) si \(u > 0\), \(\ln(-u)\) si \(u < 0\)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>\(u'\,e^u\)</td>
+                      <td>\(e^u\)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>\(u'\sin u\)</td>
+                      <td>\(-\cos u\)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>\(u'\cos u\)</td>
+                      <td>\(\sin u\)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>\(x \mapsto u(ax+b)\)</td>
+                      <td>\(x \mapsto \dfrac{1}{a}\,U(ax+b)\)</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Probabilités -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>7. Probabilités</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+
+                <div class="math-block">
+                  $$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+                  $$P(\bar{A}) = 1 - P(A) \quad;\quad P(\Omega) = 1 \quad;\quad P(\varnothing) = 0$$
+                </div>
+
+                <h3 class="section-subtitle">En cas d'équiprobabilité</h3>
+                <div class="math-block">
+                  $$P(A) = \frac{\text{nombre d'éléments de } A}{\text{nombre d'éléments de } \Omega} = \frac{\text{nombre de cas favorables}}{\text{nombre de cas possibles}}$$
+                </div>
+
+                <h3 class="section-subtitle">Probabilité conditionnelle</h3>
+                <div class="math-block">
+                  $$P_A(B) = \frac{P(A \cap B)}{P(A)}$$
+                </div>
+
+                <h3 class="section-subtitle">Si A et B sont indépendants</h3>
+                <div class="math-block">
+                  $$P(A \cap B) = P(A) \times P(B)$$
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Géométrie dans l'espace et le plan -->
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>8. Géométrie dans l'espace et le plan</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+
+                <h3 class="section-subtitle">Généralités</h3>
+                <p>Coordonnées de \(\vec{AB}\) :</p>
+                <div class="math-block">
+                  $$\vec{AB}\begin{pmatrix} x_B - x_A \\ y_B - y_A \\ z_B - z_A \end{pmatrix}$$
+                </div>
+                <p>Coordonnées du milieu de \([AB]\) :</p>
+                <div class="math-block">
+                  $$I\left(\frac{x_A + x_B}{2}\;;\;\frac{y_A + y_B}{2}\;;\;\frac{z_A + z_B}{2}\right)$$
+                </div>
+                <p>Longueur du segment \([AB]\) :</p>
+                <div class="math-block">
+                  $$AB = \|\vec{AB}\| = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2 + (z_B - z_A)^2}$$
+                </div>
+
+                <h3 class="section-subtitle">Colinéarité</h3>
+                <p>S'il existe deux nombres réels \(\alpha\) et \(\beta\) non simultanément nuls tels que : \(\alpha\vec{u} + \beta\vec{v} = \vec{0}\)</p>
+                <p>S'il existe un nombre réel \(\lambda\) non nul tel que : \(\vec{u} = \lambda\vec{v}\)</p>
+                <p>De plus deux vecteurs non nuls \(\vec{AB}\) et \(\vec{CD}\) sont colinéaires si les droites \((AB)\) et \((CD)\) sont parallèles.</p>
+
+                <h3 class="section-subtitle">Vecteurs coplanaires</h3>
+                <div class="theorem-box">
+                  <p>Trois vecteurs \(\vec{u}\), \(\vec{v}\) et \(\vec{w}\) sont coplanaires si et seulement s'il existe trois nombres réels \(\alpha\), \(\beta\) et \(\delta\), non simultanément nuls tels que \(\alpha\vec{u} + \beta\vec{v} + \delta\vec{w} = \vec{0}\)</p>
+                  <p>Soit \(\vec{u}\) et \(\vec{v}\) non colinéaires, non nuls, s'il existe deux réels \(a\) et \(b\) tels que : \(\vec{w} = a\vec{u} + b\vec{v}\), alors \(\vec{w}\) est combinaison linéaire de \(\vec{u}\) et \(\vec{v}\).</p>
+                </div>
+
+                <h3 class="section-subtitle">Produit scalaire</h3>
+                <div class="math-block">
+                  $$\vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\vec{u}\,;\vec{v}) = AB \times AC \times \cos(\widehat{BAC})$$
+                </div>
+                <p>Formules de polarisation :</p>
+                <div class="math-block">
+                  $$\vec{u} \cdot \vec{v} = \frac{1}{2}\left(\|\vec{u}\|^2 + \|\vec{v}\|^2 - \|\vec{u} - \vec{v}\|^2\right)$$
+                  $$\vec{u} \cdot \vec{v} = \frac{1}{2}\left(\|\vec{u} + \vec{v}\|^2 - \|\vec{u}\|^2 - \|\vec{v}\|^2\right)$$
+                </div>
+                <p>Deux vecteurs \(\vec{u}\) et \(\vec{v}\) sont orthogonaux si leur produit scalaire est nul : \(\vec{u} \cdot \vec{v} = 0\)</p>
+
+                <h3 class="section-subtitle">Représentation paramétrique d'une droite</h3>
+                <p>Soit \(\mathcal{D}\), la droite passant par le point \(A\) de coordonnées \((x_A\,; y_A\,; z_A)\) et de vecteur directeur \(\vec{u}\begin{pmatrix} \alpha \\ \beta \\ \delta \end{pmatrix}\) :</p>
+                <div class="math-block">
+                  $$M(x\,;y\,;z) \in \mathcal{D} \iff \exists\, t \in \mathbb{R},\; \begin{cases} x = x_A + t\alpha \\ y = y_A + t\beta \\ z = z_A + t\delta \end{cases}$$
+                </div>
+
+                <h3 class="section-subtitle">Équation cartésienne d'un plan</h3>
+                <p>Soit \(\mathcal{P}\) le plan passant par \(A\) et de vecteur normal \(\vec{n}\begin{pmatrix} a \\ b \\ c \end{pmatrix}\) :</p>
+                <div class="math-block">
+                  $$M(x\,;y\,;z) \in \mathcal{P} \iff \vec{n} \cdot \vec{AM} = 0 \iff a(x - x_A) + b(y - y_A) + c(z - z_A) = 0$$
+                </div>
+                <p>Une représentation cartésienne de ce plan est \(ax + by + cz + d = 0\).</p>
+
+                <h3 class="section-subtitle">Méthodes à connaître</h3>
+
+                <div class="method-box">
+                  <h4>A, B, C forment un plan</h4>
+                  <p>Les 3 points A, B et C définissent un plan si et seulement s'ils ne sont pas alignés. Donc si \(\vec{AB}\) et \(\vec{AC}\) ne sont pas colinéaires.</p>
+                </div>
+
+                <div class="method-box">
+                  <h4>Le vecteur \(\vec{n}\) est un vecteur normal au plan (ABC)</h4>
+                  <p>Pour montrer que \(\vec{n}\) est un vecteur normal au plan \((ABC)\), il faut prouver que \(\vec{n}\) est non nul et orthogonal à deux vecteurs non colinéaires du plan \((ABC)\).</p>
+                  <p>On prouve donc que \(\vec{n} \neq \vec{0}\) et par exemple que \(\vec{n} \cdot \vec{AB} = 0\) et \(\vec{n} \cdot \vec{AC} = 0\).</p>
+                </div>
+
+                <div class="method-box">
+                  <h4>La droite de vecteur directeur \(\vec{u}\) est perpendiculaire au plan (ABC)</h4>
+                  <p><strong>Première méthode :</strong> on prouve, par exemple que, \(\vec{u} \cdot \vec{AB} = 0\) et \(\vec{u} \cdot \vec{AC} = 0\).</p>
+                  <p><strong>Deuxième méthode :</strong> si on dispose d'un vecteur \(\vec{n}\) normal au plan \((ABC)\), il suffit de vérifier que \(\vec{n}\) et \(\vec{u}\) sont colinéaires.</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Annales conseillées -->
+        <h2>Annales conseillées</h2>
+
+        <div class="callout callout-info">
+          <p><strong>SURTOUT :</strong> ne vous précipitez pas sur la correction, privilégiez le fait de chercher 5-10 min une question.</p>
+        </div>
+
+        <ul>
+          <li><a href="https://www.apmep.fr/IMG/pdf/annee_2022_spe_DV.pdf" target="_blank" style="color: var(--blue-primary); font-weight: 600;">Toutes les annales</a></li>
+          <li>Métropole 12 mai 2022 &mdash; <a href="https://www.apmep.fr/IMG/pdf/Corrige_spe_metropole_2_12_mai_2022_DV-3.pdf" target="_blank" style="color: var(--gold-dark); font-weight: 500;">Corrigé</a></li>
+          <li>Polynésie 5 mai 2022 &mdash; <a href="https://www.apmep.fr/IMG/pdf/corrige__spe_polynesie_2_5_mai_2022_fk.pdf" target="_blank" style="color: var(--gold-dark); font-weight: 500;">Corrigé</a></li>
+          <li>Métropole 11 mai 2022 &mdash; <a href="https://www.apmep.fr/IMG/pdf/Corrige_Spe1_metropole_1_11_mai_2022_RR-3.pdf" target="_blank" style="color: var(--gold-dark); font-weight: 500;">Corrigé</a></li>
+          <li>Asie 17 mai 2022 &mdash; <a href="https://www.apmep.fr/IMG/pdf/Corrige_Asie_spe_17_mai_2022_DV-2.pdf" target="_blank" style="color: var(--gold-dark); font-weight: 500;">Corrigé</a></li>
+          <li>Métropole 9 septembre 2022 &mdash; <a href="https://www.apmep.fr/IMG/pdf/Corrige_Bac_spe_Métropole_J2_sept_2022_FH-2.pdf" target="_blank" style="color: var(--gold-dark); font-weight: 500;">Corrigé</a></li>
+          <li><a href="https://www.apmep.fr/Annee-2022" target="_blank" style="color: var(--blue-primary); font-weight: 600;">Tous les corrigés (APMEP)</a></li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les élèves de Terminale de l'Académie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="guide-etranger.html">Études Étranger</a></li>
+            <li><a href="entretiens.html">Entretiens</a></li>
+            <li><a href="parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Révisions</h4>
+          <ul class="footer-links">
+            <li><a href="hggsp.html">BAC HGGSP</a></li>
+            <li><a href="maths.html">BAC Maths</a></li>
+            <li><a href="grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Académie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Créé avec soin par Aymar Lesueur pour l'Académie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</body>
+</html>

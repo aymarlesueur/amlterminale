@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beaudoin DE VILLERS - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Beaudoin DE VILLERS</span>
+      </div>
+      <h1>Beaudoin DE VILLERS</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #7B4FB5; color: #fff;">Physique</span>
+<span class="student-tag tag-abandon">NSI</span>
+<span class="student-tag tag-option">Option Maths Expertes en Tle</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; Physique</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>NSI</td></tr>
+<tr><td class="info-label">Option Tle</td><td>Option Maths Expertes en Tle</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;">Prepa MPSI a Stanislas</td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value">Prepa MPSI a Stanislas</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">10 voeux - 9 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI Ginette <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI Ginette
+Madame la Directrice,
+Je souhaite vivement intégrer votre classe préparatoire en Mathématiques Physique Sciences de l’Ingénieur afin d’intégrer une grande école, devenir ingénieur en informatique et par la suite chef d’entreprise.
+Aîné d’une famille de cinq enfants, j’ai toujours été impliqué dans la vie familiale, mais aussi dans le scoutisme pendant sept ans, ce qui reflète parfaitement la devise de Sainte Geneviève, "Aimer Servir". Ces expériences m’ont appris à m’engager pleinement et à être attentif aux besoins des autres.
+Je suis actuellement scolarisé à l'Académie Musicale de Liesse, un lycée catholique hors contrat à horaires aménagés musique. Ce qui m’attire à Sainte Geneviève, c’est l’exigence académique et l’esprit d’équipe qui règnent au sein de votre établissement. En effet, cela me permettrait de retrouver ce que je vis déjà avec l’Académie, et qui me correspond parfaitement. La vie en internat permet de nouer des liens avec les personnes de la promotion, et donc de mieux les connaître pour s’entraider. L’ancrage catholique de votre établissement est également un atout, car je considère que l’accompagnement humain et spirituel est essentiel pendant ces années de formation. Ne pouvant assister aux réunions d'information, j'ai eu l’opportunité d’échanger avec vous au salon des classes préparatoires de l’ICP, ce qui a confirmé mon envie de rejoindre votre établissement.
+Passionné de musique, j’ai toujours su maintenir un très bon niveau scolaire, malgré un rythme de travail soutenu. L’Académie impose un programme identique à celui des autres lycées, mais avec des horaires aménagés, ce qui m’a appris à optimiser mon temps et à travailler efficacement. Ayant un an d’avance et étant né en fin d’année, j’ai souvent dû me dépasser pour répondre aux attentes d’un groupe plus âgé. Aujourd’hui, je suis premier dans mes spécialités et dans le trinôme de tête de classe. Cependant, je pense donner 70% de mon potentiel, car je ne suis pas essoufflé et je prends le temps de faire beaucoup d’autres choses. Mais je sais aussi que choisir Sainte Geneviève, c’est mettre de côté tout ce qui n’est pas scolaire pour un certain temps.
+Passionné par les sciences et l'informatique, j’ai profité du confinement de 2020 pour me former en codant des applications et en démontant des ordinateurs. Depuis, je mets ces compétences au service de mon établissement, en résolvant des problèmes informatiques, en effectuant des montages vidéo ou en installant du matériel. Les mathématiques sont également un de mes centres d’intérêt, et j’ai choisi l’option maths expertes pour approfondir mes connaissances. En classe de troisième, j’ai obtenu le Brevet d'Initiation à l'Aéronautique, afin d’approfondir ma compréhension des principes de l'aviation.
+L'internat à Liesse m’a appris à vivre en collectivité, à gérer des responsabilités et à prioriser mes actions. J’ai notamment été responsable d’une dizaine de garçons, ce qui m’a permis de développer ma capacité à encadrer et à organiser. J’ai aussi été chargé pendant trois ans de l'entretien d’un orgue à tuyaux, ce qui m’a appris la rigueur et la régularité, des qualités essentielles pour réussir en classe préparatoire.
+La musique occupe une place importante dans ma vie. J’ai commencé le piano à 7 ans, puis l’orgue à 11 ans, et j’accompagne la Messe chaque dimanche. J’ai aussi participé à des concerts d’orgue organisés par mon lycée. La musique m’a enseigné la discipline, la gestion du stress et le dépassement de soi. Ces qualités me seront précieuses dans ma préparation à l’entrée dans une grande école d’ingénieur. Je serai heureux de continuer à rendre service, que ce soit avec l’orgue de la chapelle, en participant aux chœurs ou même en assurant leur direction.
+Enfin, je souhaite effectuer ma classe préparatoire dans un établissement catholique pour concilier travail intellectuel et vie spirituelle. La foi étant un pilier essentiel de ma vie, l’accompagnement proposé par Sainte Geneviève me touche particulièrement. Je suis convaincu que votre établissement, par son excellence académique et son esprit de cohésion, représente l’environnement idéal pour relever les défis du supérieur et m’épanouir pleinement.
+J’espère vivement que ma candidature retiendra votre attention. Dans l’attente de votre réponse, je vous prie d’agréer, Madame, mes sincères salutations.
+Beaudoin Guilhe la Combe de Villers</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Maths Info <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Maths Info
+Madame, Monsieur,
+Je suis actuellement élève en Terminale à l’Académie Musicale de Liesse, un établissement à horaires aménagés musique avec une forte exigence académique, mais aussi artistique et humaine.
+Passionné par les sciences et notamment les mathématiques, j’ai choisi de prendre l’option maths expertes en Terminale afin de pouvoir me perfectionner dans ce domaine. Cette science me passionne par l’exactitude de ses résultats, et par la réponse qu’elle apporte à quasiment tous les problèmes. J’aime beaucoup l’abstraction qui en résulte, car elle permet de se détacher de la réalité.
+Grand amateur d’informatique, j’ai profité du confinement de 2020 pour développer mes compétences informatiques notamment en codage. Je codais des applications simples dans la plupart des langages courants. Je n’ai depuis cessé de m’améliorer, et je mets ces compétences au service des autres. Dans mon établissement scolaire, je suis actuellement responsable du parc informatique depuis 3 ans. Ma mission consiste à en assurer la maintenance en lien avec les adultes concernés, mais aussi à configurer les nouveaux ordinateurs lorsqu’ils arrivent ou à proposer des solutions pour répondre à des besoins comme la nécessité de bloquer l’accès à certaines parties de l’ordinateur.
+Ces expériences alliées à ma capacité à travailler sous pression me seront précieuses pour intégrer votre licence.
+J’espère vivement que ma candidature retiendra votre attention.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Maths Physique <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Maths Physique
+Madame, Monsieur,
+Je suis actuellement élève en Terminale à l’Académie Musicale de Liesse, un établissement à horaires aménagés musique avec une forte exigence académique, mais aussi artistique et humaine.
+Passionné par les sciences et notamment les mathématiques, j’ai choisi de prendre l’option maths expertes en Terminale afin de pouvoir me perfectionner dans ce domaine. Cette science me passionne par l’exactitude de ses résultats, et par la réponse qu’elle apporte à quasiment tous les problèmes.
+Ayant un bon niveau scolaire, j’ai pu m’investir dans la vie de mon établissement pour l’aider dans son fonctionnement et ainsi acquérir une certaine maturité personnelle. J’ai ainsi été assistant de la direction des études, responsable de l’entretien de plusieurs éléments dans l’établissement comme par exemple l’orgue à tuyaux ou l’horloge mécanique, ou encore responsable d’une équipe d’une dizaine de garçons de la CM1 à la Terminale. Je me suis également vu confier des responsabilités plus ponctuelles telles que l’organisation de plusieurs weekends pour un groupe d’une quarantaine de membres, ou bien l’animation et la régie son et lumière de plusieurs dîners à thèmes pour 90 personnes évalués sur des critères professionnels.
+Ces expériences alliées à ma capacité à travailler sous pression me seront précieuses pour intégrer votre licence.
+J’espère vivement que ma candidature retiendra votre attention.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI Sainte Marie d&#x27;Antony</span>
+              <span class="accordion-icon" style="opacity:0.3">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p class="no-letter-msg">Aucune lettre de motivation disponible pour ce voeu.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI Stanislas <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI Stanislas
+Entre 3600 et 4000 caractères
+Monsieur,
+Je souhaite vivement intégrer votre classe préparatoire en Maths Physique Sciences de l’Ingénieur afin d’intégrer une grande école, devenir ingénieur en informatique et par la suite chef d’entreprise.
+Je suis actuellement scolarisé à l’Académie Musicale de Liesse, un internat à horaires aménagés musique. Ce cadre porteur m’aide tous les jours à me dépasser, tant au niveau scolaire qu’au niveau éducatif et musical.
+Si l’Académie est une classe à horaires aménagés musique, la priorité n’en est pas moins donnée au scolaire. C’est en effet à ce domaine qu’est allouée la plus grosse partie de notre temps. La classe à horaires aménagés m’a permis d’apprendre à suivre un rythme rapide, et donc à travailler efficacement. Je suis donc actuellement premier de classe dans mes deux spécialités, mais également dans l’option maths expertes, et je suis dans la tête de classe sur la moyenne générale. Équilibré dans mon travail, je suis convaincu que la formation dispensée par une classe préparatoire me correspond parfaitement.
+Étant donné les engagements et le rythme pris à l’Académie, je suis sûr d’avoir les ressources nécessaires au rythme de votre établissement et ainsi me préparer au mieux pour intégrer une école d’ingénieurs prestigieuse.
+Je suis passionné par les sciences. Les mathématiques m’attirent : c’est une science exacte qui a réponse à beaucoup de problèmes matériels, et permet de modéliser le monde réel. J’ai choisi l’option maths expertes dans le but de me perfectionner en ce domaine. Cependant, je suis aussi attiré par les sciences informatiques. J’ai mis à profit le temps que j’avais pendant le confinement de 2020 à coder des applications, ou à explorer les possibilités d’un ordinateur. J’ai acquis beaucoup de compétences informatiques que je ne cesse de mettre au service des autres. Ainsi, dans mon établissement, je gère le parc informatique en collaboration avec l’adulte responsable, mais je m’occupe également de la partie technique lors de conférences ou activités particulières, notamment en ce qui concerne le son et lumière. Ainsi, lors de l'événement organisé pour l’anniversaire de la création de l’Académie, j’ai assuré la régie lumière pendant une dizaine d’heures consécutives, et j’ai entièrement réalisé le montage d’une vidéo d’une heure qui résume les activités depuis la création. Mes capacités sont ainsi mises au service des autres dans l’intérêt général de la communauté.
+Cependant, ce n’est pas uniquement le niveau scolaire qui me pousse à postuler à Stanislas. En effet, étant catholique pratiquant, engagé en tant qu’organiste dans ma paroisse, je souhaite pouvoir vivre ma foi durant les deux années de travail acharné que sont celles de classe préparatoire. La possibilité de se confesser, d’assister à la messe en semaine ou même de pouvoir se confier à Dieu sur le lieu des études sont un atout particulier que peu de classes préparatoires en France peuvent se vanter d’avoir. Postuler dans votre établissement me permettrait de continuer à faire grandir ma foi, de partager celle-ci avec d'autres et de poursuivre ma construction personnelle.
+Enfin, l'Académie Musicale de Liesse étant un internat, j’ai pris l’habitude de travailler dans ce type d’établissement. J’y travaille beaucoup mieux, à l’aide des propositions d’études cadrées, mais aussi en pouvant me poser dans des endroits calmes. J’ai eu l’occasion de vous rencontrer lors du salon des classes préparatoires catholiques à l’Institut Catholique de Paris, et de mieux découvrir votre établissement. Cela m’a conforté dans mon choix premier de m’inscrire chez vous.
+Ainsi, Stanislas est une classe préparatoire qui éveille particulièrement mon intérêt, tant par le côté scolaire que par le côté spirituel offert, et dans laquelle je pense pouvoir m’épanouir.
+J’espère vivement que ma candidature retiendra votre attention.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de référence 1500 caractères MP2I <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de référence 1500 caractères MP2I
+Madame, Monsieur,
+Je souhaite vivement intégrer votre CPGE afin de devenir ingénieur informatique.
+Je suis actuellement élève en Terminale à l’Académie Musicale de Liesse, un établissement à horaires aménagés musique avec une forte exigence académique, artistique et humaine.
+Passionné par les sciences et notamment les mathématiques, j’ai choisi de prendre l’option maths expertes en Terminale afin de pouvoir me perfectionner dans ce domaine. Cette science m’attire par l’exactitude de ses résultats, et par la réponse qu’elle apporte à quasiment tous les problèmes. Ainsi, lancé dans la perspective de constamment m’améliorer, je suis passé premier de classe en maths, en maths expertes et en physique, et je pense encore pouvoir m’améliorer. Je suis volontaire dans ce que je fais, et ainsi je pense que la classe préparatoire serait la meilleure voie pour me permettre de progresser.
+Grand amateur d’informatique, j’ai profité du confinement de 2020 pour développer mes compétences informatiques notamment en codage et je n’ai depuis cessé de m’améliorer. Dans mon établissement scolaire, je suis actuellement responsable du parc informatique depuis 3 ans. Ma mission consiste à en assurer la maintenance en lien avec les adultes concernés ou à proposer des solutions pour répondre à des besoins comme la nécessité de bloquer l’accès à certaines parties de l’ordinateur.
+Ces expériences alliées à ma capacité à travailler sous pression me seront précieuses pour intégrer votre CPGE MP2I.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de référence 1500 caractères MPSI <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de référence 1500 caractères MPSI
+Madame, Monsieur,
+Je souhaite vivement intégrer votre CPGE afin de devenir ingénieur informatique.
+Je suis actuellement élève en Terminale à l’Académie Musicale de Liesse, un établissement à horaires aménagés musique avec une forte exigence académique, artistique et humaine.
+Passionné par les sciences et notamment les mathématiques, j’ai choisi de prendre l’option maths expertes en Terminale afin de pouvoir me perfectionner dans ce domaine. Cette science m’attire par l’exactitude de ses résultats, et par la réponse qu’elle apporte à quasiment tous les problèmes. Ainsi, lancé dans la perspective de constamment m’améliorer, je suis passé premier de classe en maths, en maths expertes et en physique, et je pense encore pouvoir m’améliorer. Je suis volontaire dans ce que je fais, et ainsi je pense que la classe préparatoire serait la meilleure voie pour me permettre de progresser.
+Les responsabilités qui m’ont été confiées dans le cadre de mon établissement m’ont permis d’acquérir une certaine maturité. J’ai été responsable de l’entretien de plusieurs éléments dans l’établissement comme par exemple l’orgue à tuyaux, un instrument de plusieurs centaines de milliers d’euros. Je me suis également vu confier des responsabilités plus ponctuelles telles que l’organisation de plusieurs weekends pour un groupe d’une quarantaine de membres.
+Ces expériences alliées à ma capacité à travailler sous pression me seront précieuses pour intégrer votre CPGE MPSI.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Maths Info  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Maths Info
+Madame, Monsieur,
+Je suis actuellement élève en Terminale à l’Académie Musicale de Liesse, un établissement à horaires aménagés musique avec une forte exigence académique, mais aussi artistique et humaine.
+Passionné par les sciences et notamment les mathématiques, j’ai choisi de prendre l’option maths expertes en Terminale afin de pouvoir me perfectionner dans ce domaine. Cette science me passionne par l’exactitude de ses résultats, et par la réponse qu’elle apporte à quasiment tous les problèmes. J’aime beaucoup l’abstraction qui en résulte, car elle permet de se détacher de la réalité.
+Grand amateur d’informatique, j’ai profité du confinement de 2020 pour développer mes compétences informatiques notamment en codage. Je codais des applications simples dans la plupart des langages courants. Je n’ai depuis cessé de m’améliorer, et je mets ces compétences au service des autres. Dans mon établissement scolaire, je suis actuellement responsable du parc informatique depuis 3 ans. Ma mission consiste à en assurer la maintenance en lien avec les adultes concernés, mais aussi à configurer les nouveaux ordinateurs lorsqu’ils arrivent ou à proposer des solutions pour répondre à des besoins comme la nécessité de bloquer l’accès à certaines parties de l’ordinateur.
+Ces expériences alliées à ma capacité à travailler sous pression me seront précieuses pour intégrer votre licence.
+J’espère vivement que ma candidature retiendra votre attention.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI Sainte Marie d'Antony <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI Sainte Marie d'Antony
+10000 caractères max
+Madame le Censeur, Monsieur le Directeur,
+Je souhaite vivement intégrer votre classe préparatoire en Mathématiques Physique et Sciences de l’Ingénieur afin d’intégrer une grande école, devenir ingénieur en informatique et par la suite chef d’entreprise.
+Actuellement élève à l’Académie Musicale de Liesse, un internat à horaires aménagés musique, je cherche constamment à me dépasser, tant en scolaire, qu’en éducatif et en musique. La classe à horaires aménagés m’a permis d’apprendre à suivre un rythme rapide, et donc à travailler efficacement. J’ai pu maintenir un bon niveau scolaire malgré l’exigence de toutes les matières et je pense donc pouvoir m’épanouir en classe préparatoire.
+Ce qui m’attire à Sainte Marie, c’est l’exigence académique alliée à l’esprit qui y règne. En effet, ce que je recherche en classe préparatoire n’est pas la compétition poussée à outrance, mais bien l’entraide et l’esprit d’équipe. Je suis convaincu que ceux-ci permettent de progresser plus vite et plus loin vers l'excellence. Cependant, un certain niveau reste nécessaire afin d’accéder aux plus grandes écoles, j’en suis conscient.
+Je suis un passionné de sciences. Les mathématiques m’attirent par l’exactitude de leurs résultats, et par leur capacité à modéliser le réel. J’ai ainsi choisi de prendre l’option maths expertes, que je majore, afin de pouvoir en apprendre plus. Mais ce ne sont pas les seules sciences qui m’intéressent : je suis aussi passionné par l’informatique. J’ai profité du confinement de 2020 pour apprendre beaucoup de choses, que ce soit en termes de programmation, ou en termes de réparation. Depuis, je mets mes compétences au service des autres. Je suis ainsi responsable du parc informatique de mon établissement, et j’assure son entretien et son bon fonctionnement en lien avec l’équipe d’adultes.
+Je suis également un grand amateur de musique. Étant scolarisé à l’Académie Musicale de Liesse, j’ai fait plus d’une centaine de concerts et tournées dans toute la France, voire même dans le monde. J’ai développé mon sens de la rigueur pour accéder au niveau requis, mais également ma sensibilité personnelle, en chantant au service du beau pour toucher les gens et leur faire passer un bon moment avec le concert.
+Étant organiste, je suis l’accompagnateur musical du chœur lors des répétitions mais aussi pendant les concerts. Cela m’oblige à une certaine fiabilité puisqu’étant seul pour accompagner une chorale, la réussite du concert dépend aussi beaucoup de moi et de mon accompagnement. Cela oblige également à une certaine professionnalisation, car même étant malade, il faut faire le concert : le chœur n’a pas d’autres accompagnateurs. Ce cas de figure m’étant arrivé plusieurs fois, cela m’a permis de me dépasser et d’apprendre à me donner complètement aux autres pour leur rendre service.
+En rentrant en classe préparatoire, je suis conscient de ne pas pouvoir me donner autant que ce que je voudrais à la musique, et je suis prêt à m’en détacher. Cependant, le niveau que j’ai acquis sur l’orgue me permettrai de vous rendre service et je serai heureux de pouvoir le faire en accompagnant au piano ou à l’orgue différents offices, voire même en participant ou créant un petit chœur dans le même but.
+Dans le cadre du projet éducatif de l’Académie Musicale de Liesse, les élèves sont beaucoup mis à contribution pour le fonctionnement de l’établissement. De nombreuses responsabilités sont ainsi confiées aux élèves. Depuis l’envoi du courrier des élèves jusqu’à l’entretien complet de l’orgue à tuyaux se trouvant dans la chapelle, en passant par la direction d’une équipe d’une dizaine de garçons du CM1 à la Terminale, les responsabilités que j’ai eues m’ont forgé la volonté, m’ont appris à me mettre au service des autres, mais aussi à communiquer avec des adultes dans un cadre professionnel. Ces compétences me servent encore aujourd’hui et j’espère pouvoir les mettre au service des autres durant ma classe préparatoire.
+Dans le même but, j’ai également été responsable de l’organisation d’un weekend de trois jours pour une quarantaine de personnes. Je devais leur trouver un lieu de logement, des activités à faire, organiser un concert, mais aussi tous les déplacements, le tout rentrant dans un budget limité. J’ai pu développer ma compétence en gestion de projet, mon anticipation et mon imagination, mais également mon improvisation en temps réel pour gérer les différents imprévus, et ma capacité à m’exprimer en public en toutes circonstances.
+J’ai aussi participé à l’organisation d’un dîner à thème pour 120 personnes. Il m’a fallu en superviser l’animation et la technique (le matériel son et lumière avant, pendant et après l’évènement). Ce projet, fruit d'un travail de plusieurs mois, était évalué sur des critères professionnels, et donc il me fallait accomplir de mon mieux les tâches qui m’étaient confiées pour mener vers la victoire. J’ai ainsi développé ma capacité à me projeter afin de me rendre compte quels étaient les avantages et les inconvénients de chaque idée.
+Enfin, je m’investis également beaucoup en dehors de mon établissement scolaire. J’ai participé à plusieurs sons et lumières au profit du patrimoine, en tant qu’acteur, me permettant de découvrir la richesse du patrimoine français, mais également sa fragilité. Je participe également à des représentations de théâtre, en amateur, pour une grosse centaine de personnes. Cependant, je reste attaché à ma paroisse. En effet, j’y accompagne la messe tous les dimanches à l’orgue, parfois au chant lorsque les circonstances l’exigent. Je mets également mes capacités techniques au service de celle-ci, notamment en ce moment où on change la sonorisation de l’église. J’assiste également le facteur d’orgue lors de ses venues pour entretenir les orgues de la paroisse, et je le remplace lorsqu’il ne peut pas venir. Ainsi, j’aime m’investir dans ce que je fais, et je suis persuadé que tout ce que je ne ferai plus l’année prochaine sera autant de concentration disponible pour travailler efficacement.
+Une autre facette de votre établissement que j’aime beaucoup est l’accompagnement spirituel proposé. En effet, étant catholique pratiquant, je souhaiterais pouvoir vivre ma foi dans un cadre porteur. La prépa ne permet pas forcément de s'adonner à la pratique religieuse, et ainsi pouvoir profiter de vos propositions spirituelles m’aiderai vraiment à continuer à vivre ma foi au quotidien.
+Le cadre de votre internat m’attire également beaucoup. En effet, la classe préparatoire représente deux années difficiles, et loger juste à côté dans un cadre idéal comme celui de votre internat m'aiderait beaucoup à me concentrer sur le travail scolaire. La possibilité de travailler dans une salle consacrée au travail dès que j’ai besoin, mais également la cohésion qu’il apporte m’attirent beaucoup. C’est ce que je vis déjà actuellement et depuis le début de mon lycée. Cette expérience m’est particulièrement profitable et je pense que c’est le meilleur cadre dans lequel je puisse évoluer.
+Je suis donc convaincu que la classe préparatoire MPSI proposée par Sainte Marie est la meilleure voie que je puisse suivre. Les caractéristiques scolaires mais aussi spirituelles et humaines de votre établissement m’attirent énormément. N’ayant pas pu venir à vos portes ouvertes, j’ai tout de même réussi à discuter avec vous lors du salon des prépas catholiques dans les locaux de l’Institut Catholique de Paris. Cela n’a fait que me conforter dans ma volonté de vous rejoindre pour l’année prochaine.
+J’espère vivement que ma candidature retiendra votre attention.
+Dans l’attente de votre réponse,
+Beaudoin Guilhe la Combe de Villers</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>MPSI Stanislas  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">MPSI Stanislas
+Entre 3600 et 4000 caractères
+Monsieur,
+Je souhaite vivement intégrer votre classe préparatoire en Maths Physique Sciences de l’Ingénieur afin d’intégrer une grande école, devenir ingénieur en informatique et par la suite chef d’entreprise.
+Je suis actuellement scolarisé à l’Académie Musicale de Liesse, un internat à horaires aménagés musique. Ce cadre porteur m’aide tous les jours à me dépasser, tant au niveau scolaire qu’au niveau éducatif et musical.
+Si l’Académie est une classe à horaires aménagés musique, la priorité n’en est pas moins donnée au scolaire. C’est en effet à ce domaine qu’est allouée la plus grosse partie de notre temps. La classe à horaires aménagés m’a permis d’apprendre à suivre un rythme rapide, et donc à travailler efficacement. Je suis donc actuellement premier de classe dans mes deux spécialités, mais également dans l’option maths expertes, et je suis dans la tête de classe sur la moyenne générale. Équilibré dans mon travail, je suis convaincu que la formation dispensée par une classe préparatoire me correspond parfaitement.
+Étant donné les engagements et le rythme pris à l’Académie, je suis sûr d’avoir les ressources nécessaires au rythme de votre établissement et ainsi me préparer au mieux pour intégrer une école d’ingénieurs prestigieuse.
+Je suis passionné par les sciences. Les mathématiques m’attirent : c’est une science exacte qui a réponse à beaucoup de problèmes matériels, et permet de modéliser le monde réel. J’ai choisi l’option maths expertes dans le but de me perfectionner en ce domaine. Cependant, je suis aussi attiré par les sciences informatiques. J’ai mis à profit le temps que j’avais pendant le confinement de 2020 à coder des applications, ou à explorer les possibilités d’un ordinateur. J’ai acquis beaucoup de compétences informatiques que je ne cesse de mettre au service des autres. Ainsi, dans mon établissement, je gère le parc informatique en collaboration avec l’adulte responsable, mais je m’occupe également de la partie technique lors de conférences ou activités particulières, notamment en ce qui concerne le son et lumière. Ainsi, lors de l'événement organisé pour l’anniversaire de la création de l’Académie, j’ai assuré la régie lumière pendant une dizaine d’heures consécutives, et j’ai entièrement réalisé le montage d’une vidéo d’une heure qui résume les activités depuis la création. Mes capacités sont ainsi mises au service des autres dans l’intérêt général de la communauté.
+Cependant, ce n’est pas uniquement le niveau scolaire qui me pousse à postuler à Stanislas. En effet, étant catholique pratiquant, engagé en tant qu’organiste dans ma paroisse, je souhaite pouvoir vivre ma foi durant les deux années de travail acharné que sont celles de classe préparatoire. La possibilité de se confesser, d’assister à la messe en semaine ou même de pouvoir se confier à Dieu sur le lieu des études sont un atout particulier que peu de classes préparatoires en France peuvent se vanter d’avoir. Postuler dans votre établissement me permettrait de continuer à faire grandir ma foi, de partager celle-ci avec d'autres et de poursuivre ma construction personnelle.
+Enfin, l'Académie Musicale de Liesse étant un internat, j’ai pris l’habitude de travailler dans ce type d’établissement. J’y travaille beaucoup mieux, à l’aide des propositions d’études cadrées, mais aussi en pouvant me poser dans des endroits calmes. J’ai eu l’occasion de vous rencontrer lors du salon des classes préparatoires catholiques à l’Institut Catholique de Paris, et de mieux découvrir votre établissement. Cela m’a conforté dans mon choix premier de m’inscrire chez vous.
+Ainsi, Stanislas est une classe préparatoire qui éveille particulièrement mon intérêt, tant par le côté scolaire que par le côté spirituel offert, et dans laquelle je pense pouvoir m’épanouir.
+J’espère vivement que ma candidature retiendra votre attention.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d'encadrement ou d'animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Pendant un an, j’ai été responsable d’un groupe de garçons allant du CM1 à la Terminale. Cette expérience m’a appris à répondre à leurs besoins, à partager du temps avec eux, et à transmettre des informations essentielles tout en faisant preuve de patience face aux petits tracas quotidiens.J’ai également participé à environ cent concerts dans un chœur semi-professionnel pendant trois ans. Cela m’a permis de développer la rigueur, l’écoute et la gestion du stress. En parallèle, j’ai donné plusieurs concerts de piano et d’orgue, où la concentration était primordiale, car chaque erreur se faisait immédiatement entendre, contrairement au chant en chœur où une faute passe souvent inaperçue. J’ai également été accompagnateur pour ce chœur. J’ai donc pu développer ma capacité à suivre et à m’adapter pour faire ce que le chef de chœur souhaitait, et ainsi pouvoir aider les différents choristes lors de leur travail musical.En tant que responsable ou membre de l’équipe d’organisation des rentrées anticipées pour le lycée, j’ai acquis des compétences en gestion d’événements. Ce rôle m’a appris à être professionnel, et à communiquer avec précision. J’ai aussi appris à négocier et à être fiable, afin de gagner la confiance de ceux qui me confient des missions importantes.J’ai pratiqué le théâtre en amateur et j’ai participé à plusieurs représentations publiques de pièces. J’ai ainsi pu travailler ma confiance en moi mais aussi ma faculté à transmettre des émotions à un public.1489 caractères</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Pendant un an, j’ai assumé la responsabilité de l'entretien d'une horloge mécanique, une tâche qui m'a permis de développer des compétences en régularité et en minutie. Ce travail m’a appris à intervenir sur du matériel de précision et à diagnostiquer les blocages ou dysfonctionnements tout en veillant à ne pas dérégler l’ensemble du système. Cette expérience m’a enseigné la rigueur nécessaire pour maintenir un mécanisme complexe en parfait état de fonctionnement.J’ai également pris part en tant que figurant à un son et lumière organisé au profit d'une association dédiée à la restauration du patrimoine français. Ce projet m’a sensibilisé à l’importance de préserver notre héritage culturel et m’a permis de comprendre l'engagement nécessaire pour la sauvegarde du patrimoine historique.De plus, j’ai contribué à deux autres spectacles en tant que figurant et en tant qu’assistant technique pour un autre événement organisé par mon établissement scolaire. Ces expériences m'ont permis de m’impliquer activement dans la vie de mon établissement, mettant mes compétences au service de la collectivité.Enfin, durant trois ans, j’ai assuré la responsabilité du parc informatique de mon établissement scolaire. Ma mission consistait à effectuer des maintenances en cas de dysfonctionnements, ainsi qu’à configurer les nouveaux ordinateurs reçus, garantissant leur bon fonctionnement et contribuant à l’amélioration des outils informatiques à disposition des élèves et du personnel.1483 caractères</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lors de mon stage de découverte du monde professionnel en 3e, j’ai eu la chance de découvrir le métier de gendarme, ce qui m’a permis de prendre conscience de l’engagement envers mon pays et de l’importance du dépassement de soi. Afin de m’approcher encore plus du monde professionnel, j’ai été responsable pendant trois ans de l’entretien d’un orgue à tuyaux d’une valeur d’environ 650 000€ en collaboration avec son facteur d’orgue.J’ai également réalisé une vidéo à but promotionnel pour un établissement à l’occasion de son anniversaire. Ce projet m’a appris à utiliser un logiciel de montage vidéo et à respecter des délais stricts, car la vidéo devait être rendue publique à une date précise, et diffusée pendant un événement rassemblant plus de 1000 personnes. Cela m’a demandé plus de 80 heures de travail et m’a permis de développer ma persévérance.Dans le cadre d’un festival, j’ai assuré la régie lumière pendant 9 heures consécutives. Cette expérience m’a forcé à être professionnel, notamment en étant seul pendant une partie de la journée et en prenant soin du matériel qui ne m’appartenait pas, ce qui m’a appris à être responsable.Enfin, j’ai organisé un weekend auto-financé pour une quarantaine de jeunes, incluant un déplacement de 140 km, un concert, le logement, l’intendance et diverses activités. Cela m’a permis de développer mes compétences en organisation et de mieux comprendre l’importance de se mettre à la place des autres pour proposer des activités qui leur plaisent.1499 caractères</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde (pratiques sportives et culturelles, parcours spécifiques)</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Il y a deux ans, j’ai passé une semaine en Espagne, une expérience enrichissante qui m’a permis de découvrir de nouvelles cultures et d'améliorer mon espagnol en étant immergé dans un environnement hispanophone.J’ai également obtenu le Brevet d'Initiation à l'Aéronautique avec la mention Très Bien. Cette formation m’a non seulement permis de nourrir ma passion pour l’aéronautique, mais elle m’a aussi appris à organiser mon travail pour réussir cet examen tout en poursuivant mes études.Durant mon lycée, j'ai intégré une école maîtrisienne dans laquelle j'ai pratiqué la musique à un niveau élevé pendant trois ans, participant à une centaine de concerts à travers la France et à l'étranger. J’y ai développé mon envie de viser l’excellence et de m’ouvrir à d’autres cultures musicales, tout en apprenant à être à l’aise devant un public.Ayant joué du piano pendant sept ans et de l’orgue pendant trois ans, j’ai développé ma persévérance et ma gestion du stress, notamment lors des concerts, où j'ai appris à prendre confiance en moi et à jouer en public.L'année dernière, j’ai validé mon cycle 3 de solfège, ce qui m’a appris à travailler de manière rigoureuse et à atteindre les objectifs fixés pour cette épreuve.Je pratique également la voile, un sport qui me passionne particulièrement. J’ai pu développer une grande capacité d’observation, notamment pour analyser la direction et la force du vent afin d’optimiser les déplacements de mon bateau.1456 caractères</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

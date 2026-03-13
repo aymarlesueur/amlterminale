@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yves LE GOFF - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Yves LE GOFF</span>
+      </div>
+      <h1>Yves LE GOFF</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #7B4FB5; color: #fff;">Physique</span>
+<span class="student-tag tag-abandon">SVT</span>
+<span class="student-tag tag-option">Option Maths Expertes en Tle</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; Physique</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>SVT</td></tr>
+<tr><td class="info-label">Option Tle</td><td>Option Maths Expertes en Tle</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;"><span style="color: var(--gray); font-style: italic;">En attente...</span></td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box choix-pending">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value" style="color: var(--gray); font-style: italic;">En attente...</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">14 voeux - 14 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CPES Aix <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CPES Aix
+Je suis actuellement en terminale scientifique avec pour objectif de faire une classe préparatoire afin de me préparer aux concours d’écoles d’ingénieurs dont spécialement celles de l’armée. L’option mathématiques expertes me permet de développer un potentiel analytique tout en me permettant d’augmenter mon intérêt pour les mathématiques dont j’apprécie cette facette d’abstraction. Cependant, pour atteindre mon objectif qu’est intégrer une école d’ingénieurs de l’armée, mon niveau n’est pas suffisant et la CPES me semble être le cadre idéal pour atteindre le niveau nécessaire pour mon projet ainsi que renforcer mes méthodes de travail.
+Le cadre militaire de cette formation va dans la continuité de ce que j’ai vécu au Lycée dans une école exigeante tant en discipline qu’en responsabilités. En horaires aménagés musique, j’ai appris la persévérance et la régularité nécessaires pour accomplir mon projet sur le long terme. De plus, cela m’a permis de développer une certaine organisation personnelle en plus d’une pratique instrumentale et vocale de 10 heures par semaine m’ayant fait travailler mes facultés intellectuelles et artistiques.
+Enfin, ma ténacité associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans le parcours que je vise et pour lequel la CPES du lycée militaire d’Aix en Provence me semble être un excellent tremplin.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Double Licence Maths Physique Saclay <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Double Licence Maths Physique Saclay
+Je suis issu d’une terminale scientifique. De fait, j’ai toujours apprécié les mathématiques et la physique. Ces matières me captivent car elles demandent une grande rigueur intellectuelle et une certaine capacité d’abstraction. Mon engagement dans l'option mathématiques expertes atteste de ma volonté de m'investir pleinement dans ces disciplines et de relever des défis toujours plus ambitieux.
+Je suis attiré en particulier par cette licence qui représente pour moi un cadre idéal pour développer mes compétences scientifiques et acquérir une méthode de travail solide.
+De plus, je pense avoir la persévérance et la régularité pour intégrer ce type de formations. Ayant passé mes 3 années de lycée dans une classe à horaires aménagés musique, j’ai eu l’occasion de trouver un rythme d’organisation dans mon travail personnel. De plus, une pratique instrumentale et vocale assidue de 10 heures par semaine m’a permis de pouvoir travailler mes facultés intellectuelles et artistiques et de développer mes capacités dans différents domaines.
+Ayant passé mon lycée dans une classe à petits effectifs, j’ai acquis une capacité à intégrer rapidement les notions abordées en cours.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation Sorbonne Sciences/Philosophie <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation Sorbonne Sciences/Philosophie
+Issu d’une filière Scientifique, j’en ai acquis des capacités d’analyse et de synthèse. L’option mathématiques expertes que j’ai suivie en Terminale m’a permis d’enrichir mon approche analytique, en m’apportant des outils qui m’ont permis de mieux appréhender les problèmes complexes. Toutefois, cette année m’a également permis de redécouvrir une appétence pour les matières littéraires par le biais de la philosophie et de l’histoire. Ainsi, je suis à la fois littéraire et scientifique, c’est pour cette raison que je souhaite intégrer cette double licence de Sciences et Philosophie.
+Je dispose également de certaines qualités et expériences qui seront des atouts dans ce parcours exigeant. En tant qu’élève ayant suivi un parcours à horaires aménagés musique, j’ai dû développer une organisation personnelle rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en études supérieures. La pratique musicale m’a également permis de renforcer des qualités essentielles, telles que la persévérance, la concentration et la discipline, que je compte également mettre à profit.
+Enfin, ma ténacité associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours tel que la double licence.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation B/L Stanislas <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation B/L Stanislas
+Ayant toujours apprécié les matières scientifiques, je suis issu d’une filière qui m’a fait approfondir mes capacités d’analyse et de synthèse. L’option mathématiques expertes que j’ai suivie en Terminale m’a permis d’enrichir mon approche analytique, en m’apportant des outils qui m’ont permis de mieux appréhender les problèmes complexes. Toutefois, cette année m’a également permis de redécouvrir une appétence pour les matières littéraires par le biais de la philosophie et de l’histoire. L’approche philosophique de concepts que je n’avais, jusque-là, jamais appréhendé sous cet angle m’a donné d’apprécier énormément cette matière au cours de cette année. Ainsi, je possède simultanément un profil littéraire et scientifique et c’est pour cette raison que je souhaite intégrer une B/L.
+Je suis persuadé que la classe préparatoire lettres et sciences sociales à Stanislas est le meilleur lieu pour suivre cette formation. D’abord pour l’esprit, les témoignages d’élèves de votre établissement, tant en Terminale qu’en classe préparatoire, m’ont convaincu de l’esprit de cohésion, de service et de responsabilité qui y règne. C’est également un environnement propice à la réussite et à l’épanouissement personnel par l’exigence et la rigueur qu’on y promeut et qui se manifeste dans l’ambiance de travail qui a été appuyée par les témoignages d’élèves. Tous ces aspects s’inscrivent dans le cadre d’une vie chrétienne que l’on peut continuer à vivre en ses murs, vie chrétienne que j’ai vécu pendant tout mon lycée par le chant des vêpres quotidiennement ainsi que de nombreux temps de prière communautaire, ce qui m’a fait grandir dans ma foi. Je trouve important de continuer à vivre cette dimension spirituelle.
+Je suis conscient que la classe préparatoire représente un parcours exigeant et demande une grande capacité de travail et de remise en question, par conséquent, j’ai bien identifié mes axes de progression. Spécialement la gestion de mon émotivité qui est toujours un défi pour moi, spécialement en lien avec la maîtrise de soi. Je travaille sur moi afin de savoir canaliser avec discernement mes émotions, pour cela, j’ai su prendre des responsabilités telles que l’animation d’un groupe d’enfants de 9 à 12 ans dans leurs activités ainsi que la charge d’âme que cela implique. Ainsi, par le travail de ma patience et de ma tempérance, j’apprends à dominer mes faiblesses.
+Je dispose également de certaines qualités et expériences qui seront des atouts dans ce parcours exigeant. En tant qu’élève ayant suivi un parcours à horaires aménagés musique au lycée, j’ai dû développer une organisation personnelle rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à gérer efficacement mon temps, à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en classe préparatoire. La pratique musicale sur 10 ans m’a également permis de renforcer des qualités essentielles telles que la persévérance, la concentration et la discipline, que je compte mettre à profit pour faire face aux défis de la classe préparatoire. De plus, par de nombreux solos chantés au cours de concerts avec mes différents chœurs, j’ai pu développer une grande assurance en public.
+Par ailleurs, issu d’une famille de militaires, j’ai eu l’opportunité de m’adapter à des environnements différents à chaque déménagement, ce qui m’a forgé une grande faculté d’adaptation. En ce sens, je suis capable de m'intégrer rapidement à de nouveaux contextes.
+Enfin, je suis une personne déterminée et tenace. Une fois engagé dans un projet, je m'investis pleinement pour atteindre mes objectifs, sans me laisser décourager par les obstacles. Cette ténacité, associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours aussi exigeant que celui de la classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre type pour les B/L <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre type pour les B/L
+Issu d’une filière Scientifique, j’en ai acquis des capacités d’analyse et de synthèse. L’option mathématiques expertes que j’ai suivie en Terminale m’a permis d’enrichir mon approche analytique, en m’apportant des outils qui m’ont permis de mieux appréhender les problèmes complexes. Toutefois, cette année m’a également permis de redécouvrir une appétence pour les matières littéraires par le biais de la philosophie et de l’histoire. Ainsi, je suis à la fois littéraire et scientifique, c’est pour cette raison que je souhaite intégrer une B/L.
+Je suis conscient que cette formation est exigeante et demande de l’investissement et de l’organisation. En tant qu’élève ayant suivi un parcours à horaires aménagés musique, j’ai dû développer ces qualités de manière rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en classe prépa. La pratique musicale m’a également permis de renforcer des qualités essentielles, telles que la persévérance, la concentration et la discipline, que je compte mettre à profit pour faire face aux défis de la classe préparatoire.
+Enfin, ma ténacité associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours aussi exigeant que celui de la classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation Lycée militaire d’Autun <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation Lycée militaire d’Autun
+Ayant toujours apprécié les matières scientifiques, j’ai choisi une filière correspondante en Terminale. Mon projet professionnel est d’intégrer une école d’ingénieurs de l’armée et pour cela, la classe préparatoire au lycée militaire d’Autun me paraît être une excellente voie de travail pour gagner en méthode de travail, en rigueur et en organisation.
+Je suis attiré en particulier par l’exigence de la formation MPSI qui représente pour moi un cadre idéal pour développer mes compétences scientifiques et acquérir une méthode de travail solide. L’ambiance de travail et la qualité de l’enseignement en classe préparatoire m’incitent à choisir cette formation pour atteindre un meilleur niveau académique.
+De plus, je pense avoir la persévérance et la régularité pour intégrer ce type de formations difficiles que sont les classes préparatoires. Ayant passé mes 3 années de lycée dans une classe à horaires aménagés musique, j’ai eu l’occasion de trouver un rythme d’organisation dans mon travail personnel. De plus, une pratique instrumentale et vocale assidue de 10 heures par semaine m’a permis de pouvoir travailler mes facultés intellectuelles et artistiques et de développer mes capacités dans différents domaines, me procurant ainsi une certaine ouverture d’esprit.
+Enfin, ayant passé mon lycée dans une classe à petits effectifs, j’ai acquis une capacité à intégrer rapidement les notions abordées en cours. Je suis donc prêt à l'exigence et au rythme d’une classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation MSPI Ginette <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation MSPI Ginette
+Je m'appelle Yves Le Goff, à 16 ans, je suis le troisième d’une fratrie de cinq enfants. Je suis passionné de musique, en particulier de chant, de rugby et de randonnée. Ayant toujours apprécié les mathématiques et la physique chimie, j’en ai fait mes spécialités en terminale. Ces matières me captivent particulièrement, car elles demandent une rigueur intellectuelle et une capacité d’abstraction. Mon engagement dans l'option mathématiques expertes atteste de ma volonté de m'investir pleinement dans ces disciplines et de relever des défis toujours plus ambitieux. Cette option m’a permis de développer une véritable profondeur de réflexion et d’affiner mes compétences, renforçant ainsi mon potentiel pour exceller dans ces domaines et poursuivre des études dans une filière exigeante comme la MPSI.
+Je suis persuadé que la classe préparatoire MPSI à Sainte Geneviève est le meilleur lieu pour suivre cette formation. D’abord pour l’esprit, les témoignages d’élèves de votre établissement, dans différentes filières de classe préparatoire, m’ont convaincu de l’esprit de cohésion, de service et de responsabilité qui y règne. C’est également un environnement propice à la réussite et à l’épanouissement personnel par l’exigence et la rigueur qu’on y promeut et qui se manifeste dans l’ambiance de travail qui a été appuyée par les témoignages d’élèves. Tous ces aspects s’inscrivent dans le cadre d’une vie chrétienne que l’on peut continuer à vivre en ses murs, vie chrétienne que j’ai vécu pendant tout mon lycée par le chant des vêpres quotidiennement ainsi que de nombreux temps de prière communautaire, ce qui m’a fait grandir dans ma foi. Je trouve important de continuer à vivre cette dimension spirituelle.
+Je suis conscient que la classe préparatoire représente un parcours exigeant et demande une grande capacité de travail et de remise en question, par conséquent, j’ai bien identifié mes axes de progression. Spécialement la gestion de mon émotivité qui est toujours un défi pour moi, spécialement en lien avec la maîtrise de soi. Je travaille sur moi afin de savoir canaliser avec discernement mes émotions, pour cela, j’ai su prendre des responsabilités telles que l’animation d’un groupe d’enfants de 9 à 12 ans dans leurs activités ainsi que la charge d’âme que cela implique. Ainsi, par le travail de ma patience et de ma tempérance, j’apprends à dominer mes faiblesses.
+Je dispose également de certaines qualités et expériences qui seront des atouts dans ce parcours exigeant. En tant qu’élève ayant suivi un parcours à horaires aménagés musique au lycée, j’ai dû développer une organisation personnelle rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à gérer efficacement mon temps, à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en classe préparatoire. La pratique musicale sur 10 ans m’a également permis de renforcer des qualités essentielles telles que la persévérance, la concentration et la discipline, que je compte mettre à profit pour faire face aux défis de la classe préparatoire. De plus, par de nombreux solos chantés au cours de concerts avec mes différents chœurs, j’ai pu développer une grande assurance en public.
+Par ailleurs, issu d’une famille de militaires, j’ai eu l’opportunité de m’adapter à des environnements différents à chaque déménagement, ce qui m’a forgé une grande faculté d’adaptation. En ce sens, je suis capable de m'intégrer rapidement à de nouveaux contextes.
+Enfin, je suis une personne déterminée et tenace. Une fois engagé dans un projet, je m'investis pleinement pour atteindre mes objectifs, sans me laisser décourager par les obstacles. Cette ténacité, associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours aussi exigeant que celui de la classe préparatoire.
+Fiche formation Ginette</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation Sainte Marie d’Antony <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation Sainte Marie d’Antony
+10000 caractères
+Je suis Yves Le Goff, troisième d’une fratrie de cinq enfants, et fils de militaire. Mon parcours scolaire a été marqué par de nombreux déménagements, m’amenant à fréquenter divers établissements scolaires à travers la France. Cette mobilité constante m’a permis d’acquérir une grande capacité d’adaptation, de rencontrer des personnes et des cultures différentes, et d’affiner ma curiosité intellectuelle. Ce parcours, parfois atypique, m’a appris à voir chaque situation comme une opportunité de grandir et de m’enrichir.
+Parmi mes passions, la musique a toujours occupé une place centrale. En plus de la randonnée et de la lecture, qui sont des pratiques qui m’aident à me ressourcer et à développer une réflexion personnelle, la musique a joué un rôle déterminant dans ma formation. Ces activités m’ont permis de me forger des valeurs solides, d’apprendre la rigueur, la discipline et l’importance de l’engagement. Mon amour pour la musique m’a permis de mieux comprendre le monde et d’apprécier la diversité culturelle et artistique. Cela se traduit par plus de 10 ans de chant choral dans trois maîtrises différentes, ainsi que six années de pratique en cor d’harmonie et de solfège. J’ai participé à plus de 150 concerts et interprété de nombreux solos avec mes différents chœurs. De plus, j’ai eu l’opportunité de découvrir différents instruments comme le piano, la trompette, l’orgue et la bombarde, ce qui m’a permis de développer une grande ouverture d’esprit et de perfectionner mes capacités musicales. Ma capacité à travailler sur des projets collectifs en musique, tout en étant capable de me produire en solo, reflète bien mon équilibre entre indépendance et esprit d’équipe. Cette dualité est essentielle dans un environnement comme la prépa MPSI, où l’autonomie et le travail en groupe sont complémentaires.
+Sur le plan académique, j’ai choisi la filière scientifique en terminale, un choix motivé par mon goût prononcé pour les matières scientifiques et ma volonté de me préparer aux défis intellectuels que la classe préparatoire MPSI représente. Mon parcours scientifique a été particulièrement marqué par un fort intérêt pour les mathématiques et la physique-chimie. J’ai eu la chance, dès la seconde, de découvrir un fort potentiel pour ces disciplines, et c’est à partir de ce moment-là que mon ambition académique s’est concrétisée. Parallèlement à mes excellents résultats en sciences, j'ai également su faire preuve de polyvalence en obtenant d'excellentes performances en philosophie et en histoire, qui font partie de mes matières préférées. Ces résultats témoignent de ma capacité à m’investir pleinement dans des domaines variés et à allier rigueur scientifique et réflexion humaniste, des compétences essentielles pour réussir en MPSI.
+L’intégration de l’Académie musicale de Liesse a été un tournant dans ma vie scolaire et personnelle. La possibilité de suivre des horaires aménagés m’a permis de concilier efficacement mes études scientifiques et ma passion pour la musique. Les petits effectifs et l’esprit particulier qui règne dans cette académie m’ont permis de grandir dans un environnement où l’écoute et l’entraide sont des valeurs essentielles. Par ailleurs, cet environnement m’a permis d’approfondir ma pratique musicale tout en cultivant un esprit chrétien, nourri par les enseignements spirituels reçus dans cet établissement.
+Cela m’a également permis de grandir par l’organisation et la gestion de projets. De fait, dans le cadre de l’Académie musicale de Liesse, j’ai été amené à assumer plusieurs responsabilités, telles que la gestion d’un groupe de jeunes, l’organisation d’événements comme des repas à thème et des courts-métrages humoristiques. Ces responsabilités ont renforcé mon sens de l’organisation, ma capacité à coordonner des projets et mon esprit de leadership. Cela m’a également permis de développer des compétences dans la gestion du temps et la capacité à prendre des décisions rapidement et efficacement. Ces expériences pratiques m’ont permis de renforcer mes capacités personnelles, en particulier dans la gestion du stress et la communication.
+En parallèle de mes études et de mes activités musicales, j’ai toujours été animé par un désir d'approfondir ma foi chrétienne. Le chant des vêpres deux fois par semaine, les occasions spirituelles régulières avec des groupes de prière, des messes et des adorations m’ont permis de nourrir ma vie spirituelle. Je considère cette dimension essentielle dans mon parcours, car elle me permet d’équilibrer mes ambitions académiques avec un véritable sens de l’engagement moral et spirituel. Je cherche à poursuivre cette voie, en intégrant un établissement qui valorise la vie chrétienne et la formation humaine tout autant que l'excellence académique.
+Mon projet professionnel à long terme m’est encore inconnu mais je pense que faire une classe préparatoire me permettra d’affiner ma réflexion tout en acquérant des compétences majeures. C’est pourquoi la classe préparatoire MPSI à l’institution Sainte Marie d’Antony m’apparaît comme un choix idéal. Je sais que cet établissement est réputé pour sa rigueur académique et son ambiance chaleureuse et stimulante. Je suis convaincu qu’il offre un cadre parfait pour m’épanouir et pour développer pleinement mon potentiel, tant sur le plan scientifique que personnel. Les retours d’élèves et de parents sur l’ambiance scolaire de l’établissement renforcent mon désir de m’y investir pleinement. Je recherche un environnement qui non seulement m’offre un enseignement rigoureux, mais aussi un accompagnement personnel, en particulier dans la gestion de la pression des concours.
+Intégrer une classe préparatoire est difficile, j’en suis conscient et je compte sur ma ténacité, mon organisation et ma discipline, que j’ai développées au fil de mes études à horaires aménagés et de ma pratique musicale. Ma capacité à persévérer, à me concentrer sur mes objectifs et à surmonter les difficultés fait partie intégrante de mon caractère. En outre, mon aisance à m’exprimer en public, développée à travers mes nombreuses prestations en solo, est un atout précieux pour les nombreux oraux auxquels je serai confronté en classe préparatoire.
+J’ai également pris conscience de certaines faiblesses, comme mon émotivité et ma tendance à me distraire facilement. Cependant, je travaille activement à surmonter ces obstacles. Mes responsabilités en tant que leader dans des projets collectifs m’ont permis de renforcer ma patience, ma tempérance et ma capacité à garder mon calme sous pression. L’organisation rigoureuse de mes journées et la prise en charge de mes responsabilités m’ont appris à gérer mon temps efficacement et à rester concentré, même dans les moments de stress.
+Je suis convaincu que votre établissement est l’environnement idéal pour poursuivre mes études et mes aspirations, tant sur le plan académique que spirituel. Je suis prêt à relever les défis qui se présenteront à moi, à m’investir pleinement dans mes études et dans la vie de l’établissement, et à contribuer à la dynamique de votre communauté.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation MPSI Stanislas <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation MPSI Stanislas
+Ayant une attirance pour les mathématiques et la physique-chimie qui ont été mon choix de spécialités en terminale, j’ai pu développer des capacités d’analyse et de synthèse. Ces matières scientifiques me captivent particulièrement, car elles demandent une rigueur intellectuelle et une capacité d’abstraction. Mon engagement dans l'option mathématiques expertes atteste de ma volonté de m'investir pleinement dans ces disciplines et de relever des défis toujours plus ambitieux. Cette option m’a permis de développer une véritable profondeur de réflexion et d’affiner mes compétences, me poussant à vouloir poursuivre mon parcours scolaire dans une filière exigeante comme la MPSI.
+Je suis persuadé que la classe préparatoire MPSI à Stanislas est le meilleur lieu pour suivre cette formation. D’abord pour l’esprit, les témoignages d’élèves de votre établissement, tant en Terminale qu’en classe préparatoire, m’ont convaincu de l’esprit de cohésion, de service et de responsabilité qui y règne. C’est également un environnement propice à la réussite et à l’épanouissement personnel par l’exigence et la rigueur qu’on y promeut et qui se manifeste dans l’ambiance de travail qui a été appuyée par les témoignages d’élèves. Tous ces aspects s’inscrivent dans le cadre d’une vie chrétienne que l’on peut continuer à vivre en ses murs, vie chrétienne que j’ai vécu pendant tout mon lycée par le chant des vêpres quotidiennement ainsi que de nombreux temps de prière communautaire, ce qui m’a fait grandir dans ma foi. Je trouve important de continuer à vivre cette dimension spirituelle.
+Je suis conscient que la classe préparatoire représente un parcours exigeant et demande une grande capacité de travail et de remise en question, par conséquent, j’ai bien identifié mes axes de progression. Spécialement la gestion de mon émotivité qui est toujours un défi pour moi, spécialement en lien avec la maîtrise de soi. Je travaille sur moi afin de savoir canaliser avec discernement mes émotions, pour cela, j’ai su prendre des responsabilités telles que l’animation d’un groupe d’enfants de 9 à 12 ans dans leurs activités ainsi que la charge d’âme que cela implique. Ainsi, par le travail de ma patience et de ma tempérance, j’apprends à dominer mes faiblesses.
+Je dispose également de certaines qualités et expériences qui seront des atouts dans ce parcours exigeant. En tant qu’élève ayant suivi un parcours à horaires aménagés musique au lycée, j’ai dû développer une organisation personnelle rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à gérer efficacement mon temps, à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en classe préparatoire. La pratique musicale sur 10 ans m’a également permis de renforcer des qualités essentielles telles que la persévérance, la concentration et la discipline, que je compte mettre à profit pour faire face aux défis de la classe préparatoire. De plus, par de nombreux solos chantés au cours de concerts avec mes différents chœurs, j’ai pu développer une grande assurance en public.
+Par ailleurs, issu d’une famille de militaires, j’ai eu l’opportunité de m’adapter à des environnements différents à chaque déménagement, ce qui m’a forgé une grande faculté d’adaptation. En ce sens, je suis capable de m'intégrer rapidement à de nouveaux contextes.
+Enfin, je suis une personne déterminée et tenace. Une fois engagé dans un projet, je m'investis pleinement pour atteindre mes objectifs, sans me laisser décourager par les obstacles. Cette ténacité, associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours aussi exigeant que celui de la classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre type pour les MPSI <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre type pour les MPSI
+J’ai une appétence pour les mathématiques et la physique dont j’ai choisi de faire mes spécialités en terminale. Ces matières me captivent particulièrement, car elles demandent une rigueur intellectuelle et, pour les mathématiques, une capacité d’abstraction. Mon engagement dans l'option mathématiques expertes atteste de ma volonté de m'investir pleinement dans ces disciplines et de relever des défis toujours plus ambitieux.
+Je suis attiré en particulier par la rigueur et l’exigence de la formation MPSI qui représente pour moi un cadre idéal pour développer mes compétences scientifiques et acquérir une méthode de travail solide. L’ambiance de travail et la qualité de l’enseignement en classe préparatoire m’incitent à choisir cette formation pour atteindre un meilleur niveau académique.
+De plus, je pense avoir la persévérance et la régularité pour intégrer ce type de formations difficiles que sont les prépas. Ayant passé mes 3 années de lycée dans une classe à horaires aménagés musique, j’ai eu l’occasion de trouver un rythme d’organisation dans mon travail personnel. De plus, une pratique instrumentale et vocale assidue de 10 heures par semaine m’a permis de pouvoir travailler mes facultés intellectuelles et artistiques et de développer mes capacités dans différents domaines.
+Ayant passé mon lycée dans une classe à petits effectifs, j’ai acquis une capacité à intégrer rapidement les notions abordées en cours. Je suis donc prêt à l'exigence et le rythme d’une classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre type PCSI <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre type PCSI
+J’ai une appétence pour les mathématiques et la physique dont j’ai choisi de faire mes spécialités en terminale. Ces matières me captivent particulièrement car elles demandent une rigueur intellectuelle et, pour la physique, une application aux objets étudiés. Mon engagement dans l'option mathématiques expertes atteste de ma volonté de m'investir pleinement dans ces disciplines et d’y relever des défis ambitieux.
+Je suis attiré en particulier par la rigueur et l’exigence de la formation PCSI qui représente pour moi un cadre idéal pour développer mes compétences scientifiques et acquérir une méthode de travail solide. L’ambiance de travail et la qualité de l’enseignement en classe préparatoire m’incitent à choisir cette formation pour atteindre un meilleur niveau académique.
+De plus, je pense avoir la persévérance et la régularité pour intégrer ce type de formations difficiles que sont les prépas. Ayant passé mes 3 années de lycée dans une classe à horaires aménagés musique, j’ai eu l’occasion de trouver un rythme d’organisation dans mon travail personnel. De plus, une pratique instrumentale et vocale assidue de 10 heures par semaine m’a permis de pouvoir travailler mes facultés intellectuelles et artistiques et de développer mes capacités dans différents domaines.
+Ayant passé mon lycée dans une classe à petits effectifs, j’ai acquis une capacité à intégrer rapidement les notions abordées en cours. Je suis donc prêt à l'exigence et au rythme d’une classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre de motivation Sorbonne Sciences/Philosophie  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre de motivation Sorbonne Sciences/Philosophie
+Issu d’une filière Scientifique, j’en ai acquis des capacités d’analyse et de synthèse. L’option mathématiques expertes que j’ai suivie en Terminale m’a permis d’enrichir mon approche analytique, en m’apportant des outils qui m’ont permis de mieux appréhender les problèmes complexes. Toutefois, cette année m’a également permis de redécouvrir une appétence pour les matières littéraires par le biais de la philosophie et de l’histoire. Ainsi, je suis à la fois littéraire et scientifique, c’est pour cette raison que je souhaite intégrer cette double licence de Sciences et Philosophie.
+Je dispose également de certaines qualités et expériences qui seront des atouts dans ce parcours exigeant. En tant qu’élève ayant suivi un parcours à horaires aménagés musique, j’ai dû développer une organisation personnelle rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en études supérieures. La pratique musicale m’a également permis de renforcer des qualités essentielles, telles que la persévérance, la concentration et la discipline, que je compte également mettre à profit.
+Enfin, ma ténacité associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours tel que la double licence.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre type PCSI  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre type PCSI
+J’ai une appétence pour les mathématiques et la physique dont j’ai choisi de faire mes spécialités en terminale. Ces matières me captivent particulièrement car elles demandent une rigueur intellectuelle et, pour la physique, une application aux objets étudiés. Mon engagement dans l'option mathématiques expertes atteste de ma volonté de m'investir pleinement dans ces disciplines et d’y relever des défis ambitieux.
+Je suis attiré en particulier par la rigueur et l’exigence de la formation PCSI qui représente pour moi un cadre idéal pour développer mes compétences scientifiques et acquérir une méthode de travail solide. L’ambiance de travail et la qualité de l’enseignement en classe préparatoire m’incitent à choisir cette formation pour atteindre un meilleur niveau académique.
+De plus, je pense avoir la persévérance et la régularité pour intégrer ce type de formations difficiles que sont les prépas. Ayant passé mes 3 années de lycée dans une classe à horaires aménagés musique, j’ai eu l’occasion de trouver un rythme d’organisation dans mon travail personnel. De plus, une pratique instrumentale et vocale assidue de 10 heures par semaine m’a permis de pouvoir travailler mes facultés intellectuelles et artistiques et de développer mes capacités dans différents domaines.
+Ayant passé mon lycée dans une classe à petits effectifs, j’ai acquis une capacité à intégrer rapidement les notions abordées en cours. Je suis donc prêt à l'exigence et au rythme d’une classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Lettre type pour les B/L  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Lettre type pour les B/L
+Issu d’une filière Scientifique, j’en ai acquis des capacités d’analyse et de synthèse. L’option mathématiques expertes que j’ai suivie en Terminale m’a permis d’enrichir mon approche analytique, en m’apportant des outils qui m’ont permis de mieux appréhender les problèmes complexes. Toutefois, cette année m’a également permis de redécouvrir une appétence pour les matières littéraires par le biais de la philosophie et de l’histoire. Ainsi, je suis à la fois littéraire et scientifique, c’est pour cette raison que je souhaite intégrer une B/L.
+Je suis conscient que cette formation est exigeante et demande de l’investissement et de l’organisation. En tant qu’élève ayant suivi un parcours à horaires aménagés musique, j’ai dû développer ces qualités de manière rigoureuse. La gestion d’un emploi du temps chargé, conciliant les études et la pratique musicale, m’a appris à travailler de manière autonome. J’ai ainsi acquis une capacité à respecter des délais serrés et à faire preuve de rigueur, des compétences qui me seront précieuses en classe prépa. La pratique musicale m’a également permis de renforcer des qualités essentielles, telles que la persévérance, la concentration et la discipline, que je compte mettre à profit pour faire face aux défis de la classe préparatoire.
+Enfin, ma ténacité associée à ma capacité à travailler de manière autonome et à m’adapter à des contextes variés, est pour moi un gage de réussite dans un parcours aussi exigeant que celui de la classe préparatoire.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d’encadrement et d’animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Au sein de mon internat, il m’a été confié, en première, l’encadrement de 10 jeunes de 8 à 18 ans dans le cadre de services et d’activités extrascolaires. Cette année, dans la continuité, j’ai demandé la charge d’une trentaine d’enfants de 9 à 11 ans pour des activités sportives au cours de rassemblements quotidiens. Ces deux engagements m’ont permis de développer mon sens des responsabilités vis-à-vis de ceux qui ont confiance en moi, ma capacité à gérer des conflits ainsi que mon aptitude à entraîner les autres en m’adaptant à leurs caractères et expériences.En complément, j'ai eu l’opportunité d’organiser des évènements comme, par exemple, un défi regroupant les 120 jeunes de mon internat de manière régulière sur une année pour des épreuves diverses, dont la préparation d’un dîner à thème pour 140 invités, impliquant plusieurs mois d’anticipations pour l’animation, la cuisine et la décoration, ou encore la création, la prise de vue et le montage d’un court métrage. Cela m’a appris à m’organiser personnellement, à m’investir pour un projet ainsi qu’à apprendre la notion de délégation puisqu’un tel événement ne peut s’organiser seul.Enfin, par le biais du chœur dans lequel je suis impliqué, cela fait deux années que je suis chef de pupitre des ténors, en responsabilité d’organiser les répétitions et d’assurer la discipline, en plus d’être un élément moteur. Cela m’a donc demandé de prendre confiance en moi et d’appliquer le principe d’équité dans mes décisions.1488 caractères</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Engagé en tant que citoyen, je me suis mis au service de causes et de valeurs qui me tiennent à cœur par des engagements associatifs divers.En tant que délégué de classe, j’ai développé ma capacité à être un interface entre les enseignants, les parents et les élèves qui m’accordent leur confiance. J’y ai appris la nécessité, en tant que représentant des élèves, d’avoir une attitude ajustée ainsi que l’esprit de service et le bon positionnement en société.Investi dans un festival de bandes dessinées avec l’ensemble de ma famille, je contribue au rayonnement du septième art au sein de ma commune.De plus, bénévole pour l’association des Amis du Château de Bienassis, j’ai participé en tant que figurant à 8 spectacles Son et Lumière sur l’histoire de la Bretagne. Les fonds récoltés à ces occasions ont été reversés à l’association dont le but est de promouvoir et valoriser le château du quinzième siècle pour lequel nous avions la chance de jouer notre spectacle.De la cinquième à la troisième, j’ai pu m’associer à des actions caritatives pour l’association Handisport avec mon collège. Ces actions m’ont permis d’être sensibilisé à l’inclusion des personnes handicapées dans la société grâce au sport. En courant pour cette cause, j’ai contribué à une levée de fonds pour l’association.Enfin, depuis la troisième, j’ai pu tenir une place importante dans l’animation musicale de nombreux rassemblements associatifs, ce qui a contribué à développer mon aisance en public.1478 caractères</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J’ai pu bénéficier de deux stages en entreprise qui m’ont ouverts sur des univers particuliers : en troisième, avec une PME d’architecture d’intérieur et en première avec un chef de chœur dirigeant la maîtrise de Lannion, également titulaire de plusieurs orgues. La découverte de ces deux domaines passionnants m’a permis de travailler sur mon projet d’avenir.Au lycée, j’ai fait partie d’un chœur semi-professionnel et ai participé à 150 prestations, telles que des concerts et des récitals, ajoutées à un engagement musical d’environ 2 heures par jour. Durant cette période, j’ai également été amené à de multiples reprises à m’intégrer dans un orchestre professionnel avec mon cor d’harmonie, ce qui m’a fait travailler mes facultés d'intégration et d’adaptation.Toutes ces occasions musicales m’ont donné l’occasion d’augmenter mon assurance en public et mon audace. J’ai également pu développer tous les aspects techniques et logistiques en rapport avec l’organisation des déplacements.Enfin, j'ai eu l’occasion de découvrir de nombreux aspects de l’hygiène en internat par des responsabilités telles que l’entretien d’un bloc sanitaire pour 90 internes avec la direction d’une équipe dans cette tâche, ainsi que la gestion d’une buanderie et celle d’un stock de nourriture pour 140 personnes. Cela m’a inculqué une grande fiabilité, de la régularité dans l’engagement et un certain travail sur moi-même afin de remplir au mieux ces charges exigeantes.1457 caractères</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde et pratique culturelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dans le domaine sportif, j’ai eu la chance de pratiquer le rugby pendant 2 années et le tennis pendant 3 ans. Au rugby, j’ai développé des qualités telles que l’esprit d’équipe, le dépassement de soi et l’investissement pour une activité.Au niveau musical, j’ai pratiqué le cor d’harmonie pendant 6 années et sous aspects techniques, pratiquant cet instrument en tant que concertiste, membre d’un orchestre et dans de nombreux styles de musique. Cela m’a permis d’obtenir mon cycle 2 en Conservatoire à Rayonnement Régional, cycle 2 que j’ai également en solfège avec la mention très bien. Ces pratiques instrumentales et de formation musicale m'ont enseigné la régularité et la fiabilité ainsi que la persévérance.J’ai également fait 10 ans de chant choral, interprétant un répertoire classique ou moderne, en particulier en tant que soliste pour de nombreux concerts. J’ai acquis une aisance en public et une capacité à faire front et à savoir m’imposer, j’ai également acquis des compétences comme diriger un chœur et parfaire ma culture musicale. Durant ces 10 années, j’ai été amené à participer à des tournées, en France d’abord, autour du mont Saint-Michel, en Corse et dans le Var, ainsi qu’à l’étranger, en Espagne, à Madrid, Tolède et Ségovie et en Allemagne, à Mülheim an der Ruhr. Ces déplacements m’ont donné une ouverture à des cultures, des langues, des manières de faire différentes et donc de travailler, outre l’aspect musical, mon ouverture d’esprit et ma curiosité.1486 caractères</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

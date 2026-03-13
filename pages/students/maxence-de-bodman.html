@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maxence DE BODMAN - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Maxence DE BODMAN</span>
+      </div>
+      <h1>Maxence DE BODMAN</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #9A6BB4; color: #fff;">HLP</span>
+<span class="student-tag tag-spe" style="background: #D27B2D; color: #fff;">HGGSP</span>
+<span class="student-tag tag-abandon">Arts Musique</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>HLP &amp; HGGSP</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>Arts Musique</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;"><span style="color: var(--gray); font-style: italic;">En attente...</span></td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box choix-pending">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value" style="color: var(--gray); font-style: italic;">En attente...</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">8 voeux - 8 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Gestion Internationale UCO <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Gestion Internationale
+UCO
+Madame, Monsieur,
+Actuellement en Terminale, je souhaite intégrer l'an prochain la Licence Gestion Internationale, Économie et Éthique de l'UCO à Angers. Attiré par l'économie et les enjeux éthiques, je suis convaincu que votre formation me permettra d’acquérir une vision globale et responsable du monde des affaires tout en comprenant son évolution.
+Mes spécialités Humanités Littérature Philosophie et Histoire Géographie Géopolitique Sciences Politiques m’ont apporté une solide capacité d’analyse critique et une compréhension des enjeux internationaux. L’étude de l’économie, la géopolitique et l’éthique correspond parfaitement à l’approche pluridisciplinaire de votre formation.
+Passionné par les relations internationales et les problématiques économiques, je m’intéresse particulièrement à la gestion interculturelle, la Responsabilité Sociale des Entreprises et les politiques économiques mondiales. Je suis rigoureux, curieux et apprécie les travaux collaboratifs. Mon esprit critique et ma capacité d’adaptation font de moi, je pense, un candidat en parfaite adéquation avec votre programme.
+C’est pourquoi je pense qu'intégrer cette licence à l’UCO serait pour moi une opportunité idéale pour approfondir mes connaissances et construire mon projet professionnel. Je serais donc heureux de contribuer à la dynamique de votre établissement en vous rejoignant à la rentrée prochaine.
+Dans l’attente d’un retour favorable, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Concours Sésame <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Concours Sésame
+Madame, Monsieur,
+Actuellement en Terminale générale, je souhaite intégrer une de vos formations via le Concours Sésame pour développer mes compétences en commerce et management international. Passionné par l’économie, la géopolitique et les sciences humaines, je suis convaincu que vos programmes me permettront d’acquérir une formation solide et polyvalente, en phase avec mon ambition professionnelle.
+Mes spécialités, Humanités, Littérature Philosophie et Histoire Géographie Géopolitique Sciences Politiques, m’ont doté d'une capacité d’analyse et une ouverture sur le monde, essentielles dans ces domaines. Ces compétences me semblent essentielles pour évoluer dans les métiers du commerce et du management, qui nécessitent une solide culture générale ainsi qu’une grande adaptabilité.
+Mon intérêt pour le fonctionnement des entreprises et les stratégies économiques me motive à intégrer l’un de vos programmes, où je pourrai acquérir des compétences pratiques et théoriques en gestion, marketing et commerce international.
+Ce qui m’attire particulièrement dans votre programme, c’est l’accent mis sur l’ouverture internationale et la diversité des enseignements proposés. Je pense que cette approche me permettra de m’épanouir et de construire un projet professionnel en adéquation avec mes valeurs.
+Je serais honoré de rejoindre une de vos formations pour m’y construire un avenir professionnel.
+Dans l’attente de votre retour, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Bachelor Manager Hôtellerie/Restauration Ferrandi <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Bachelor Manager Hôtellerie/Restauration Ferrandi
+Madame, Monsieur,
+Actuellement en Terminale générale, je souhaite intégrer le Bachelor Manager dans l’hôtellerie-restauration de FERRANDI Paris afin d’acquérir des compétences approfondies en gestion, management et excellence du service hôtelier. Très intéressé par le secteur de l’hôtellerie-restauration, son fonctionnement et son évolution, je suis plus particulièrement attiré par son exigence, sa dimension internationale et l’expérience client qu’il permet d’offrir.
+Mes spécialités Humanités Littérature Philosophie et Histoire-Géographie Géopolitique Sciences-Politiques, m’ont apporté des qualités essentielles pour ce domaine : une capacité d’analyse, une aisance en communication et une compréhension des enjeux culturels et économiques globaux.
+De plus, j’ai la chance d'être bilingue en anglais, et intermédiaire en espagnol (B2), ce qui me permettra de communiquer aisément à l'international, comme le demandent les métiers de l'hôtellerie-restauration. J’aime évoluer dans un environnement dynamique où rigueur et créativité sont nécessaires. FERRANDI Paris représente pour moi l’excellence dans ce domaine et me permettrait de développer des compétences solides en gestion hôtelière tout en bénéficiant d’une approche pratique et professionnalisante.
+Prêt à m’investir pleinement, je serais honoré de rejoindre votre programme afin qu’il m’aide à concrétiser mon projet professionnel.
+Dans l’attente de votre retour, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Science Etrangères Sorbonne <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Science Etrangères Sorbonne
+Madame, Monsieur,
+Actuellement en terminale générale, je souhaite intégrer la Licence Langues Étrangères Appliquées (LEA) parcours Anglais-Espagnol à l’Université Sorbonne Paris Nord. Passionné par les langues et leur application dans le monde professionnel, je souhaite développer mes compétences linguistiques et culturelles afin de m’orienter vers une carrière à dimension internationale.
+Bilingue en anglais et titulaire d’un niveau B2-C1 en espagnol, j’ai toujours été attiré par les échanges interculturels et les enjeux économiques mondiaux. Mes spécialités : Humanités, Littérature Philosophie ainsi qu’Histoire Géographie Géopolitique Sciences Politiques, m’ont permis d’acquérir des compétences analytiques et une bonne maîtrise de l’expression écrite et orale, essentielles dans cette formation.
+L’approche pluridisciplinaire de la LEA, alliant langues, économie et communication, correspond parfaitement à mon projet. Intégrer votre université me permettrait d’acquérir des bases solides et nécessaires pour évoluer dans des domaines comme le commerce international ou la traduction spécialisée. En effet, j'ai pour projet professionnel de devenir guide touristique, ou traducteur spécialisé d’anglais et espagnol, au français.
+Motivé et prêt à m’investir pleinement, je serais honoré de rejoindre votre formation qui, j’en suis sûr, m'aidera à accomplir pleinement mon projet professionnel.
+Dans l’attente de votre retour, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Economie/Gestion Catho de Lille <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Economie/Gestion Catho de Lille
+Chère Madame, Cher Monsieur,
+Actuellement en terminale générale , je souhaite intégrer la Licence Économie et Gestion – Parcours Management et Humanités à l’Institut Catholique de Lille. Attiré par les sciences économiques et le management, je recherche une formation pluridisciplinaire alliant réflexion humaniste et approche stratégique du monde des affaires.
+Mes spécialités : Histoire Géographie, Géopolitique Sciences Politiques ainsi que Humanité Littérature Philosophie, m’ont apporté une solide capacité d’analyse, une bonne aisance rédactionnelle et une compréhension approfondie des enjeux économiques et sociétaux. Autant de compétences qui sont essentielles pour évoluer dans le management et la gestion d’entreprise, objets de ma candidature dans votre formation.
+L’approche transversale de votre programme, combinant économie, sciences de gestion et humanités, correspond parfaitement à mon projet. Je souhaite acquérir des compétences en stratégie, en organisation et en communication, tout en développant une vision éthique et responsable du management. En effet, j’ai pour projet professionnel d’être conseiller auprès d’entreprises, raison pour laquelle j’ai l’honneur de postuler à votre formation.
+Motivé et prêt à m’investir pleinement, je serais honoré de rejoindre votre établissement afin de préparer mon avenir professionnel dans une formation excellente dans son domaine.
+Dans l’attente de votre retour, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Economie /Gestion ASSAS <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Economie /Gestion ASSAS
+Madame, Monsieur,
+Actuellement en Terminale générale, je souhaite intégrer la Licence Économie et Gestion de l’Université Panthéon-Assas (antenne de Melun) afin d’acquérir des compétences en analyse économique, en gestion et en prise de décision stratégique afin de continuer après vers un master (je ne sais pas encore lequel) dans le domaine des finances.
+Mes spécialités : Histoire Géographie Géopolitique Sciences Politiques ainsi que Humanités Littérature Philosophie, m’ont permis de développer une solide capacité d’analyse, une réflexion critique et une aisance à l’écrit et à l’oral, des atouts essentiels pour réussir dans cette formation.
+Passionné par l’économie et les sciences de gestion, je suis particulièrement attiré par l’approche rigoureuse et quantitative de votre programme, qui me permettra d’approfondir ma compréhension des mécanismes économiques et de me préparer à des études approfondies en management ou en finance. Cela m’aidera à mieux comprendre les systèmes économiques actuels, appelés à évoluer avec l’Intelligence Artificielle et beaucoup d’autres facteurs.
+Sérieux et profondément motivé par la chance d’être pris, je suis prêt à m’investir pleinement dans cette formation exigeante et enrichissante afin de mener à bien mon projet professionnel : devenir conseiller auprès d'entreprises pour les aider dans leur développement et la gestion de leur économie interne.
+Dans l’attente de votre retour, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Certificat de Spécialisation en Sommellerie Lycée de l’Hermitage <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Certificat de Spécialisation en Sommellerie L
+ycée de l’Hermitage
+Madame, Monsieur,
+Actuellement en terminale générale, je souhaite intégrer le Certificat de Spécialisation en Sommellerie au Lycée Hôtelier de l’Hermitage. Passionné par l’univers du vin et de la gastronomie, je veux développer mes compétences en dégustation, accords mets-vins et gestion de cave afin d’évoluer dans ce secteur exigeant.
+Mes spécialités : Humanités Littérature Philosophie ainsi qu’Histoire Géographie, Géopolitique Sciences Politiques, m’ont apporté une culture générale solide, une capacité d’analyse et une aisance à l’oral, essentielles pour comprendre l’histoire du vin, ses enjeux économiques et son rôle dans l’art de la table. J’ai déjà lu divers livres ou sur le vin, notamment la série “Les Gouttes de Dieu”, me permettant de me forger une bonne culture oenologique de base.
+Attiré par le contact humain et le partage, je souhaite maîtriser l’art du service et approfondir mes connaissances œnologiques pour conseiller au mieux une clientèle exigeante. Votre formation, reconnue pour son excellence, représente une opportunité unique d’apprentissage et de perfectionnement. J’ai en effet pour projet professionnel de travailler dans l'hôtellerie restauration avec une spécialité en sommellerie.
+Sérieux et motivé, je suis prêt à m’investir pleinement dans cette formation afin qu’elle porte par un enseignement qualitatif mon projet professionnel à terme.
+Dans l’attente de votre retour, je l'espère positif, je vous prie d’agréer, Madame, Monsieur, mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Licence Economie/Gestion Université Paris Cité <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Licence Economie/Gestion Université Paris Cité
+Madame, Monsieur,
+Actuellement en Terminale générale, je souhaite intégrer la Licence Économie-Gestion à l’Université Paris Cité afin d’acquérir des compétences en analyse économique, gestion et prise de décision. Tout cela dans le but de mener à bien mon projet professionnel.
+Mes spécialités : Humanités Littérature Philosophie ainsi qu’Histoire-Géographie, Géopolitique et Sciences Politiques, m’ont permis de développer des capacités d’abstraction, de logique et de déduction essentielles à cette formation. J’ai également acquis une capacité de synthèse ainsi qu’une aisance à l’écrit et à l’oral, en français comme en anglais (bilingue), et espagnol (B2-C1), me préparant à la rédaction d’études et de rapports dans un contexte académique ou professionnel exigeant.
+Attiré par les enjeux économiques et les sciences de gestion, je souhaite approfondir mes connaissances pour évoluer dans un domaine alliant réflexion stratégique et rigueur analytique. Votre formation représente donc pour moi une opportunité idéale pour me construire un projet professionnel ambitieux. En effet j’aimerais créer mon cabinet de conseil aux entreprises afin de les aider dans le développement et la gestion de leur économie interne.
+Motivé et rigoureux, je suis prêt à m’investir pleinement dans cette licence afin qu’elle m’aide à mener à bon port mon projet professionnel.
+Dans l’attente de votre retour, positif je l’espère, je vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes Experiences d'Encadrement ou d'Animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J’ai co-organisé des spectacles rassemblant jusqu’à 120 personnes, développant ainsi ma capacité à gérer le stress face au public. Cela m’a appris à parler de manière intelligible et à adapter mon discours selon les réactions de l’audience. Certaines de ces veillées étant évaluées sur l’humour et la bienveillance, j’ai affiné mon sens du timing et de l’interaction avec le public.Mon sens des responsabilités s’est encore renforcé lors d’un camp de marche en haute montagne où j’ai mené une équipe de 9 personnes. Cette expérience m’a appris le leadership par l'exemple et l’importance de la sécurité des membres de mon équipe dans un environnement difficile. Être chef d’équipe impliquait vigilance et capacité d’adaptation face aux imprévus.Dans le cadre scolaire, j’ai dirigé une équipe de 10 élèves tout au long de l’année. Nous assurions le service des repas pour 150 personnes, ainsi que le débarrassage et la mise du couvert. Nous avons également participé à des compétitions sportives en équipe. Cette responsabilité m’a appris l’autonomie et la capacité à fédérer un groupe composé de personnes d’âges variés.Enfin, en tant que responsable de pupitre dans un chœur semi-professionnel, j’ai coordonné 15 altos, veillant à la bonne acquisition des partitions et à la cohésion musicale. Nous avons réalisé une trentaine de concerts, renforçant mon sens de l’organisation et du travail collectif, d’autant plus que le rendu devait être le meilleur possible pour le public.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon Engagement Citoyen et Associatif</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dès mon plus jeune âge, j’ai exercé des responsabilités et me suis engagé activement dans des projets collectifs divers. Élu délégué d’un groupe de 30 élèves du CM1 à la sixième, j’ai pu acquérir des premières compétences en gestion de groupe, en organisation et en logistique. J’ai donc coordonné des grands jeux, des soirées cinéma et théâtre, collaborant avec les adultes pour mener à bien ces projets. Cette expérience m’a appris la planification, le travail d’équipe et la prise de décision.Mon engagement s’est aussi illustré dans des actions solidaires. J’ai chanté à plusieurs reprises, sur la base du volontariat, dans un Établissement d’Hébergement de Personnes Âgées Dépendantes au sein d'un chœur semi-professionnel, offrant aux résidents un moment de divertissement et réconfort. J'ai été touché par cette cohésion intergénérationnelle et ai été sensibilisé à l’impact du bénévolat auprès des plus démunis et des plus isolés.De plus, j'ai chanté la Marseillaise (de nombreuses fois) lors de cérémonies de commémoration de la Première Guerre mondiale, en partenariat avec la mairie, une députée (de l'Aisne), et mon école. J’ai été heureux et fier de participer à ce devoir de mémoire empreints de valeurs républicaines.Ces expériences riches et variées ont éveillé et développé mon souci de l'Autre, l'importance de l'entraide, la force de l'équipe, la culture d'un engagement citoyen, autant de facettes clés dans la construction de mon avenir académique et professionnel.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon Experience Professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Mes expériences professionnelles m’ont permis d’explorer différents secteurs et de développer des compétences variées.J’ai découvert le monde du travail au sein d’une entreprise pépiniériste à rayonnement interrégional, d’abord lors d’un stage d’une semaine en demi-journée de jardinage au siège, puis dans la pépinière, où j’ai participé à la production ouvrière en manipulant différentes plantes et machines. Cette immersion s’est poursuivie avec un “job d’été” d’un mois, ma première expérience salariée, qui m’a appris la rigueur, la ponctualité et l’autonomie dans l’exécution des tâches confiées.J’ai également effectué un stage de deux semaines dans la location de bateaux, où j’ai rédigé des contrats et géré des encaissements en liquide et par carte bancaire, développant ainsi mon sens du contact, de la responsabilité et de la gestion financière.Un autre stage d’une semaine en restauration m’a permis d’expérimenter la cuisine, mais surtout le service et l’entretien des locaux, tout en apprenant à gérer une caisse et à travailler sous pression.Enfin, une semaine passée en club équestre en tant qu’aide moniteur m’a appris l’importance du travail en équipe, du respect des consignes et de l’organisation pour assurer le bon fonctionnement des activités.Ces expériences m’ont offert une réelle polyvalence et une capacité d’adaptation précieuse pour mon avenir professionnel, en me confrontant aux exigences et aux réalités, parfois dures, du monde du travail.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au Monde (Pratiques Sportives et Culturelles, Parcours Specifiques)</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Ma curiosité et mon goût pour la découverte m’ont conduit à m’investir dans de nombreuses activités sportives et culturelles. Je pratique régulièrement le badminton le week-end, un sport qui m’aide à développer mon endurance, ma réactivité et mon esprit de compétition. En parallèle, ma passion pour la plongée sous-marine m’a permis d’explorer des environnements uniques, d’apprendre à gérer mon souffle et de me familiariser avec les règles de sécurité sous l’eau. Je suis également passionné de chasse, une activité qui demande patience, rigueur et connaissance du milieu naturel. Voyager a toujours été une part importante de mon parcours. J’ai eu la chance de séjourner dans plusieurs pays, notamment au Sénégal, en Lituanie, en Espagne, au Portugal, en Suisse, en Italie, en Allemagne, au Danemark où j’ai vécu trois ans et demi, ainsi qu’en Norvège, en Suède et aux Pays-Bas, où j’ai résidé cinq ans. Ces expériences m’ont offert une véritable ouverture culturelle, une capacité d’adaptation et une aisance dans des environnements multiculturels, des qualités importantes pour favoriser l’inclusion et la diversité sociale. Enfin, mon engagement musical avec une association pendant la semaine m’a permis de participer à quelques tournées en France et à l’étranger. Ces semaines intensives de concerts m’ont appris la rigueur du travail en groupe et l’importance de la discipline artistique. Ces expériences ont nourri mon ouverture sur le monde et ont renforcé mon sens de l’engagement</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

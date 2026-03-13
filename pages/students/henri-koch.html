@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Henri KOCH - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Henri KOCH</span>
+      </div>
+      <h1>Henri KOCH</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #7B4FB5; color: #fff;">HGGSP (Physique en 1re)</span>
+<span class="student-tag tag-abandon">NSI</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; HGGSP (Physique en 1re)</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>NSI</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;"><span style="color: var(--gray); font-style: italic;">En attente...</span></td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box choix-pending">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value" style="color: var(--gray); font-style: italic;">En attente...</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">17 voeux - 17 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>GIEE - UCO Angers <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">GIEE - UCO Angers
+Madame, Monsieur,
+Je vous adresse ma candidature pour la Licence GIEE, formation qui correspond pleinement à mes aspirations. En effet, mon ambition est de travailler dans le domaine de l’économie.
+Après ma visite lors des portes ouvertes de décembre 2024, j’ai eu un entretien en visio, à la suite duquel j’ai obtenu de votre part un avis favorable.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion.
+De plus, mon parcours à l’Académie Musicale de Liesse m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+En outre, les enseignements en doctrine sociale de l’Église que j’ai reçus rejoignent l’approche éthique de votre formation.
+Responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère a développé mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l’analyse des enjeux économiques et humains.
+Convaincu que cette licence me fournira les outils essentiels pour évoluer dans le domaine de la gestion internationale, je serais honoré d’y apporter mon dynamisme et ma motivation.
+Henri Koch
+(1463/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CATHO DE LILLE LICENCE PHILO, POLITIQUE, ÉCONOMIE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CATHO DE LILLE LICENCE PHILO, POLITIQUE, ÉCONOMIE
+Madame, Monsieur,
+Je vous adresse ma candidature pour la licence de Science politique, du Parcours philosophie, politique et économie (PPE) de l’Université Catholique de Lille en lien avec l’ESPOL, formation qui correspond pleinement à mes aspirations. En effet, mon ambition est de conjuguer philosophie, politique et économie dans un cadre international.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais et possède une ouverture culturelle précieuse. Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. De plus, mon parcours à l’Académie Musicale de Liesse m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle et une formation humaine de qualité.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure (levée de fonds pour des associations), m’a permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l’analyse des enjeux économiques et humains.
+Convaincu que cette licence me fournira les outils essentiels pour évoluer dans le domaine de la gestion internationale, je serais honoré d’y apporter mon dynamisme et ma motivation.
+(1490/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CATHO DE LILLE - LICENCE DROIT INTERNATIONAL ET EUROPÉEN <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CATHO DE LILLE - LICENCE DROIT INTERNATIONAL ET EUROPÉEN
+La licence de droit à l'Université Catholique de Lille représente pour moi un choix évident, car elle correspond parfaitement à mon projet professionnel : devenir avocat.
+L'aspect humain et philosophique du droit, sa rigueur et sa logique, m’ont convaincu de l'intérêt de cette orientation.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour l'actualité et la politique.
+De plus, mon parcours à l’Académie Musicale de Liesse (en classe CHAM) m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure, m’ont permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret.
+Enfin, pour préparer au mieux mes études de droit, j’ai pris le temps de trouver un stage dans un cabinet d’avocats pour l’été à venir. Ceci renforce ma motivation pour intégrer votre établissement.
+(1420/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CATHO DE LILLE - LICENCE ECONOMIE - FINANCE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CATHO DE LILLE - LICENCE ECONOMIE - FINANCE
+Je vous adresse ma candidature pour la licence d’économie, du parcours économie-finance de l’Université Catholique de Lille, formation qui correspond pleinement à mes aspirations. En effet, mon ambition est de travailler dans le domaine de la finance dans un cadre international, en intégrant des principes responsables aux décisions économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion.
+De plus, mon parcours à l’Académie Musicale de Liesse (en classe CHAM) m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure m’a permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets tout en me sensibilisant aux questions de budget et de financement, que j’ai trouvées passionnantes.
+Convaincu que cette licence me fournira les outils essentiels pour évoluer dans le domaine de l’économie et la finance, je serais honoré d’y apporter mon dynamisme et ma motivation.
+(1490/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>SORBONNE - LICENCE DROIT <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">SORBONNE - LICENCE DROIT
+La licence de droit à l'Université Panthéon Sorbonne représente pour moi un choix évident, car elle correspond parfaitement à mon projet professionnel : devenir avocat.
+L'aspect humain et philosophique du droit, sa rigueur et sa logique, m’ont convaincu de l'intérêt de cette orientation.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour l'actualité et la politique.
+De plus, mon parcours en classe CHAM m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure, m’a permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l’analyse des enjeux économiques et humains.
+Enfin, pour préparer au mieux mes études de droit, j’ai pris le temps de trouver un stage dans un cabinet d’avocats pour l’été à venir. Ceci renforce ma motivation pour intégrer votre établissement.
+(1491/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>SORBONNE - LICENCE ECONOMIE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">SORBONNE - LICENCE ECONOMIE
+Madame, Monsieur,
+Je vous adresse ma candidature pour la licence d’économie de l’Université Paris Sorbonne, formation qui correspond pleinement à mes aspirations. En effet, mon ambition est de travailler dans le domaine de la finance dans un cadre international, en intégrant aux décisions économiques des principes responsables et éthiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion.
+De plus, mon parcours en classe CHAM m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure (levée de fonds pour des associations), m’a permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets ainsi que pour les questions de budget et de financement que j’ai trouvé passionnantes.
+Convaincu que cette licence me fournira les outils essentiels pour évoluer dans le domaine de l’économie et la finance, je serais honoré d’y apporter mon dynamisme et ma motivation.
+(1479/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>SORBONNE - LICENCE ECONOMIE  INTERNATIONAL TRACK (à traduire en anglais) <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">SORBONNE - LICENCE ECONOMIE  INTERNATIONAL TRACK (à traduire en anglais)
+Je vous adresse ma candidature pour la licence d’économie de l’Université Paris Sorbonne parcours International Track, formation qui correspond pleinement à mes aspirations. En effet, mon ambition est de travailler dans le domaine de la finance dans un cadre international.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+De plus, mon parcours en classe CHAM m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure (levée de fonds pour des associations), m’a permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour les questions de financement et de gestion d’un budget. Convaincu que cette licence me fournira les outils essentiels pour évoluer dans le domaine de l’économie internationale, je serais honoré d’y apporter mon dynamisme et ma motivation.
+(1498/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ASSAS - LICENCE ECONOMIE - GESTION <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ASSAS - LICENCE ECONOMIE - GESTION
+Je vous adresse ma candidature pour la licence d’économie - gestion de l’Université Paris Assas qui correspond pleinement à mes aspirations. En effet, mon ambition est de travailler dans le domaine de la gestion dans un cadre international.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse et analyse. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain, en particulier économiques.
+De plus, mon parcours en classe CHAM m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure (levée de fonds pour des associations), m’a permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Ceci a renforcé mon goût pour la gestion de projets ainsi que les questions de financement et de gestion d’un budget.
+Convaincu que cette licence me fournira les outils essentiels pour évoluer dans le domaine de l’économie et la finance, je serais honoré d’y apporter mon dynamisme et ma motivation.
+(1496/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ASSAS - LICENCE DROIT <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ASSAS - LICENCE DROIT
+La licence de droit à l'Université Panthéon Assas représente pour moi un choix évident, car elle correspond parfaitement à mon projet professionnel : devenir avocat.
+L'aspect humain et philosophique du droit, sa rigueur et sa logique, m’ont convaincu de l'intérêt de cette orientation.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour l'actualité et la politique.
+De plus, mon parcours en classe CHAM m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure, m’ont permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l’analyse des enjeux économiques et humains.
+Enfin, pour préparer au mieux mes études de droit, j’ai pris le temps de trouver un stage dans un cabinet d’avocats pour l’été à venir. Ceci renforce ma motivation pour intégrer votre établissement.
+(1491/1500)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>LYCÉE MONTAIGNE - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">LYCÉE MONTAIGNE - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion au lycée Montaigne.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique du lycée Montaigne, qui correspond parfaitement à mes aspirations.
+1479/1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>LYCEE CHAPTAL - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">LYCEE CHAPTAL - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion au lycée Chaptal.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique du lycée Chaptal, qui correspond parfaitement à mes aspirations.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>LYCEE JACQUES DECOUR - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">LYCEE JACQUES DECOUR - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion au lycée Jacques Decour.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique du lycée Jacques Decour, qui correspond parfaitement à mes aspirations.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ECOLE NATIONALE DE COMMERCE - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ECOLE NATIONALE DE COMMERCE - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion à l’ECG.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique de l’ECG, qui correspond parfaitement à mes aspirations.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>LYCEE CARNOT - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">LYCEE CARNOT - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion au lycée Carnot.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique du lycée Carnot, qui correspond parfaitement à mes aspirations.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>LYCÉE JANSON DE SAILLY - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">LYCÉE JANSON DE SAILLY - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion au lycée Janson de Sailly.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique du lycée Janson de Sailly, qui correspond parfaitement à mes aspirations.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>LYCEE LAKANAL - CPGE ECG <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">LYCEE LAKANAL - CPGE ECG
+Madame, Monsieur,
+Je vous adresse ma candidature pour la classe préparatoire aux grandes écoles de gestion au lycée Lakanal.
+Mon ambition est de poursuivre mes études en gestion dans une grande école, en conjuguant des compétences économiques.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l'anglais et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour les grands enjeux du monde contemporain.
+Mon parcours en classe CHAM m'a apporté rigueur, discipline et esprit d'équipe, notamment à travers une formation musicale semi-professionnelle.
+En tant que responsable d'un groupe de dix élèves, j'ai affiné mon sens du leadership et du collectif. La gestion d'un projet de restaurant éphémère m'a permis d'exercer mes compétences en organisation et prise de décision dans un cadre concret. Cette expérience a renforcé mon goût pour la gestion de projets et l'analyse des enjeux économiques.
+Convaincu que cette classe préparatoire me fournira les outils essentiels pour réussir dans une grande école de gestion, je serais honoré d'y apporter mon dynamisme et ma motivation. Je suis particulièrement attiré par l'excellence académique du lycée Lakanal, qui correspond parfaitement à mes aspirations.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CATHO DE LILLE - LICENCE DROIT INTERNATIONAL ET EUROPÉEN  <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CATHO DE LILLE - LICENCE DROIT INTERNATIONAL ET EUROPÉEN
+La licence de droit à l'Université Catholique de Lille représente pour moi un choix évident, car elle correspond parfaitement à mon projet professionnel : devenir avocat.
+L'aspect humain et philosophique du droit, sa rigueur et sa logique, m’ont convaincu de l'intérêt de cette orientation.
+Ayant vécu six ans à Londres, où j’étais scolarisé au Lycée français Charles de Gaulle, je maîtrise parfaitement l’anglais (TOEFL niveau B2) et possède une ouverture culturelle précieuse.
+Les spécialités Maths et HGGSP m'ont permis d'acquérir des compétences de rédaction, de synthèse, d'analyse et de réflexion. J'ai décidé de changer de spécialité l’an dernier, car l’HGGSP correspond mieux à mon intérêt pour l'actualité et la politique.
+De plus, mon parcours à l’Académie Musicale de Liesse (en classe CHAM) m’a apporté rigueur, discipline et esprit d’équipe, notamment à travers une formation musicale semi-professionnelle.
+Par ailleurs, en tant que responsable d’un groupe de dix élèves, j’ai affiné mon sens du leadership et du collectif. La gestion d’un projet de restaurant éphémère, ainsi que d’autres projets d’envergure, m’ont permis d’exercer mes compétences en organisation et prise de décision dans un cadre concret.
+Enfin, pour préparer au mieux mes études de droit, j’ai pris le temps de trouver un stage dans un cabinet d’avocats pour l’été à venir. Ceci renforce ma motivation pour intégrer votre établissement.
+(1420/1500)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 4 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Encadrement et animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Cette année, en Terminale, je suis chef d’équipe au sein de mon internat. J’encadre ainsi un groupe de dix élèves d’âges différents (du CM1 à la Terminale). Ma mission consiste à répartir les tâches entre les garçons et m’assurer de leur bonne réalisation. C’est un rôle exigeant qui a renforcé mon sens des responsabilités et mon esprit d’équipe. Tout au long de l’année, j’ai appris à diriger tout en étant diplomate et patient envers mes camarades plus jeunes.Par ailleurs, cette mission, m’oblige à être moi-même très organisé et rigoureux, ainsi qu’à communiquer et collaborer quotidiennement avec les adultes de l’école. Ceci a largement développé ma capacité à m’exprimer, à prendre des initiatives et avoir confiance en moi.En outre, j’ai dirigé une vingtaine de coéquipiers lors de l’organisation d’un diner à thème dont j’avais la responsabilité pour 120 convives. Nous avons élaboré le menu et j’ai établi le budget, puis j’ai réparti les différentes tâches en fonction des compétences de mes camarades. Ensuite, il a fallu orchestrer l’ensemble des préparatifs et assurer la bonne réalisation du projet dans son ensemble. Cette expérience a constitué un point fort dans mon année scolaire et a confirmé mon intérêt pour les questions de budget, de financement ainsi que de management.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">La lutte contre l’exclusion est une cause qui me touche particulièrement et c’est pourquoi je participe régulièrement à des animations récréatives dans des EPHAD ou des centres pour personnes en situation de handicap. En m’investissant bénévolement auprès des personnes en difficulté, j’ai mesuré à quel point il est important que chaque citoyen s’engage pour contribuer à une société inclusive et bienveillante.Par ailleurs, j’ai récemment participé à un exercice attentat dans le cadre du plan Vigipirate, en tant que figurant/victime. Cette expérience m’a sensibilisé aux traumatismes que peuvent constituer ces situations.Elle m’a également permis d’être conscient des risques et des attitudes à adopter dans de telles circonstances.Enfin, en juillet dernier, j’ai été sélectionné pour chanter dans le chœur qui animait la messe d’ouverture des Jeux Olympiques à Notre-Dame de Paris. De nombreux représentants politiques assistaient à cet événement et j’ai compris alors que nous étions au cœur d’un véritable élan citoyen. J’ai même eu la chance de pouvoir échanger un peu avec la ministre de la Culture et celle de l’Éducation Nationale à l’issue de cet événement.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dans le cadre de ma CHAM, j’ai eu la chance d’évoluer jusqu’à un niveau musical semi-professionnel. Cela m’a permis de participer à l’organisation de nombreux concerts en m’impliquant dans toutes les étapes de l’événement : communication (à travers la réalisation de flyers et de vidéos d’annonce), transports des instruments de musique, installation des lieux de la représentation et accueil du public. J’ai réalisé à quel point la logistique est fondamentale dans l’organisation d’un tel événement. Cela requiert beaucoup de rigueur ainsi qu’un certain sens du détail. Ces expériences particulièrement formatrices m’ont permis de découvrir les coulisses du monde du spectacle au sein de théâtres parisiens (Théâtre Mogador, Théâtre des variétés...).En outre, ces concerts d’envergure m’ont également donné l’occasion de travailler avec de nombreux musiciens et orchestres professionnels, ce qui implique, là encore, un goût pour l’esprit d’équipe, la capacité à écouter les autres et à rester concentré.Enfin, j’ai récemment eu la chance de participer à une émission de radio, toujours dans le cadre de mon école et de mon activité musicale, ce qui m’a ouvert à l’univers des media et de l’information, constituant une nouvelle expérience enrichissante.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde/Parcours spécifiques</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J’ai eu l’opportunité de vivre pendant six ans au Royaume-Uni, à Londres, de l’âge de 5 à 11 ans. Vivre en immersion totale dans ce pays m’a permis de découvrir une culture et une langue différentes. J’ai d’abord fréquenté une école anglaise puis j’ai intégré le Lycée français Charles de Gaulle à Londres, du CP au CM2.Cela m’a donc permis de maîtriser parfaitement la langue anglaise mais aussi de m’ouvrir à une grande diversité de cultures dans la mesure où le Lycée français regroupe une importante diversité de nationalités de diférents continents. J’y ai noué des amitiés fortes avec des élèves anglais, français, mais aussi russes, canadiens ou moyen-orientaux. De plus, ayant beaucoup déménagé, changé de ville et d’école, j’ai développé une grande capacité d’adaptation.Par ailleurs, je suis musicien et j’étudie en CHAM depuis 5 ans. Je pratique le chant et la trompette de façon intensive. Cela implique une capacité à travailler de façon autonome ainsi qu’une grande rigueur. J’ai eu plusieurs fois l’occasion de chanter en solo, notamment à Paris, ce qui constitue une expérience unique.En effet, c’est un exercice particulièrement exigeant au cours duquel nous devons donner le meilleur de nous-même. Cette pratique répétée m’a appris à surmonter le trac et aujourd’hui, je ne crains pas de devoir prendre la parole devant un large public.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

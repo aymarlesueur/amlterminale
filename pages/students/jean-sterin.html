@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jean STÉRIN - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Jean STÉRIN</span>
+      </div>
+      <h1>Jean STÉRIN</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #D27B2D; color: #fff;">HGGSP</span>
+<span class="student-tag tag-abandon">SVT</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; HGGSP</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>SVT</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;">ICES : Licence d’Histoire</td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value">ICES : Licence d’Histoire</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">2 voeux - 2 lettres de motivation</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICES, UCO, ICP, La Catho <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Madame, Monsieur,
+
+Élève depuis 4 ans à l'Académie Musicale de Liesse, un internat à horaires aménagés musique, j'ai mené de front des exigences scolaires fortes et une pratique musicale intensive.
+
+Aujourd'hui en Terminale spécialité HGGSP, j'ai appris l'autonomie et l'organisation nécessaires pour mener à bien ma scolarité.
+
+Depuis toujours, l'histoire est ma passion. Je m'y investis pleinement et j'y réussis bien. Mon domaine d'excellence est la géopolitique des conflits et l'histoire contemporaine.
+
+Je suis quelqu'un de tenace qui va au bout de mes objectifs. Je réfléchis à une carrière de diplomate ou à une carrière militaire. Je suis convaincu que l'ICES peut m'apporter des connaissances précieuses et me donner des clés utiles à la construction de mon avenir.
+
+Les valeurs qui m'animent sont celles que vous proposez de vivre à L'ICES, surtout le service des autres : ainsi j'ai été chargé d'encadrer des élèves plus jeunes dans les tâches de la vie commune et responsable de l'accueil des invités dans mon internat. A Lourdes j'ai servi comme brancardier.
+
+L'ICES représente pour moi bien plus qu'une formation académique : c'est un cadre où je pourrais allier l'acquisition d'un savoir rigoureux à des valeurs essentielles à mes yeux, telles que le partage, l'amitié, la foi et l'entraide. Je suis convaincu que cette institution me permettra de développer pleinement mon potentiel intellectuel et humain, en accord avec mes aspirations et mon engagement envers mon pays.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>La Sorbonne et autres universités <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Madame, Monsieur,
+
+Élève depuis 4 ans à l'Académie Musicale de Liesse, un internat à horaires aménagés musique, j'ai mené de front des exigences scolaires fortes et une pratique musicale intensive.
+
+Aujourd'hui en Terminale spécialité HGGSP, j'ai appris l'autonomie et l'organisation nécessaires pour mener à bien ma scolarité.
+
+Depuis toujours, l'histoire est ma passion. Je m'y investis pleinement et j'y réussis bien. Mon domaine d'excellence est la géopolitique des conflits et l'histoire contemporaine.
+
+Je suis quelqu'un de tenace qui va au bout de mes objectifs. Je réfléchis à une carrière de diplomate ou à une carrière militaire. Je suis convaincu que votre établissement peut m'apporter des connaissances précieuses et me donner des clés utiles à la construction de mon avenir.
+
+Les valeurs qui m'animent sont celles que vous proposez de vivre dans votre établissement, surtout le service des autres : ainsi j'ai été chargé d'encadrer des élèves plus jeunes dans les tâches de la vie commune et responsable de l'accueil des invités dans mon internat. J'ai été responsable du (supply chain) concernant le matériel interne.
+
+Ces expériences m'ont permis de développer des qualités essentielles telles que la discipline, l'organisation.
+
+La Sorbonne représente pour moi bien plus qu'une formation académique : c'est un cadre où je pourrais allier l'acquisition d'un savoir rigoureux. Je suis convaincu que cette institution me permettra de développer pleinement mon potentiel intellectuel et humain.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les paragraphes de présentation rédigés pour Parcoursup</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d'encadrement ou d'animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Depuis quatre ans, j'ai la chance d'être scolarisé dans un internat aux horaires aménagés spécialisés dans le chant et la musique.
+
+J'ai choisi ce lycée dont la spécificité est celui d'avoir des horaires aménagées pour nous permettre de travailler la musique en particulier le chant choral.
+
+En effet, j'ai intégré une chorale depuis l'âge de mes 9 ans en Belgique, les pastoureaux.
+
+Nous avions entre 4 heures et 8 heures de répétition par semaine.
+
+Après plusieurs auditions de niveau, j'ai progressé pour atteindre le niveau le plus élevé des choristes, le groupe cantate.
+
+Dans le cadre de cette chorale, nous avons donné de nombreux concerts ainsi que plusieurs tournées à l'étranger (Canada, Suisse, Allemagne).
+
+Au sein de mon école et dans le cadre de l'internat, j'ai été chargé d'encadrer un groupe d'élèves âgés de 9 ans à 17 ans.
+
+Parmi mes responsabilités, nous devions gérer et maintenir propre les espaces communs et ceux de réceptions. J'ai attribué selon leur âge et leurs compétences différentes actions afin de remplir notre mission tout au long de l'année.
+
+Je devais donc surveiller non seulement la qualité du travail mais aussi vérifier la bonne cohésion de groupe, en évitant les conflits internes.
+
+J'ai par ailleurs été responsable des services généraux (supply chain) concernant les produits d'entretien et plus globalement le matériel interne.
+
+Cette expérience, particulièrement exigeante, m'a permis de développer des qualités essentielles telles que la discipline, l'organisation et la persévérance.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen ou bénévole</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">À Lourdes, j'ai pu me mettre au service des personnes malades ou âgées par mon engagement de brancardier durant une semaine.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences personnelles ou stages</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Jardinage / gestion entretien des espaces : Habitant à la campagne, j'entretien un potager de 140 m² ce qui comprend la préparation des sols, le calendrier des plantations, la rotation des cultures et la gestion du compost.
+
+J'oeuvre aussi à l'outillage (entretien des machines agricoles, motoculteur, tracteur tondeuse, tronçonneuse).
+
+J'aide aussi dans la gestion des poules (nourriture, prévention des maladies et des parasites).
+
+Travail de bûcheronnage, stockage du bois sur une partie forestière et une partie verger d'une surface de 2 hectares.
+
+Apiculture, gestion de deux ruches, extraction du miel, gestion des cadres et mise en pot.
+
+Je suis passionné par l'histoire en particulier sur la période 1800 à nos jours. Je m'intéresse à la géopolitique, les conflits, la guerre.</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde, pratiques sportives et culturelles</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Sport : tennis, golf en compétition, ski flèche vermeil.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>

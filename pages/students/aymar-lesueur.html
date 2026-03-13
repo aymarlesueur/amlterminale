@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aymar LESUEUR - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="icon" href="../../assets/images/logo-aml.png">
+  <style>
+    /* Student Profile Styles */
+    .student-profile {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .photo-placeholder {
+      width: 160px;
+      height: 200px;
+      min-width: 160px;
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--gray);
+    }
+    .photo-placeholder svg {
+      opacity: 0.4;
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .student-tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-promo {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-bac {
+      background: rgba(21, 45, 91, 0.1);
+      color: var(--blue-primary);
+    }
+    .tag-spe {
+      color: #fff;
+    }
+    .tag-abandon {
+      background: var(--off-white);
+      color: var(--gray);
+      text-decoration: line-through;
+      border: 1px solid var(--gray-light);
+    }
+    .tag-option {
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 10px 0;
+      font-size: 0.92rem;
+    }
+    .info-label {
+      color: var(--gray);
+      font-weight: 500;
+      width: 140px;
+      padding-right: 16px;
+    }
+    .choix-final-box {
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(212, 168, 67, 0.15));
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+    .choix-final-box.choix-pending {
+      background: var(--off-white);
+      border-color: var(--gray-light);
+      border-left-color: var(--gray);
+    }
+    .choix-final-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .choix-pending .choix-final-label {
+      color: var(--gray);
+    }
+    .choix-final-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .voeux-section {
+      margin-top: 48px;
+    }
+    .voeux-section h2 {
+      color: var(--blue-primary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .voeux-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .voeu-letter-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .letter-text {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+    .no-letter-msg {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 48px;
+      padding: 12px 24px;
+      border: 2px solid var(--gold);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--gold);
+      color: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    @media (max-width: 768px) {
+      .student-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .photo-placeholder {
+        width: 120px;
+        height: 150px;
+        min-width: 120px;
+      }
+      .info-label {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="nav-brand">
+        <img src="../../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Academie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+        <li><a href="../entretiens.html">Entretiens</a></li>
+        <li><a href="../parcoursup.html" class="active">Parcoursup</a></li>
+        <li><a href="../hggsp.html">HGGSP</a></li>
+        <li><a href="../maths.html">Maths</a></li>
+        <li><a href="../grand-oral.html">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Accueil</a>
+        <span>/</span>
+        <a href="../parcoursup.html">Data Base Parcoursup</a>
+        <span>/</span>
+        <span>Aymar LESUEUR</span>
+      </div>
+      <h1>Aymar LESUEUR</h1>
+      <p>Profil Parcoursup - Promotion 8 / BAC 2025</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+      <div class="content-wrapper" style="max-width: 900px;">
+
+        <!-- Student Profile Card -->
+        <div class="student-profile">
+          <div class="photo-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+            <span>Photo</span>
+          </div>
+          <div class="profile-info">
+            <div class="student-tags">
+              <span class="student-tag tag-promo">Promotion 8</span>
+<span class="student-tag tag-bac">BAC 2025</span>
+<span class="student-tag tag-spe" style="background: #1E3F7A; color: #fff;">Maths</span>
+<span class="student-tag tag-spe" style="background: #D27B2D; color: #fff;">HGGSP</span>
+<span class="student-tag tag-abandon">LLCE Anglais</span>
+
+            </div>
+            <table class="info-table">
+              <tr><td class="info-label">Promotion</td><td>Promotion 8 / BAC 2025</td></tr>
+<tr><td class="info-label">Specialites</td><td>Maths &amp; HGGSP</td></tr>
+<tr><td class="info-label">Abandon 1re</td><td>LLCE Anglais</td></tr>
+<tr><td class="info-label">Choix Final</td><td style="font-weight: 600;">Ave Maria University : Double Major en Economics and Finance.</td></tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Choix Final -->
+        
+      <div class="choix-final-box">
+        <div class="choix-final-label">Choix Final Parcoursup</div>
+        <div class="choix-final-value">Ave Maria University : Double Major en Economics and Finance.</div>
+      </div>
+
+        <!-- Voeux & Letters -->
+        
+      <div class="voeux-section">
+        <h2>Voeux Parcoursup</h2>
+        <p class="voeux-count">15 voeux - 15 lettres de motivation</p>
+        <div class="accordion">
+          
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>DCG Grandchamp <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">DCG Grandchamp
+Scolarisé dans un lycée à horaires aménagés musique, avec les spécialités mathématiques et HGGSP, je souhaite intégrer la classe préparatoire DCG. Attiré par la pluralité des disciplines qu’elle propose et son approche d’excellence, je suis convaincu que cette formation me permettra de m’épanouir aussi bien d’un point de vue académique que personnel.
+Le caractère atypique de ce cursus correspond à mes aspirations : tout en préparant aux grandes écoles de management, il combine des matières générales et professionnalisantes, sur un rythme triennal permettant d’affiner son projet professionnel. D’un caractère curieux, travailleur et ouvert sur le monde, j’ai à cœur de me doter d’une formation polyvalente, tournée vers l’entreprise. Je pense pouvoir apporter à la classe mon sérieux, mon esprit d’initiative et d’équipe ainsi que mes qualités de leadership, développées notamment au sein de mon internat, où j’ai eu l’occasion d’exercer des responsabilités importantes pour mon âge, en étant désigné pour manager un groupe de 10 puis 30 garçons, et en terminale l’ensemble des élèves de l’école (120 garçons).
+Je suis en mesure de m’intégrer facilement au sein de votre établissement, dont l’excellence académique et la qualité d’accompagnement exigeant et bienveillant des étudiants sont reconnues. Étant domicilié à Paris, ND du Grandchamp me permettrait en outre de conserver un équilibre études/famille qui me semble essentiel.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1491/ 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>BACHELOR ESCP <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">BACHELOR ESCP
+Scolarisé dans un lycée à horaires aménagés musique, avec les spécialités mathématiques et HGGSP, je souhaite intégrer le Bachelor de l’ESCP. Ce cursus entre pleinement dans mon projet : suivre une formation professionnalisante en management, tournée vers l’international.
+Je sais que sortir de sa zone de confort fait progresser : apprendre la musique, en 3ème, sans aucune formation préalable, tout en suivant un cursus académique exigeant a été un défi, mais aussi une source de développement. Curieux, travailleur et ouvert sur le monde, je pense pouvoir apporter à la promotion mon sérieux, mon esprit d’initiative et mes qualités de leadership, développées au sein de mon internat, où j’ai exercé des responsabilités importantes pour mon âge, en particulier le management d’un groupe de 10 puis 30 garçons, et enfin des 120 élèves.
+L’opportunité de pouvoir étudier dans trois pays en trois ans représente pour moi plus qu’un atout académique : c’est une occasion de renforcer mes capacités d’adaptation, de comprendre différemment le monde et d’acquérir une véritable ouverture culturelle.
+Je suis en mesure de m’intégrer facilement au sein de l’ESCP, reconnue pour son excellence académique, son rayonnement international et son réseau d’alumni. Ayant un frère élève du programme Grande École, j’ai constaté que son expérience et son parcours au sein de votre établissement correspondaient à mes propres aspirations.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1477 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>CONCOURS SÉSAME <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">CONCOURS SÉSAME
+Scolarisé dans un lycée à horaires aménagés musique, avec les spécialités mathématiques et HGGSP, je souhaite intégrer une école de management via le concours SESAME. Les écoles et programmes auxquels le concours donne accès correspondent à mes aspirations : une formation professionnalisante en management, tournée vers l’international.
+Je sais que sortir de sa zone de confort fait progresser : apprendre la musique, en 3ème, sans aucune formation préalable, tout en suivant un cursus académique exigeant a été un défi mais aussi une source de développement. Curieux, travailleur et ouvert sur le monde, je pense pouvoir apporter aux formations mon sérieux, mon esprit d’initiative et mes qualités de leadership, développées au sein de mon internat, où j’ai exercé des responsabilités importantes pour mon âge, en particulier le management d’un groupe de 10 puis 30 garçons, et enfin des 120 élèves.
+Ce qui m’attire particulièrement dans les programmes postbac du concours SESAME, c’est leur ouverture internationale, leur approche d’excellence du management et du commerce ainsi que leur diversité de possibilités. Vivre dans différents pays, être confronté à de nouvelles cultures et m’adapter à des environnements variés m’est essentiel pour élargir ma compréhension du monde.
+Je suis enthousiaste à l’idée de rejoindre ces programmes de haut niveau, stimulants et de nature à m’ouvrir de larges perspectives professionnelles.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1484 / 1500
+Coefficients Sésame.pdf
+Coefficients de chaque épreuve et fixé par chaque école
+Livret-d-entrainement.pdf
+Pack PDF disponible uniquement lorsque vous avez payé les frais d’inscription (300€).</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>BACHELOR EDHEC <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">BACHELOR EDHEC
+Currently attending a high school with a specialized music schedule, and pursuing majors in mathematics HGGSP, I am eager to join EDHEC’s BBA programs. These courses align perfectly with my aspirations: professionally oriented training in management combined with a strong international focus.
+I believe that true growth comes from stepping outside of one’s comfort zone. Learning music in 9th grade without any prior training, while following a demanding academic program, was a significant challenge—one that became a source of personal development. Curious, hardworking, and open to the world, I believe I can contribute to your programs through my commitment, initiative, and leadership skills—qualities I developed in my boarding school, where I took on responsibilities beyond my age by managing a group of 10, then 30, and eventually all 120 students.
+What attracts me most to these BBA programs is their balance between academic instruction, international exchanges, and internships. Living in different countries, discovering new cultures, and adapting to diverse environments are essential for me to broaden my global perspective. Additionally, the comprehensive nature of the curriculum will allow me to either pursue further studies or enter the professional world with confidence.
+I am enthusiastic about the opportunity to join such high-level, dynamic programs that promise to open up wide-ranging professional prospects.
+I hope my application will receive your favorable attention.
+NOMBRE DE CARACTÈRES : 1493 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>DAUPHINE SCIENCE DES ORGANISATIONS - PARIS CLASSIQUE <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">DAUPHINE SCIENCE DES ORGANISATIONS - PARIS CLASSIQUE
+Scolarisé dans un lycée à horaires aménagés musique, avec les spécialités mathématiques et HGGSP, je souhaite intégrer la licence Sciences des Organisations. En effet, ce cursus combinant une formation généraliste et des enseignements dans des disciplines quantitatives m’attire particulièrement car je suis doté d’un esprit curieux et d’une envie de comprendre les dynamiques mondiales.
+J’ai expérimenté le fait que sortir de sa zone de confort fait progresser. Dans mon internat, j'ai dû apprendre la musique, en 3ème, sans formation préalable tout en maintenant un rythme académique exigeant lié aux horaires aménagés, ce qui m'a permis de développer des qualités tant dans mon travail que dans sa gestion : la rigueur, l’endurance dans l’effort et la gestion d’un planning chargé sont des aptitudes que j’ai pu approfondir. J’ai aussi été amené à prendre des responsabilités puisque j’ai encadré 120 élèves, gérant aussi bien les défis collectifs que les décisions sous pression.
+Je suis convaincu que ces atouts me seront utiles pour m’insérer dans le cadre structuré et exigeant de cette licence, dont le large caractère pluridisciplinaire correspond à mes centres d’intérêt et à l’orientation professionnelle que j’entrevois. De surcroît, étant très désireux d’une expérience à l’international, la perspective d’effectuer une mobilité à l’étranger pendant mes études constitue une motivation essentielle (93 au TOEFL).
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1480 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>DAUPHINE SCIENCE DES ORGANISATIONS - LONDRES <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">DAUPHINE SCIENCE DES ORGANISATIONS - LONDRES
+Currently enrolled in a high school with a specialized music schedule, with majors in mathematics and HGGSP, I am eager to join the Bachelor's program in
+Science des Organisations
+. This program, which is mainly based in London and entirely in English, combines a broad general education with training in quantitative disciplines. I'm attracted to it because I'm naturally curious and driven by a desire to understand global dynamics.
+I have experienced firsthand that growth often comes from stepping out of one’s comfort zone. In 9th grade, at my boarding school, I had to learn music from scratch with no prior training, all while maintaining a demanding academic workload due to the specialized schedule. This challenge allowed me to develop key skills both in my work and in how I manage it: discipline, perseverance and the ability to handle a heavy schedule are qualities I have been able to strengthen over time. I have also taken on leadership responsibilities, notably by supervising 120 students—managing collective challenges as well as making decisions under pressure.
+I am confident that these strengths will help me thrive within the structured and demanding framework of this degree, whose multidisciplinary nature aligns with both my interests and my envisioned career path. Furthermore, as I am highly motivated to gain international experience, the opportunity to join a program mainly abroad is a key source of motivation for me.
+I hope my application will capture your attention.
+NOMBRE DE CARACTÈRES : 1495 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>DAUPHINE SCIENCE DES ORGANISATIONS - MADRID <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">DAUPHINE SCIENCE DES ORGANISATIONS - MADRID
+Currently enrolled in a high school with a specialized music schedule, with majors in mathematics and HGGSP, I’m eager to join the Bachelor's program in
+Science des Organisations
+. This program, which is mainly based in Madrid and in English and Spanish, combines a broad general education with training in quantitative disciplines, particularly appeals to me as I am naturally curious and driven by a desire to understand global dynamics.
+I have experienced firsthand that growth often comes from stepping out of one’s comfort zone. In 9th grade, at my boarding school, I had to learn music from scratch with no prior training, all while maintaining a demanding academic workload due to the specialized schedule. This challenge allowed me to develop key skills both in my work and in how I manage it : discipline, perseverance, and the ability to handle a heavy schedule are qualities I have been able to strengthen. I have also taken on leadership responsibilities, notably by supervising 120 students—managing collective challenges as well as making decisions under pressure.
+I’m confident that these strengths will help me thrive within the structured and demanding framework of this degree, whose multidisciplinary nature aligns with both my interests and my envisioned career path. Furthermore, as I am highly motivated to gain international experience, the opportunity to join a program mainly abroad is a key source of motivation for me.
+I hope my application will capture your attention.
+NOMBRE DE CARACTÈRES : 1500 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICP - Licence Sciences Sociales - Parcours ESPS <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICP - Licence Sciences Sociales - Parcours ESPS
+Scolarisé dans un lycée à horaires aménagés musique, avec les spécialités mathématiques et HGGSP, je souhaite intégrer la Licence Sciences Sociales de l’ICP. Votre formation m’attire par l’approche analytique des enjeux contemporains et des dynamiques sociopolitiques qu’elle propose.
+Doté d’une curiosité intellectuelle et d’un goût prononcé pour l’analyse des phénomènes économiques et politiques, comprendre les mécanismes qui régissent notre société m’est important. Mon parcours en musique m’a appris la rigueur et la discipline, des qualités essentielles pour réussir dans un cursus exigeant. En jonglant entre un emploi du temps dense et une pratique musicale intensive, j’ai su développer une gestion efficace de mon travail et une grande capacité d’adaptation.
+De plus, mon engagement au sein de mon établissement m’a permis de développer des compétences en leadership et en prise de décision. En encadrant des élèves et en gérant des projets collectifs, j’ai appris à travailler en équipe, à prendre des initiatives et à assumer des responsabilités importantes pour mon âge.
+Ce qui m’attire particulièrement dans ce programme, c’est son approche pluridisciplinaire particulièrement étendue qui permet d’appréhender dans toute leur complexité les enjeux économiques et politiques. La possibilité d’articuler des savoirs en sociologie, économie et science politique constitue une opportunité idéale pour affiner mon projet professionnel.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1497 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ICP - Double Diplôme / Licence Sciences Sociales + Bachelor Géopolitique <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ICP - Double Diplôme / Licence Sciences Sociales + Bachelor Géopolitique
+Scolarisé dans un lycée à horaires aménagés musique, avec les spécialités mathématiques et HGGSP, je souhaite intégrer le double diplôme de l’ICP. Votre formation m’attire par la variété des enseignements proposés et l'exigence qu’elle requiert .
+Doté d’une curiosité intellectuelle et d’un goût prononcé pour l’analyse des phénomènes économiques et politiques, comprendre les mécanismes qui régissent notre société m’est important. Mon parcours en musique m’a appris la rigueur et la discipline, des qualités essentielles pour réussir dans un cursus exigeant. En jonglant entre un emploi du temps dense et une pratique musicale intensive, j’ai su développer une gestion efficace de mon travail et une grande capacité d’adaptation.
+De plus, mon engagement au sein de mon établissement m’a conduit à développer des compétences en leadership et en prise de décision. En encadrant des élèves et en gérant des projets collectifs, j’ai appris à travailler en équipe, à prendre des initiatives et à assumer des responsabilités importantes pour mon âge.
+Ce qui m’attire particulièrement dans ce programme, c’est son approche pluridisciplinaire particulièrement étendue qui permet d’appréhender dans toute leur complexité les enjeux économiques et géopolitiques. La possibilité d’articuler des savoirs en sociologie, économie et science politique constitue une opportunité idéale pour affiner mon projet professionnel.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1462 / 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ASSAS - LICENCE DE DROIT <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ASSAS - LICENCE DE DROIT
+Scolarisé dans un lycée à horaires aménagés musique avec les spécialités mathématiques et HGGSP, je souhaite intégrer la licence en droit d’Assas. Attiré par l'excellence académique et la rigueur méthodologique de ce cursus, je suis convaincu qu’il me permettra d’acquérir une formation juridique solide et une maîtrise des outils propres aux juristes.
+Habitué aux défis personnels, j’ai constaté que l’on progresse en sortant de sa zone de confort. Intégrer ce cursus en 3ème, sans formation musicale préalable, tout en maintenant un rythme académique soutenu, m’a appris à allier rigueur et persévérance. De plus, les responsabilités que j’ai exercées – encadrant jusqu’à 120 élèves – m’ont confronté à des prises de décision sous pression et à la nécessité de fédérer un groupe par la parole. Cette expérience m’a permis de développer une aisance oratoire certaine, en m’habituant à m’exprimer devant un public, souvent dans des contextes imprévus. J’ai appris à formuler mes idées avec clarté, à adapter mon discours en fonction de l’auditoire, des qualités essentielles pour évoluer dans le domaine juridique.
+Mon parcours en HGGSP m’a par ailleurs apporté une analyse critique des dynamiques politiques et sociales, essentielles pour comprendre les enjeux juridiques contemporains. En parallèle, ma spécialisation en mathématiques a renforcé mon esprit logique et structuré, des atouts indispensables pour l’étude du droit.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1480/ 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ASSAS - DOUBLE DIPLÔME DROIT / COLLÈGE DE DROIT <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ASSAS - DOUBLE DIPLÔME DROIT / COLLÈGE DE DROIT
+Scolarisé dans un lycée à horaires aménagés musique avec les spécialités mathématiques et HGGSP, je souhaite intégrer le Double Diplôme Droit/Collège de Droit à Assas. Attiré par l'excellence académique et la rigueur méthodologique de votre formation, je suis convaincu que ce cursus me permettra d’acquérir une culture juridique et une maîtrise des outils propres aux juristes.
+Habitué aux défis personnels, j’ai appris que l’on progresse en sortant de sa zone de confort. Intégrer ce cursus en 3ème, sans formation préalable, tout en maintenant un rythme académique soutenu, m’a appris à allier rigueur et persévérance. De plus, les responsabilités que j’ai exercées – encadrant jusqu’à 120 élèves – m’ont confronté à des prises de décision sous pression et à la nécessité de fédérer un groupe par la parole. Cette expérience m’a permis de développer une aisance oratoire certaine, en m’habituant à m’exprimer devant un public, souvent dans des contextes imprévus. J’y ai appris à articuler mes idées avec clarté, à adapter mon discours en fonction de mon auditoire, des qualités essentielles pour évoluer dans le domaine juridique.
+Mon parcours en HGGSP m’a par ailleurs apporté une analyse des dynamiques politiques et sociales, essentielles pour comprendre les enjeux juridiques contemporains. En parallèle, ma spécialisation en mathématiques a renforcé mon esprit logique et structuré, des atouts indispensables pour l’étude du droit.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1500/ 1500</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ECG Sainte-Geneviève <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ECG Sainte-Geneviève
+Madame, Monsieur,
+Je m’appelle Aymar Lesueur, j’ai 17 ans et suis actuellement élève en Terminale, avec les spécialités mathématiques et HGGSP. Scolarisé à Sainte Jeanne-Élisabeth (Paris), mon enfance a été rythmée par des activités extrascolaires enrichissantes. Depuis mes six ans, je fréquente le patronage du Bon Conseil, un lieu devenu un véritable second foyer, où j’ai appris à recevoir mais surtout à donner et à m’engager au sein d’une communauté.
+En 6ème, j’ai rejoint le collège Stanislas, suivant le parcours de mes trois frères. J’y ai acquis de solides méthodes de travail, bien que cette période ait été marquée par un tournant personnel : le diagnostic de mon diabète de type 1. Gérer cette contrainte quotidienne m’a appris l’autonomie, intégrant cette réalité sans qu’elle ne devienne un frein et m’habituant à gérer les imprévus avec calme et organisation.
+En 4ème, j’ai ressenti le besoin d’un changement : j’ai eu envie de m’impliquer dans un projet plus vaste et plus collectif en rejoignant l’Académie Musicale de Liesse. Sans bagage musical, et malgré une candidature tardive, j’ai pourtant été accepté. Dès mon entrée en 3ème, je me suis aperçu que ce choix allait transformer mon parcours.
+Ces quatre années m’ont apporté plus que n’importe quelle expérience académique. Elles m’ont appris à travailler efficacement et à sortir de ma zone de confort. Débuter la musique sans expérience a été un défi majeur, mais j’ai persévéré : j’ai appris à chanter, étudié la théorie musicale et découvert la batterie. J’ai eu la chance de chanter dans plus d’une centaine de concerts, dont le
+Requiem
+de Mozart et le
+Dixit Dominus
+de Haendel. La musique m’a enseigné la rigueur, la patience et l’esprit d’équipe.
+Au fil des années, j’ai découvert mon goût pour l’analyse et la structuration de la pensée, que ce soit à travers les sciences humaines ou les mathématiques. En HGGSP, j’ai pu commencer à explorer les enjeux géopolitiques qui façonnent le monde. Décrypter les rapports de force et comprendre les dynamiques politiques m'aide à développer ma connaissance et ma vision du monde et à nourrir une pensée critique. Cette discipline m’apprend à argumenter avec rigueur et à construire des analyses méthodiques.
+Les mathématiques, quant à elles, sollicitent une autre forme de raisonnement tout aussi enrichissante. J’apprécie la logique et la précision qu’elles exigent, ainsi que le défi de résoudre des problèmes complexes en mobilisant des méthodes rigoureuses. Cette matière m'apporte une satisfaction intellectuelle et complète mon approche analytique, en développant ma capacité à structurer ma pensée.
+En sus de mes études, j’ai eu l’opportunité d’exercer plusieurs responsabilités au sein de mon école, qui ont renforcé mon leadership.
+“Chef d’équipe”
+en 2nde, puis
+“Capitaine”
+en 1ère, j’ai encadré dix, puis trente et enfin cent-vingt élèves, assurant discipline, cohésion et motivation. J’ai constaté que pour gérer efficacement un groupe, l’exemple et l’engagement dans la durée sont essentiels. Ces expériences m’ont appris à prendre des décisions, à motiver un groupe et à gérer des responsabilités concrètes, vertus qui se retrouvent dans la devise de votre établissement : "Servir".
+Après quatre ans dans un cadre structuré et exigeant, je souhaite poursuivre dans cette dynamique en intégrant une classe préparatoire ECG, dont l’enseignement pluridisciplinaire m’attire particulièrement. J’ai pris goût au travail rigoureux et au dépassement de soi. Loin de m’effrayer, l'intensité intellectuelle et l’émulation d’une classe préparatoire correspondent au mode de vie que j’ai adopté au lycée. Conscient que le rythme d’un préparationnaire demande des sacrifices et que ma pratique musicale passera nécessairement au second plan, je sais cependant que cette dernière restera un appui, me permettant de me détendre de manière apaisante et efficace.
+Sainte-Geneviève s’inscrit naturellement dans cette continuité. Son cadre académique exigeant, son esprit d’émulation et la vie spirituelle qui y est proposée en font l’établissement idéal pour poursuivre mes études : un environnement structurant qui me permet de poursuivre ma vie de prière et où l’excellence se conjugue avec un authentique sens du collectif et de l'engagement.
+Souhaitant que ma candidature retienne votre attention.
+Veuillez agréer, Madame, Monsieur, l’expression de mes salutations distinguées.
+NOMBRE DE CARACTÈRES : 4391 / 4400
+QUESTIONS POUR LA FICHE INTERNAT DE GINETTE :
+La vie d’internat, obligatoire pour tous, génère des contraintes (partage de chambre, nuisance sonore, horaire de coucher fixe, partage toilettes et douches, portes de chambre qui ne ferment pas à clé, passage en couloir, portes qui claquent…). Citez deux points qui seraient un défi pour vous dans cette vie en internat ? Justifiez ce qui vous permettrait de les relever. (500 caractères max)
+Après quatre ans d'internat, je connais mes limites et sait anticiper les contraintes de la vie en communauté. La gestion de la fatigue est un défi, car lorsqu'elle s'accumule, les interactions sont plus sensibles. Je pallie cela en choisissant des temps adaptés pour me reposer et en m'isolant pour ne pas gêner ni être gêné. Le manque de confort vis-à-vis de chez soi peut aussi peser, mais je le compense en tirant parti des liens forts et des échanges enrichissants qu'offre l'internat. (490 caractères)
+La co-responsabilité à Sainte Geneviève impose que chacun prenne sa part dans la vie du groupe, pour le bien de tous. Avez-vous déjà vécu en groupe ? Si oui, dans quels lieux, mouvements ou contextes ? Quel a été votre rôle précis dans ce collectif ? Que retirez-vous de ces expériences ? (500 caractères max)
+Le cadre de l’Académie couplé à celui du patronage du Bon Conseil depuis de nombreuses années m’ont permis de mieux comprendre la force qui peut se dégager d’un groupe. Que ce soit dans un cadre scolaire ou de loisirs, je connais les bénéfices et les enjeux qui jaillissent d’une communauté. La vie en collectivité m’a appris à dépasser ma personne pour le bien commun en rendant service et à me donner sans intérêt. Le don de soi pour le groupe et la joie qui en découle m’ont profondément marqué. (498 caractères)
+Travailler seul et/ou travailler à plusieurs, dans un internat, demandent des qualités particulières. Quelles sont celles que vous avez déjà mises en œuvre dans votre environnement familial, associatif, scolaire, sportif… ? de quoi avez-vous besoin pour vous épanouir ?(500 caractères max)
+De nature sociable et affable, j’apprécie travailler en groupe, car j’ai constaté, avec les années, l’importance et la force du travail collectif. Travailler à plusieurs permet de garder sa motivation et sa concentration, des atouts essentiels pour le rythme exigeant d’une CPGE. Ici encore, le cadre de l'Académie m'a permis de développer cet aspect de ma personnalité au quotidien, renforcé avec la vie d’internat qui est continue et qui demande donc d’être constamment vigilant sur ces aspects. (497 caractères)
+Dans un internat, la journée est organisée du réveil (7h30) au coucher (23h) avec un cadre collectif important du dimanche soir au samedi après-midi. Qu'est ce que cela vous inspire ?(500 caractères max)
+Un cadre structurant a été essentiel pour me permettre de me développer durant ces quatre années à l'Académie. Il permet, à mon sens, de se consacrer pleinement à chaque activité sans avoir à anticiper la suivante. Gérer seul son emploi du temps, ses temps de travail et de repos est exigeant et chronophage, surtout en CPGE. Aujourd'hui, même si je me sens prêt à cette autonomie, je sais combien avoir un cadre organisé reste un atout majeur, offrant un équilibre entre rigueur et efficacité. (496 caractères)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ECG ND du Grandchamp <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ECG ND du Grandchamp
+Madame, Monsieur,
+Je m’appelle Aymar LESUEUR, j’ai 17 ans et je suis le dernier d’une fratrie de quatre garçons. Né et ayant grandi à Paris, j’ai effectué ma scolarité primaire à Sainte Jeanne-Élisabeth. Ces premières années ont été marquées par une scolarité sans encombre et de nombreux souvenirs heureux, notamment grâce à mes activités extrascolaires. Dès l’âge de six ans, j’ai eu la chance de fréquenter le patronage du Bon Conseil, un lieu qui a pris une place centrale dans ma vie. Initialement, j’y allais simplement pour pratiquer diverses activités sportives et culturelles, mais peu à peu, cette maison est devenue un véritable pilier familial. Chacun y a trouvé sa place, d’abord en recevant, puis en s’investissant à son tour. Encore aujourd’hui, elle représente pour moi bien plus qu’un centre d’activités : c’est un espace de partage et de transmission, ancré dans un esprit salésien et scout qui m’a profondément marqué.
+En suivant le parcours de mes frères, j’ai intégré le collège Stanislas en 6ème, dans un environnement exigeant, où le rythme de travail était soutenu. Ces trois années ont été formatrices : j’y ai acquis des méthodes de travail solides, qui me servent encore aujourd’hui. C’est aussi au début de mon année de 6ème qu’un événement majeur a bouleversé mon quotidien : le diagnostic de mon diabète de type 1. Ce fut un véritable basculement, au moment où j’ai pris conscience que rien ne serait plus comme avant. Pourtant, j’ai rapidement décidé que cette maladie, bien qu’exigeante, ne devait pas être un frein.
+En fin de 4ème, un nouveau tournant s’est imposé à moi : je souhaitais autre chose. Travailler sans relâche ne me suffisait plus, et il me fallait un cadre qui m’apporte un véritable épanouissement. C’est ainsi que l’Académie Musicale de Liesse s’est imposée comme une évidence. Malgré un dossier musical inexistant, j’y ai été admis et j’ai tout de suite su que ces années seraient importantes pour moi.
+Ces quatre années, toujours en cours, ont été déterminantes. L’Académie m’a offert un cadre exigeant, rythmé par des défis quotidiens, qui m’ont permis de grandir aussi bien sur le plan personnel qu’intellectuel. M’adapter à un emploi du temps intense, combinant études et musique, m’a appris la rigueur, l’organisation et l’efficacité. D’un point de vue musical, ce fut une aventure marquante : partir de zéro, me confronter à l’inconnu et développer ma curiosité ont été des sources d’épanouissement et d’équilibre.
+La vie en internat a également été une expérience inédite et enrichissante. Dès mon arrivée, j’ai apprécié cette immersion dans une communauté soudée, où la camaraderie et la bienveillance sont omniprésentes. Cette vie collective m’a demandé des ajustements, notamment dans la gestion de mes émotions et de la fatigue, mais elle m’a aussi permis de renforcer ma stabilité et ma tempérance. J’ai progressivement pris des responsabilités, d’abord en tant que “
+Chef d’équipe
+” en 2nde, où j’encadrais un groupe de dix garçons dans l’accomplissement de diverses tâches quotidiennes, puis en tant que “
+Capitaine
+” en 1ère, avec la responsabilité d'un groupe de trente élèves et enfin en tant que “
+Capitaine Général
+” pour les cent-vingt élèves. Ces expériences ont développé mon leadership, mon sens du management et surtout, m’ont appris la valeur de l’engagement et du don de soi pour le bien collectif.
+Sur le plan académique, mon goût pour l’analyse et la réflexion m’ont particulièrement orienté vers l’HGGSP. Cette discipline m’a passionné par la richesse de ses problématiques et son approche critique du monde. Étudier les relations internationales et les enjeux géopolitiques m’a permis d’affiner ma compréhension du pouvoir et des transformations globales de notre monde. J’apprécie particulièrement la rigueur argumentative et la structuration de la pensée que cette matière exige. Décrypter les rapports de force et comprendre les mécanismes m’apportent une satisfaction intellectuelle qui dépasse le cadre scolaire : c’est une matière qui me pousse à développer ma propre réflexion et à cultiver une pensée critique.
+Parallèlement, les mathématiques ont toujours occupé une place essentielle dans mon parcours. J’aime la logique et la précision qu’elles imposent, ainsi que le défi qu’elles représentent lorsqu’il s’agit de résoudre des problèmes complexes. Cette discipline, par son exigence et sa rigueur, m’a appris à adopter une approche méthodique et à raisonner avec clarté. Derrière chaque exercice se cache une logique à découvrir, une structure à comprendre, et c’est ce défi intellectuel qui me stimule.
+Aujourd’hui, fort de cette expérience, je souhaite intégrer une classe préparatoire ECG, dont l’enseignement pluridisciplinaire m’attire particulièrement. L’exigence et le rythme soutenu de l’Académie m’ont préparé à une charge de travail intense, et je suis prêt à m’investir pleinement dans mes études. J’ai pris goût à des journées structurées, riches et stimulantes, et je suis convaincu qu’une classe préparatoire est le cadre idéal pour poursuivre cette dynamique. De plus, je suis conscient que le rythme d’un préparationnaire demande des sacrifices, et que ma pratique musicale passera nécessairement au second plan. Je sais que je ne pourrai pas y consacrer autant de temps qu’aujourd’hui, mais elle restera un appui, me permettant de me détendre de manière apaisante et efficace.
+Notre-Dame du Grandchamp s’inscrit naturellement dans toute la cohérence de ce projet personnel : l’ambiance de saine émulation, la rigueur intellectuelle et l’esprit de cohésion qui y règnent me rappellent l’Académie, et je pense que mon parcours m’a bien préparé à ce que propose votre établissement.
+Je vous remercie de l’attention portée à ma candidature.
+Veuillez agréer l’expression de mes sentiments les plus distingués.
+NOMBRE DE CARACTÈRES : 5805/ 6000</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ECG Saint-Jean de Passy <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ECG Saint-Jean de Passy
+Madame, Monsieur,
+Je m’appelle Aymar LESUEUR, j’ai 17 ans et je suis le dernier d’une fratrie de quatre garçons. Né et ayant grandi à Paris, j’ai effectué ma scolarité primaire à Sainte Jeanne-Élisabeth. Ces premières années ont été marquées par une scolarité sans encombre et de nombreux souvenirs heureux, notamment grâce à mes activités extrascolaires. Dès l’âge de six ans, j’ai eu la chance de fréquenter le patronage du Bon Conseil, un lieu qui a pris une place centrale dans ma vie. Initialement, j’y allais simplement pour pratiquer diverses activités sportives et culturelles, mais peu à peu, cette maison est devenue un véritable pilier familial. Chacun y a trouvé sa place, d’abord en recevant, puis en s’investissant à son tour. Encore aujourd’hui, elle représente pour moi bien plus qu’un centre d’activités : c’est un espace de partage et de transmission, ancré dans un esprit salésien et scout qui m’a profondément marqué.
+En suivant le parcours de mes frères, j’ai intégré le collège Stanislas en 6ème, dans un environnement exigeant, où le rythme de travail était soutenu. Ces trois années ont été formatrices : j’y ai acquis des méthodes de travail solides, qui me servent encore aujourd’hui. C’est aussi au début de mon année de 6ème qu’un événement majeur a bouleversé mon quotidien : le diagnostic de mon diabète de type 1. Ce fut un véritable basculement, au moment où j’ai pris conscience que rien ne serait plus comme avant. Pourtant, j’ai rapidement décidé que cette maladie, bien qu’exigeante, ne devait pas être un frein.
+En fin de 4ème, un nouveau tournant s’est imposé à moi : je souhaitaisautre chose. Travailler sans relâche ne me suffisait plus, et il me fallait un cadre qui m’apporte un véritable épanouissement. C’est ainsi que l’Académie Musicale de Liesse s’est imposée comme une évidence. Malgré un dossier musical inexistant, j’y ai été admis et j’ai tout de suite su que ces années seraient importantes pour moi.
+Ces quatre années, toujours en cours, ont été déterminantes. L’Académie m’a offert un cadre exigeant, rythmé par des défis quotidiens, qui m’ont permis de grandir aussi bien sur le plan personnel qu’intellectuel. M’adapter à un emploi du temps intense, combinant études et musique, m’a appris la rigueur, l’organisation et l’efficacité. D’un point de vue musical, ce fut une aventure marquante : partir de zéro, me confronter à l’inconnu et développer ma curiosité ont été des sources d’épanouissement et d’équilibre.
+La vie en internat a également été une expérience inédite et enrichissante. Dès mon arrivée, j’ai apprécié cette immersion dans une communauté soudée, où la camaraderie et la bienveillance sont omniprésentes. Cette vie collective m’a demandé des ajustements, notamment dans la gestion de mes émotions et de la fatigue, mais elle m’a aussi permis de renforcer ma stabilité et ma tempérance. J’ai progressivement pris des responsabilités, d’abord en tant que “
+Chef d’équipe
+” en 2nde, où j’encadrais un groupe de dix garçons dans l’accomplissement de diverses tâches quotidiennes, puis en tant que “
+Capitaine
+” en 1ère, avec la responsabilité d'un groupe de trente élèves et enfin en tant que “
+Capitaine Général
+” pour les cent-vingt élèves. Ces expériences ont développé mon leadership, mon sens du management et surtout, m’ont appris la valeur de l’engagement et du don de soi pour le bien collectif.
+Sur le plan académique, mon goût pour l’analyse et la réflexion m’ont particulièrement orienté vers l’HGGSP. Cette discipline m’a passionné par la richesse de ses problématiques et son approche critique du monde. Étudier les relations internationales et les enjeux géopolitiques m’a permis d’affiner ma compréhension du pouvoir et des transformations globales de notre monde. J’apprécie particulièrement la rigueur argumentative et la structuration de la pensée que cette matière exige. Décrypter les rapports de force et comprendre les mécanismes m’apportent une satisfaction intellectuelle qui dépasse le cadre scolaire : c’est une matière qui me pousse à développer ma propre réflexion et à cultiver une pensée critique.
+Parallèlement, les mathématiques ont toujours occupé une place essentielle dans mon parcours. J’aime la logique et la précision qu’elles imposent, ainsi que le défi qu’elles représentent lorsqu’il s’agit de résoudre des problèmes complexes. Cette discipline, par son exigence et sa rigueur, m’a appris à adopter une approche méthodique et à raisonner avec clarté. Derrière chaque exercice se cache une logique à découvrir, une structure à comprendre, et c’est ce défi intellectuel qui me stimule.
+Aujourd’hui, fort de cette expérience, je souhaite intégrer une classe préparatoire ECG, dont l’enseignement pluridisciplinaire m’attire particulièrement. L’exigence et le rythme soutenu de l’Académie m’ont préparé à une charge de travail intense, et je suis prêt à m’investir pleinement dans mes études. J’ai pris goût à des journées structurées, riches et stimulantes, et je suis convaincu qu’une classe préparatoire est le cadre idéal pour poursuivre cette dynamique. De plus, je suis conscient que le rythme d’un préparationnaire demande des sacrifices, et que ma pratique musicale passera nécessairement au second plan. Je sais que je ne pourrai pas y consacrer autant de temps qu’aujourd’hui, mais elle restera un appui, me permettant de me détendre de manière apaisante et efficace.
+Saint-Jean de Passy s’inscrit naturellement dans toute la cohérence de ce projet personnel : l’ambiance de saine émulation, la rigueur intellectuelle et l’esprit de cohésion qui y règnent me rappellent l’Académie, et je pense que mon parcours m’a bien préparé à ce que propose votre établissement.
+Je vous remercie de l’attention portée à ma candidature.
+Veuillez agréer l’expression de mes sentiments les plus distingués.
+NOMBRE DE CARACTÈRES : 5800/ 6000</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>ECG - Sainte Croix <span class="voeu-letter-badge">Lettre</span></span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">ECG - Sainte Croix
+Scolarisé dans un lycée à horaires aménagés musique avec les spécialités HGSGP et mathématiques, je souhaite rejoindre la classe préparatoire ECG de Sainte-Croix, afin de poursuivre dans une filière pluridisciplinaire et dans une dynamique d'exigence et de discipline.
+Mon parcours à Stanislas puis à l’Académie m’a appris la rigueur et l’organisation, conciliant une formation musicale intense et un haut niveau académique. Relever le défi d’un cursus musical sans formation préalable m’a appris que sortir de sa zone de confort fait progresser. J’ai aussi développé un sens des responsabilités, en encadrant progressivement jusqu’à 120 élèves.
+J’ai pris goût au travail rigoureux et au dépassement de soi. Loin de m’effrayer, l'intensité intellectuelle et l’émulation d’une classe préparatoire correspondent au mode de vie dans mon lycée. Conscient que le rythme d’un préparationnaire demande des sacrifices, ma pratique musicale passera au second plan.
+Aimant l’analyse et la réflexion, j’ai développé un fort intérêt pour l’HGGSP, discipline du pouvoir et des dynamiques géopolitiques. Parallèlement, les mathématiques nourrissent mon appétence pour un raisonnement logique et structuré. Ces disciplines stimulent ma curiosité et mon goût pour l'étude approfondie, à l’origine de mon choix pour Sainte-Croix. Son cadre académique exigeant et son esprit d'émulation conjuguent l’excellence avec un authentique sens du collectif.
+Souhaitant que ma candidature retienne votre attention.
+NOMBRE DE CARACTÈRES : 1482/ 1500</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paragraphes Parcoursup -->
+      <div class="voeux-section">
+        <h2>Paragraphes Parcoursup</h2>
+        <p class="voeux-count">Les 5 paragraphes de présentation rédigés pour Parcoursup (1500 caractères max chacun)</p>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mes expériences d’encadrement ou d’animation</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dans le cadre de mes engagements, je prépare actuellement le BAFA, une formation qui renforce mes compétences en encadrement et en animation.Parallèlement à cela, j’ai eu l’opportunité d’être nommé chef d’équipe au sein de mon établissement, j'ai donc commencé par gérer une équipe de dix garçons pour des tâches quotidiennes. Cette première expérience m'a permis de développer des compétences en leadership et en organisation, en motivant chacun à contribuer efficacement.Progressivement, toujours au sein de mon école je suis devenu responsable de trente garçons, prenant en charge l’hygiène de l'établissement dans le respect des normes HACCP, ainsi que leur épanouissement éducatif. J'ai accompagné les plus jeunes pour les responsabiliser tout en valorisant les anciens, favorisant une riche cohésion d'équipe. Chaque semaine, des réunions avec mon référent m'ont aidé à affiner mes compétences en management, à renforcer mon sens de la hiérarchie et à apprendre à rendre compte.J'ai également participé à l'organisation d'un festival de musique pour jeunes, au cours duquel j'ai géré les transitions entre les groupes et veillé au divertissement du public. Cette mission m'a permis de travailler mon aisance à l'oral et ma capacité à captiver un auditoire. En parallèle, j'ai dirigé un groupe de musique à l'école, en veillant à la cohésion et au bon lien entre ses membres et l’encadrement, ce qui nous a permis de nous produire devant un public de 1 000 personnes.1475 caractèresDans ce paragraphe sont listés les responsabilités suivantesChef d’équipeCapitaineDir/CapAnimation (LWC)Responsable Musique Actuelle</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon engagement citoyen</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Dans une maison de retraite, j'ai contribué à des tâches pratiques telles que la mise du couvert et le service des repas, mais également à l'organisation d'activités visant à distraire les résidents et à leur apporter de la joie. Ces moments m'ont permis de découvrir la richesse des échanges intergénérationnels, en écoutant leurs récits de vie et en partageant des moments sincères de convivialité. J'ai également eu l'opportunité de chanter un récital dans une maison de santé, un projet qui m'a permis un partage culturel et humain.J'ai également assisté à la cérémonie du ravivage de la flamme du soldat inconnu, j'ai alors pris conscience de l'importance de la mémoire collective et de l'histoire nationale, une expérience qui m'a marqué par son caractère solennel et symbolique.Durant une colonie de vacances, j'ai accompagné un jeune en fauteuil roulant lors de randonnées, m'assurant de sa sécurité tout en favorisant son inclusion dans les activités de groupe. Parallèlement, j'ai soutenu un enfant autiste nécessitant une attention constante, ce qui m'a appris la patience et l'adaptabilité, tout en me sensibilisant davantage aux besoins spécifiques des autres.Enfin, en participant à un conseil municipal en tant que jeune conseiller, j'ai travaillé sur des propositions concrètes pour améliorer la qualité de vie des habitants de l'arrondissement. Cette expérience m'a donné une vision plus claire des processus collaboratifs nécessaires pour mener à bien des projets collectifs.1493 caractèresDans ce paragraphe, sont listés les engagements suivantsPetite Soeur des Pauvres (Bénévolat 1 semaine)Basile Moreau (récital)Raviver la flamme du soldat inconnuCamp du BC (pousser un handicapé en randonnée pendant 3 jours + un enfant autiste)Conseiller Municipal (CM2)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Mon expérience professionnelle</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">J'ai conçu, monté et publié une dizaine de vidéos promotionnelles pour un festival de mon école accueillant 1000 personnes, renforçant la visibilité de l'événement et mobilisant un large public. Cette expérience m'a permis de maîtriser des outils de création numérique et de développer une communication ciblée et percutante.Par ailleurs, j'ai organisé une soirée thématique avec un budget de 800 euros, supervisant une équipe de 30 personnes réparties en commissions (cuisine, décoration, animation). Cette responsabilité impliquait non seulement la coordination des différents pôles, mais aussi la gestion des imprévus et le respect des délais. J'ai travaillé à établir une atmosphère collaborative, encourageant chaque membre à exprimer sa créativité tout en veillant à l'harmonie du projet. Cette expérience m'a appris à gérer des contraintes budgétaires tout en atteignant des objectifs ambitieux et à valoriser les forces individuelles pour maximiser l'efficacité collective.Avec mon lycée à horaires aménagés, je participe à une cinquantaine de concerts par an à un niveau semi-professionnel. Ces prestations exigent une préparation rigoureuse et m'ont enseigné la discipline, la gestion du stress et l'adaptation à divers contextes. Les tournées à l'étranger, notamment en Belgique, en Italie et à Monaco, m'ont permis de découvrir de nouvelles cultures, d'affiner ma capacité à travailler dans des environnements multiculturels et de mieux comprendre les attentes de différents publics.1495 caractèresDans ce paragraphe sont listés, les expériences suivantesProduction/ montage Vidéo Communication Evenementiel (WE des 10 ans)AubergeConcerts de Musique Actuelle / SacréeTournées musical à l’étranger (Italie, Belgique, Monaco)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Ouverture au monde (pratiques sportives, culturelles ou parcours spécifiques)</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">Je chante dans un chœur étudiant à Paris, ce qui implique des répétitions régulières et des concerts, renforçant ainsi mon exigence et mon esprit d'équipe. Ces prestations m'ont également appris à m'adapter à des répertoires variés et à collaborer étroitement avec des musiciens de différents horizons. En parallèle, je pratique la batterie depuis quatre ans, un apprentissage qui m'a apporté rigueur et persévérance, ainsi qu'une meilleure compréhension du rythme et de la coordination.J'ai aussi monté un groupe de musique avec des camarades, une aventure qui a abouti à des concerts, des enregistrements et une composition originale. Cette initiative m'a permis de développer ma créativité, ma capacité à travailler en équipe et à partager des moments forts avec le public.Côté sport, j'ai pratiqué le handball en club, découvrant le respect de l'adversaire, l'esprit d'équipe et l'engagement collectif. J'apprécie aussi l'escalade pour son équilibre entre plaisir et effort.Enfin, un échange linguistique en Irlande m'a permis de découvrir une nouvelle culture et de perfectionner mes compétences en anglais. J'ai particulièrement apprécié les échanges quotidiens avec ma famille d'accueil et mes camarades internationaux, qui ont enrichi mon expérience personnelle et élargi ma perspective sur les différences culturelles. Cette expérience m'a également donné l'occasion de nouer des liens avec des personnes de divers horizons, enrichissant ainsi ma vision du monde.1473 caractèresDans ce paragraphe sont listés les expériences suivantes :Choeur Madeleine Célestin (+ concert)Handball en club (1 an)Pratique de la batteriePratique Régulière de l’escaladeSéjour Linguistique en Irlande (15 jours)Production Musique Actuelle hors Académie (Groupe avec Elzéar)</div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" type="button">
+              <span>Élément liés à ma scolarité</span>
+              <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <div class="letter-text">VERSION ORIGINALE, 100 % par moi mais trop de caractèresJe suis scolarisé depuis 4 ans à l’Académie Musicale de Liesse, un petit internat de garçons privés hors-contrat avec la particularité d’être une école à horaires aménagés musiques (type CHAM). Je suis donc le cursus d’un lycéen en bac général classique, mais avec la particularité d’avoir deux fois moins de cours et de dédier entre 2 et 3h de mon temps à la musique, en pratiquant la batterie et le chant en chœur. Postuler dans cette école il y a 4 ans, sans aucune formation musicale préalable , a sans doute été la décision la plus audacieuse et la plus engagée que j’ai faite, mais elle est sans nulle doute la meilleure et celle que je regrette le moins.Je dois beaucoup à cette formation très exigeante qui m’a permis de me développer, bien plus à mon sens qu’un lycée classique, tant scolairement, qu’artistiquement., qu’humainement.Du point de vue scolaire, les exigence académiques, sont grandes : réaliser le même programme que les autres lycée avec deux fois moins de cours, cela requiert une capacité de compréhension extrêmement rapide des nouvelles notions et nouveaux concepts, ainsi qu’une grande autonomie dans le travail personnel, car les cours en classe sont faits pour aller à l’essentiel, et le travail personnel vient consolider les notions abordées. Je pense donc pouvoir affirmer que cela m’a permis de développer toujours plus mon autonomie dans mon travail, cela m’a également permis d’acquérir une grande rigueur académique dans le rendu régulier des devoirs et travaux maisons. Enfin, avoir l’importance de la musique, avec des concerts et échéances régulières, m’a permis de développer une grande capacité d’anticipation des échéances scolaires, afin de ne pas se laisser surprendre.Outre l’aspect scolaire, la musique au niveau semi-professionnel prend aussi toute sa place dans le projet de l’établissement. Avec plus d’une cinquantaine de concerts par an pendant quatre ans, la musique fait désormais partie intégrante de mon quotidien. J’ai ainsi eu l’occasion de chanter de grandes œuvres sacrées telles que : Le Requiem de Mozart, Le Messie de Haendel, ou encore Le Gloria de Vivaldi. En plus de pratiquer le chant avec des répétitions quotidiennes, j’ai également la chance de pratiquer la batterie, avec un cours hebdomadaire par un professeur diplômé d’Etat, et des temps appelés Travail Instrumentale, afin de réaliser le travail que le professeur m’a donné, et de jouer seul et en autonomie. La pratique de cet instrument m’a permis de faire partie du groupe de Musique Actuelle de l’école, me permettant de jouer un répertoire de pop-rock plus récent dans lequel la batterie vient s’inscrire. Cela m’a ainsi permis de réaliser des échéances supplémentaires de natures très variées, allant d’un concert pour des personnes âgées et handicapées au festival anniversaire de l’école, ayant rassemblé 1000 personnes en passant par l’animation d’un festival pour jeunes.Enfin, mon école se veut aussi mettre l’accent sur une formation humaine complète. Ainsi en plus d’avoir des conférences et des formations régulières sur les sujets de société, l’ambiance peut-être décrite comme empreinte de confiance et de responsabilisation. Ainsi, j’ai eu l’occasion d’être nommé Chef d’équipe au sein de l’établissement. Au nombre de 16, les chefs d’équipes ont 10 de leurs camarades sous leurs ordres, et ont pour mission d’assurer leur bon développement et leur bien être, mais aussi à réaliser des tâches quotidiennes avec eux. Ces chefs d’équipes ont pour les aider un Capitaine (qui est également un élève) à qui ils doivent rendre compte régulièrement. Les capitaines (qui sont au nombre de 4) ont sous leurs responsabilités 3 équipes (ce qui fait 30 garçons), et sont également responsables de veiller sur leurs camarades, dans un esprit empreint de scoutisme, où les plus âgées prennent soin des plus jeunes. J’ai ainsi eu l’occasion d’être nommé chef d’équipe, puis capitaine, et enfin capitaine général (fonction la plus élevée parmi les élèves).Outre cela, je suis également diabétique de type 1 depuis l’âge de 10 ans. Cette maladie m’a permis de réfléchir et de mieux réaliser de nombreux grands principes de vie, et m’a permis de prendre une hauteur de vue sur de nombreux aspects, qualité qu’il m’est encore attribuée aujourd’hui. Bien loin de me démoraliser, ou de me rendre triste, mon diabète n’est pas une source de stress et j’en suis aujourd’hui totalement indépendant.VERSION PLUS COURTE ET RETRAVAILLÉE AVEC CHATGPT BON NOMBRES DE CARACTÈRESJe suis scolarisé depuis 4 ans à l’Académie Musicale de Liesse, un internat à horaires aménagés en musique (type CHAM). J’y suis un cursus de bac général classique, afin de consacrer entre 2 et 3 heures par jour à la musique, en pratiquant le chant choral et la batterie. Postuler dans cette école sans formation musicale préalable a été une décision audacieuse et engageante, mais certainement la meilleure que j’ai prise.Cette formation très exigeante m’a permis de me développer bien au-delà d’un lycée classique, aussi bien scolairement que artistiquement et humainement.Sur le plan académique, la densité d’un programme à horaires aménagés demande une assimilation rapide des notions, une grande autonomie dans le travail, une envie d'approfondir individuellement les sujets abordés ainsi qu’une capacité à organiser efficacement son temps. Cette rigueur m’a permis d’acquérir des réflexes d’apprentissage performants, une autonomie renforcée et une capacité d’anticipation précieuse, notamment pour gérer les échéances scolaires en parallèle des nombreuses obligations musicales (concerts notamment).Sur le plan artistique, la musique est omniprésente dans mon quotidien. Avec plus d’une cinquantaine de concerts par an, j’ai eu l’occasion d’interpréter de grandes œuvres sacrées comme le Requiem de Mozart, Le Messie de Haendel ou encore le Gloria de Vivaldi. En plus du chant choral, je pratique la batterie avec un professeur diplômé et bénéficie de temps dédiés au travail instrumental, me permettant d’approfondir mon apprentissage en autonomie. Cette pratique m’a aussi conduit à intégrer le groupe de musique actuelle de l’école, élargissant mon répertoire au pop-rock et me donnant l’occasion de jouer dans des contextes variés : concerts en maisons de retraite, festivals étudiants, animations de grands événements.Mon établissement accorde aussi une grande importance à la formation humaine et à la responsabilisation des élèves. Nous assistons régulièrement à des conférences sur des thématiques de vie variées, et l’engagement des élèves dans la vie de l’établissement est encouragé. L’ambiance repose sur la prise d’initiatives et l’esprit de service, nous apprenant à être acteurs de notre formation et non simples bénéficiaires.L’année prochaine, je suis conscient que je ne pourrai plus consacrer autant de temps à la musique. Si ces quatre années m’ont permis d’évoluer dans un cadre où la musique occupait une place centrale, je sais que l’intensité du travail dans mes études demandera un réajustement de mes priorités. Toutefois, je souhaite garder un lien avec cette discipline, que ce soit à travers des pratiques occasionnelles, l’intégration à une chorale universitaire ou tout autre moyen me permettant de maintenir cet équilibre personnel.Enfin, je suis diabétique de type 1 depuis mes 10 ans. Cette maladie m’a amené à développer un sens des responsabilités accru et une capacité à prendre du recul sur les défis du quotidien. Loin d’être une contrainte, elle m’a appris à m’adapter, à gérer mon équilibre de vie et à ne jamais me laisser freiner par des difficultés extérieures.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Back Link -->
+        <a href="../parcoursup.html" class="back-link">
+          &larr; Retour a la Data Base Parcoursup
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les eleves de Terminale de l'Academie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="../guide-etranger.html">Etudes a l'Etranger</a></li>
+            <li><a href="../entretiens.html">Entretiens</a></li>
+            <li><a href="../parcoursup.html">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Revisions</h4>
+          <ul class="footer-links">
+            <li><a href="../hggsp.html">BAC HGGSP</a></li>
+            <li><a href="../maths.html">BAC Maths</a></li>
+            <li><a href="../grand-oral.html">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Academie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Cree avec soin par Aymar Lesueur pour l'Academie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+
+
+</body>
+</html>
