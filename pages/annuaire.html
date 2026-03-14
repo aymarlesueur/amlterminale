@@ -486,26 +486,52 @@
       if (!searchInput) return;
 
       searchInput.addEventListener('input', function() {
-        var query = this.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        var query = this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         var cards = document.querySelectorAll('.alumni-card');
+        var promoSections = document.querySelectorAll('.promo-section');
+        var isSearching = query.length > 0;
         var visible = 0;
 
-        cards.forEach(function(card) {
-          var name = (card.getAttribute('data-name') || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-          var detail = (card.querySelector('.alumni-detail') || {}).textContent || '';
-          detail = detail.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        // Hide promo headers and empty sections when searching
+        promoSections.forEach(function(section) {
+          var header = section.querySelector('.promo-header');
+          var empty = section.querySelector('.alumni-empty');
+          if (isSearching) {
+            if (header) header.style.display = 'none';
+            if (empty) empty.style.display = 'none';
+          } else {
+            if (header) header.style.display = '';
+            if (empty) empty.style.display = '';
+          }
+        });
 
-          if (name.indexOf(query) !== -1 || detail.indexOf(query) !== -1) {
+        // Filter cards
+        cards.forEach(function(card) {
+          var name = (card.getAttribute('data-name') || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          var detail = (card.querySelector('.alumni-detail') || {}).textContent || '';
+          detail = detail.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+          if (!isSearching || name.indexOf(query) !== -1 || detail.indexOf(query) !== -1) {
             card.style.display = '';
-            visible++;
+            if (isSearching) visible++;
           } else {
             card.style.display = 'none';
           }
         });
 
-        if (query.length > 0) {
+        // Hide promo sections that have no visible cards when searching
+        if (isSearching) {
+          promoSections.forEach(function(section) {
+            var grid = section.querySelector('.alumni-grid');
+            if (!grid) { section.style.display = 'none'; return; }
+            var hasVisible = Array.from(grid.querySelectorAll('.alumni-card')).some(function(c) {
+              return c.style.display !== 'none';
+            });
+            section.style.display = hasVisible ? '' : 'none';
+          });
           resultsCount.textContent = visible + ' résultat' + (visible !== 1 ? 's' : '');
         } else {
+          promoSections.forEach(function(section) { section.style.display = ''; });
           resultsCount.textContent = '';
         }
       });
