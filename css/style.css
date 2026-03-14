@@ -136,17 +136,18 @@ section {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
 }
 
 .nav-links a {
-  padding: 8px 16px;
+  padding: 8px 10px;
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--gray-dark);
   position: relative;
+  white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -902,7 +903,7 @@ section {
 .stagger-children.visible > *:nth-child(n+7) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
 
 /* --- Responsive --- */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .nav-links {
     display: none;
     position: absolute;
