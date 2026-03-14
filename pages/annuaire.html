@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annuaire des Anciens Élèves - AML Terminale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../assets/images/logo-aml.png">
+  <style>
+    .alumni-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .alumni-card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      transition: var(--transition);
+      text-decoration: none;
+      color: inherit;
+    }
+    .alumni-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-gold);
+    }
+    .alumni-card-top {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .alumni-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+    }
+    .alumni-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--blue-primary);
+      font-family: 'Sora', 'Inter', sans-serif;
+    }
+    .alumni-status-badge {
+      display: inline-block;
+      width: fit-content;
+      padding: 3px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(212, 168, 67, 0.15);
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+    }
+    .alumni-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--gray-light);
+    }
+    .alumni-detail {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    .alumni-arrow {
+      font-size: 1.1rem;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .alumni-empty {
+      background: var(--off-white);
+      border: 2px dashed var(--gray-light);
+      border-radius: var(--radius-md);
+      padding: 40px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .alumni-empty p {
+      color: var(--gray);
+      font-style: italic;
+    }
+    .search-container {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      border: 2px solid var(--gray-light);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      background: #fff;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.2);
+    }
+    .search-results-count {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    @media (max-width: 480px) {
+      .alumni-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index" class="nav-brand">
+        <img src="../assets/images/logo-aml.png" alt="AML">
+        <div>
+          AML Terminale
+          <span>Académie Musicale de Liesse</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index">Accueil</a></li>
+        <li><a href="guide-etranger">Études à l'Étranger</a></li>
+        <li><a href="entretiens">Entretiens</a></li>
+        <li><a href="parcoursup">Parcoursup</a></li>
+        <li><a href="annuaire" class="active">Annuaire</a></li>
+        <li><a href="hggsp">HGGSP</a></li>
+        <li><a href="maths">Maths</a></li>
+        <li><a href="grand-oral">Grand Oral</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index">Accueil</a>
+        <span>/</span>
+        <span>Annuaire des Anciens</span>
+      </div>
+      <h1>Annuaire des Anciens Élèves</h1>
+      <p>Retrouve les anciens académiciens, leur parcours et leur situation actuelle, de la Promotion 1 à aujourd'hui.</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="page-content">
+    <div class="container">
+
+      <div class="callout reveal">
+        <p>Cet annuaire regroupe les anciens élèves de l'Académie Musicale de Liesse. Découvre leur parcours depuis le BAC, leur situation actuelle et connecte-toi avec eux via LinkedIn.</p>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container reveal">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="alumniSearch" placeholder="Rechercher un ancien élève...">
+        <div class="search-results-count" id="searchResultsCount"></div>
+      </div>
+
+      <!-- Promotions (newest first) -->
+
+      <!-- Promotion 1 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 1 / BAC 2018</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 2 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 2 / BAC 2019</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 3 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 3 / BAC 2020</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 4 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 4 / BAC 2021</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 5 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 5 / BAC 2022</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 6 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 6 / BAC 2023</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 7 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 7 / BAC 2024</h3>
+          <span class="badge">À venir</span>
+        </div>
+        <div class="alumni-empty">
+          <p>Les profils de cette promotion seront ajoutés prochainement.</p>
+        </div>
+      </div>
+
+      <!-- Promotion 8 -->
+      <div class="promo-section reveal">
+        <div class="promo-header">
+          <h3>Promotion 8 / BAC 2025</h3>
+          <span class="badge">12 Anciens</span>
+        </div>
+        <div class="alumni-grid">
+          <a href="anciens/alexis-bexon" class="alumni-card" data-name="Alexis BEXON" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Alexis BEXON</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">Prépa MPSI - Saint Benoît, Angers</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/pierre-couturier" class="alumni-card" data-name="Pierre COUTURIER" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Pierre COUTURIER</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">En cours de formation</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/maxence-de-bodman" class="alumni-card" data-name="Maxence DE BODMAN" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Maxence DE BODMAN</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">En cours de formation</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/francois-de-labriolle" class="alumni-card" data-name="François DE LABRIOLLE" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">François DE LABRIOLLE</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">Prépa PCSI</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/beaudoin-de-villers" class="alumni-card" data-name="Beaudoin DE VILLERS" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Beaudoin DE VILLERS</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">Prépa MPSI - Stanislas, Paris</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/christian-du-plessis" class="alumni-card" data-name="Christian DU PLESSIS" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Christian DU PLESSIS</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">En cours de formation</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/theodore-henry" class="alumni-card" data-name="Théodore HENRY" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Théodore HENRY</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">En cours de formation</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/henri-koch" class="alumni-card" data-name="Henri KOCH" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Henri KOCH</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">En cours de formation</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/yves-le-goff" class="alumni-card" data-name="Yves LE GOFF" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Yves LE GOFF</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">En cours de formation</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/aymar-lesueur" class="alumni-card" data-name="Aymar LESUEUR" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Aymar LESUEUR</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">Ave Maria University - Economics &amp; Finance, Floride</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/damien-soleil" class="alumni-card" data-name="Damien SOLEIL" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Damien SOLEIL</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">Prépa B/L - Lycée Saint Marc, Lyon</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+          <a href="anciens/jean-sterin" class="alumni-card" data-name="Jean STÉRIN" data-promo="8">
+            <div class="alumni-card-top">
+              <div class="alumni-avatar">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg>
+              </div>
+              <div class="alumni-name">Jean STÉRIN</div>
+              <div class="alumni-status-badge">Étudiant</div>
+            </div>
+            <div class="alumni-card-bottom">
+              <span class="alumni-detail">ICES - Licence d'Histoire, La Roche-sur-Yon</span>
+              <span class="alumni-arrow">&rarr;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../assets/images/logo-aml.png" alt="AML">
+          <p>Plateforme de ressources pour les élèves de Terminale de l'Académie Musicale de Liesse.</p>
+        </div>
+        <div>
+          <h4>Ressources</h4>
+          <ul class="footer-links">
+            <li><a href="guide-etranger">Études à l'Étranger</a></li>
+            <li><a href="entretiens">Entretiens</a></li>
+            <li><a href="parcoursup">Parcoursup</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Révisions</h4>
+          <ul class="footer-links">
+            <li><a href="hggsp">BAC HGGSP</a></li>
+            <li><a href="maths">BAC Maths</a></li>
+            <li><a href="grand-oral">Grand Oral</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Académie</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.academiemusicaledeliesse.fr/" target="_blank">Site officiel AML</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>AML Terminale &mdash; Créé avec soin par Aymar Lesueur pour l'Académie Musicale de Liesse</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    // Alumni search
+    (function() {
+      var searchInput = document.getElementById('alumniSearch');
+      var resultsCount = document.getElementById('searchResultsCount');
+      if (!searchInput) return;
+
+      searchInput.addEventListener('input', function() {
+        var query = this.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        var cards = document.querySelectorAll('.alumni-card');
+        var visible = 0;
+
+        cards.forEach(function(card) {
+          var name = (card.getAttribute('data-name') || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+          var detail = (card.querySelector('.alumni-detail') || {}).textContent || '';
+          detail = detail.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+          if (name.indexOf(query) !== -1 || detail.indexOf(query) !== -1) {
+            card.style.display = '';
+            visible++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (query.length > 0) {
+          resultsCount.textContent = visible + ' résultat' + (visible !== 1 ? 's' : '');
+        } else {
+          resultsCount.textContent = '';
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
